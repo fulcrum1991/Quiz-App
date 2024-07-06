@@ -16,9 +16,9 @@ Haupt-Branches:
   - Direkte Commits sind nicht erlaubt.
   - Änderungen müssen mit Versionsnummern getaggt werden.
 - Develop Branch (develop):
--   Entwicklungsumgebung.
--   Enthält den aktuellen Stand der Entwicklung.
--   Alle neuen Features werden hier zusammengeführt.
+  - Entwicklungsumgebung.
+  - Enthält den aktuellen Stand der Entwicklung.
+  - Alle neuen Features werden hier zusammengeführt.
 
 Feature-Branches:
 - Branches der develop-Branch
