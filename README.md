@@ -8,6 +8,7 @@ Model
 Template
 
 ## Branching Strategie
+![image](https://github.com/fulcrum1991/IU-Quiz/assets/96475736/88fa176a-0c88-4c22-a576-503ae47a9992)
 
 Haupt-Branches:
 - Main Branch (main):
