@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Quizaufgabe erstellen{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{%  block content %}
+    
+<form method="post">
+    {% csrf_token %}{{ form|crispy }}
+    <button type="submit" class="btn btn-success">Speichern</button>
+</form>
+
+{% endblock %}
