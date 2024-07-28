@@ -8,6 +8,9 @@ Model
 Template
 
 ### wichtige Ordner und Dateien
+
+https://www.jetbrains.com/help/pycharm/creating-and-running-your-first-django-project.html
+
 - manage.py
   - Gateway zu Django Management Befehlen.
   - Initiiert den development server, erstellt Applikationen, startet Migrationen, etc. 

@@ -1,0 +1,14 @@
+asgiref
+certifi
+cycler
+Django
+django-crispy-forms
+kiwisolver
+matplotlib
+numpy
+Pillow
+pyparsing
+python-dateutil
+pytz
+six
+sqlparse
