@@ -20,6 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Library.urls')),              # mario
-    path('', include('django.contrib.auth.urls'))   # mario: refers to login.html
+    path('', include('Library.urls')),
+    path('', include('UserManagement.urls')),
+    path('', include('django.contrib.auth.urls'))           # Including the pages for login and logout
 ]
