@@ -8,4 +8,6 @@ urlpatterns = [
     path('create-quiztask', views.create_quiztask, name='create-quiztask'),
 
     path('sign-up/', sign_up, name='sign_up'),
+    path('profile/', views.profile, name='profile'),
+    path('delete_profile/', views.delete_profile, name='delete_profile'),
 ]
