@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
-from .forms import QuizTaskForm
+from .forms import QuizTaskForm, SignUpForm
 from .models import QuizTask
+
 # Create your views here.
 
 #@login_required(login_url='/login')                  # Change. Lesender Zugriff auf Bibliothek soll gegeben sein
@@ -31,4 +32,15 @@ def create_quiztask(request):                       # naming convention pep8
         form = QuizTaskForm()
 
     return render(request, 'create-quiztask.html', {'form': form})
+
+def sign_up(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = SignUpForm()
+    return render(request, 'sign-up.html', {'form': form})
+
 
