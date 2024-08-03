@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+from dotenv import load_dotenv
+import os
+
+load_dotenv()   ### loads environment veriavle ???
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +30,7 @@ SECRET_KEY = 'django-insecure-l_utjh$u^9n@z%(c_p@p2&e9cv6+0@3#w=z&c1$^r&cxgjz(kq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -37,7 +41,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Library.apps.LibraryConfig',                               # mario
+    'UserManagement.apps.UsermanagementConfig',                 # mario
+    'Multiplayer.apps.MultiplayerConfig',                       # mario
+    'Singleplayer.apps.SingleplayerConfig',                     # mario
+    'crispy_forms',                                             # mario
+    'crispy_bootstrap5'                                         # mario
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'                    # mario
+CRISPY_TEMPLATE_PACK = 'bootstrap5'                             # mario
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,8 +67,7 @@ ROOT_URLCONF = 'Quiz-App.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,3 +134,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Login
+LOGIN_REDIRECT_URL = '/library'
+LOGOUT_REDIRECT_URL = '/login'
+
+

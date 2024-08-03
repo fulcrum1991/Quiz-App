@@ -1,0 +1,4 @@
+.idea/
+.venv/
+Quiz-App/db.sqlite3
+Dokumentation/
