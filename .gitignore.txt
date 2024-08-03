@@ -1,5 +1,4 @@
-.idea
 .idea/
-.venv
 .venv/
 Quiz-App/db.sqlite3
+Dokumentation/
