@@ -1,0 +1,11 @@
+<div id="quizpools">
+    <div id="list_quizpools">
+        {%  include 'library/list_quizpools.html' %}
+    </div>
+    <div id="create_quizpool">
+        <form hx-post="{% url 'create_quizpool' %}" hx-target="#list_quizpools">
+            <input type="text" name="name" placeholder="Quizpool X" required>
+            <input type="submit" value="Fragenpool hinzufügen" >
+        </form>
+    </div>
+</div>

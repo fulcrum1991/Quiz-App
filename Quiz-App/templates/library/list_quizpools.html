@@ -1,0 +1,16 @@
+<ul>
+    {% for pool in quizpools %}
+        <li >
+            <div>
+                <span hx-get="{% url 'get_quiztasks' pool.id %}" hx-target="#list_quiztasks">
+                    {{ forloop.counter }} {{ pool.name }}
+                </span>
+                <span class="action badge rounded-pill text-bg-danger" hx-delete="{% url 'delete_pool' pool.id %}"
+                      hx-target="#list_quizpool" hx-confirm="Are you sure you wish to delete?" style="cursor: pointer;">X</span>
+            </div>
+        </li>
+    {% empty %}
+        <p>Hier ist noch nichts zu sehen</p>
+    {% endfor %}
+</ul>
+

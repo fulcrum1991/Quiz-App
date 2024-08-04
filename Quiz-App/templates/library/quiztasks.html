@@ -1,0 +1,11 @@
+<div id="quiztasks">
+    <div id="list_quiztasks">
+        {%  include 'library/list_quiztasks.html' %}
+    </div>
+    <div id="create_quiztask">
+        <form hx-post="{% url 'create_quiztask' %}" hx-target="#list_quiztasks">
+            <input type="text" name="question" placeholder="Frage X" required>
+            <input type="submit" value="Frage hinzufügen" >
+        </form>
+    </div>
+</div>

@@ -1,38 +1,66 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.http import require_http_methods
+
+from .forms import QuizPoolForm, QuizTaskForm
+from .models import QuizPool, QuizTask, Answer
 
 
-from .forms import QuizTaskForm
-from .models import QuizTask
 
 # Create your views here.
 
+## QuizPools
 def library(request):
-    quiztasks = QuizTask.objects.all()
+    quizpools = QuizPool.objects.all()
+    return render(request, 'library/library.html', {'quizpools': quizpools})
 
-    # Delete a quiztask
+def get_quizpools(request):
+    quizpools = QuizPool.objects.all()
+    return render(request, 'library/list_quizpools.html', {'quizpools': quizpools})
+
+def delete_pool(request, id):
+    QuizPool.objects.get(id=id).delete()
+    quizpools = QuizPool.objects.all()
+    return render(request, 'library/list_quizpools.html', {'quizpools': quizpools})
+
+#@permission_required("Library.add_quiztask", login_url='/login', raise_exception=True)
+def create_quizpool(request):
     if request.method == 'POST':
-        quiztask_id = request.POST.get('quiztask-id')
-        quiztask = QuizTask.objects.filter(id=quiztask_id).first()
-        if quiztask and (quiztask.creator_id == request.user or request.user.has_perm('quiz.delete_quiztask', quiztask)):
-            quiztask.delete()
+        form = QuizPoolForm(request.POST)
 
-    return render(request, 'library/library.html', {'quiztasks': quiztasks})
-
-
-@permission_required("Library.add_quiztask", login_url='/login', raise_exception=True)
-def create_quiztask(request):                       # naming convention pep8
-    if request.method == 'POST':
-        form = QuizTaskForm(request.POST)
         if form.is_valid():
-            quiztask = form.save(commit=False)
-            quiztask.author = request.user
-            quiztask.save()
-            return redirect('library')
-    else:
-        form = QuizTaskForm()
+            quizpool = form.save(commit=False)
+            quizpool.creator = request.user
+            quizpool.save()
+    quizpools = QuizPool.objects.all()
+    return render(request, 'library/list_quizpools.html', {'quizpools': quizpools})
 
-    return render(request, 'create-quiztask.html', {'form': form})
+## QuizTasks
+def get_quiztasks(request, pool_id):
 
+    quiztasks = QuizTask.objects.filter(pool_id=pool_id)
+    print(quiztasks)
+    return render(request, 'library/list_quiztasks.html', {'quiztasks': quiztasks})
 
+def delete_task(request, pool_id):
+    QuizTask.objects.get(id=id).delete()
+    quiztasks = QuizTask.objects.get(id=pool_id)
+    return render(request, 'library/list_quizpools.html', {'quiztasks': quiztasks})
+
+#@permission_required("Library.add_quiztask", login_url='/login', raise_exception=True)
+def create_quiztask(request):
+    if request.method == 'POST':
+        form = QuizPoolForm(request.POST)
+
+        if form.is_valid():
+            quizpool = form.save(commit=False)
+            quizpool.creator = request.user
+            quizpool.save()
+    quizpools = QuizPool.objects.all()
+    return render(request, 'library/list_quizpools.html', {'quizpools': quizpools})
+
+def get_answers(request):
+    answers = Answer.objects.all()
+    return render(request, 'library/list_answers.html', {'answers': answers})
 
