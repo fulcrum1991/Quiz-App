@@ -95,7 +95,7 @@ def register_htmx(request): #Funktion, um Registrierung mit HTMX zu ermöglichen
 
 @login_required
 def profile_view(request):
-    return render(request, 'accounts/profile.html', {'user': request.user})
+    return render(request, 'accounts/profile.html', {'user': request.user}) #Ermöglicht Navigation, wenn angemeldet
 
 @login_required
 @require_http_methods(["GET", "POST"])
@@ -105,21 +105,21 @@ def edit_profile(request):
         email = request.POST.get('email')
 
         if not username or not email:
-            return JsonResponse({'message': 'Bitte füllen Sie alle Felder aus.'}, status=400)
+            return JsonResponse({'message': 'Bitte füllen Sie alle Felder aus.'}, status=400) #Wenn Nutzername oder E-Mail nicht ausgefüllt -> Error
 
         request.user.username = username
         request.user.email = email
         request.user.save()
 
-        return JsonResponse({'message': 'Profildaten erfolgreich geändert!'}, status=200)
+        return JsonResponse({'message': 'Profildaten erfolgreich geändert!'}, status=200) #Sofern Daten in Ordnung -> Pass
 
-    return render(request, 'accounts/profile_edit_form.html', {'user': request.user})
+    return render(request, 'accounts/profile_edit_form.html', {'user': request.user}) #Wenn request für Bearbeitung -> profil_edit_form dynamisch auf die Seite laden
 
 @login_required
 @require_http_methods(["POST"])
 def delete_profile(request):
     request.user.delete()
-    return JsonResponse({'message': 'Profil erfolgreich gelöscht!'}, status=200)
+    return JsonResponse({'message': 'Profil erfolgreich gelöscht!'}, status=200) #Wenn Nutzer angemeldet + Löschbutton getriggered -> Löschung
 
 def login_view(request):
     if request.method == 'POST':
@@ -130,11 +130,11 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile')
+                return redirect('profile') #WennNutzerdaten korrekt -> Weiterleitung auf Profil
     else:
         form = AuthenticationForm()
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'registration/login.html', {'form': form}) #Wenn request für Login -> Laden von Login
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('login') #Wenn Logout-Button betätigt -> Abmeldung
