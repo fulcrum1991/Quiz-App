@@ -128,14 +128,18 @@ def change_question(request, task_id):
     # Rückgabe: Rendert die aktualisierte Bibliothek vollständig (durch library-content.html) mit diesem
     # geänderten Quizpool als ausgewählten Quizpool.
 
+    selected_task = QuizTask.objects.get(id=task_id)
+
     if(QuizTaskForm(request.POST).is_valid()):
         # Diese Form wird nicht weiterverarbeitet, sondern nur genutzt, um die übergebene 'question' zu validieren.
-        quiztask = QuizTask.objects.get(id=task_id)
         new_question = request.POST.get('question', None)
-        quiztask.question = new_question
-        quiztask.save()
+        selected_task.question = new_question
+        selected_task.save()
 
-    return render(request, 'library/library-content.html', get_library_content())
+    selected_pool = selected_task.pool_id
+
+    return render(request, 'library/library-content.html',
+                  get_library_content(selected_pool=selected_pool, selected_task=selected_task))
 
 def delete_quiztask(request, task_id):
     # Löscht den ausgewählten Quiztask.

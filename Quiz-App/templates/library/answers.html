@@ -24,6 +24,8 @@
             </ul>
         </div>
     {#Create Answer#}
+        {% if answers.count < 4%}
+{#            Begrenzt die Anzahl der Antworten auf 4 #}
         <div id="create_answer">
             <form hx-post="{% url 'create_answer' selected_task.id %}"
                   hx-target="#answers">
@@ -31,6 +33,7 @@
                 <input type="submit" value="Antwort hinzufügen" >
             </form>
         </div>
+        {% endif %}
     {# Delete QuizTask#}
         <div id="delete_quiztask">
             <form hx-post="{% url 'delete_quiztask' selected_task.id %}" 
