@@ -1,0 +1,20 @@
+{%  block content %}
+    <div id="library-content">
+        <h1>Bibliothek</h1>
+        <div class="leftbox">
+            <h2>Quizpool</h2>
+            {% include 'library/quizpools.html' %}
+        </div>
+        <div class="middlebox">
+            <h2>Fragen</h2>
+            {% include 'library/quiztasks.html' %}
+        </div>
+        <div class="rightbox">
+            <h2>Frage bearbeiten</h2>
+            {% include 'library/answers.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+
+    

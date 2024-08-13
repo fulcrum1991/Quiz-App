@@ -1,22 +1,9 @@
+{# View: library function calls get_library_content and gets quizpools, quiztasks, first_pool, first_task #}
 {% extends 'base.html' %}
 {%  block title %}Bibliothek{% endblock %}
 
 {%  block content %}
-    <h1>Bibliothek</h1>
-    <div>
-        <h2>Quizpool</h2>
-        {% include 'library/quizpools.html' %}
-    </div>
-    <div>
-        <h2>Fragen</h2>
-        {% include 'library/quiztasks.html' %}
-    </div>
-    <div>
-        <h2>Antworten</h2>
-        <div hx-get="/library/get_answers" hx-trigger="load">
-            {% include 'library/list_answers.html' %}
-        </div>
-    </div>
+    {% include 'library/library-content.html' %}
 {% endblock %}
 
 
