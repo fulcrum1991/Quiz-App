@@ -118,9 +118,10 @@ def create_quiztask(request, pool_id):
 
     quiztasks = QuizTask.objects.filter(pool_id=pool_id)
     selected_pool = QuizPool.objects.get(id=pool_id)
+
     return render(request, 'library/quiztasks.html',
                   {'quiztasks': quiztasks,
-                   'selected_pool': selected_pool})
+                   'selected_pool': selected_pool,})
 
 def change_question(request, task_id):
     # Ändert den Namen eines ausgewählten Quiztasks.
@@ -136,7 +137,7 @@ def change_question(request, task_id):
         selected_task.question = new_question
         selected_task.save()
 
-    selected_pool = selected_task.pool_id
+    selected_pool = QuizPool.objects.get(id=selected_task.pool_id)
 
     return render(request, 'library/library-content.html',
                   get_library_content(selected_pool=selected_pool, selected_task=selected_task))
