@@ -26,3 +26,4 @@ fonttools~=4.53.1
 PyJWT~=2.9.0
 python-dotenv~=1.0.1
 crispy_bootstrap5
+gunicorn==20.1.0

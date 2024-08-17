@@ -15,20 +15,24 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 
-load_dotenv()   ### loads environment veriavle ???
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'django-insecure-l_utjh$u^9n@z%(c_p@p2&e9cv6+0@3#w=z&c1$^r&cxgjz(kq'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
+
 
 ALLOWED_HOSTS = ["*"]
 
