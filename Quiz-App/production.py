@@ -1,7 +1,7 @@
 import os
 
-from .settings import *  # noqa
-from .settings import BASE_DIR
+from settings import *  # noqa
+from settings import BASE_DIR
 
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
