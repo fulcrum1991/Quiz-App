@@ -13,8 +13,8 @@ def main():
 
     # When running on Azure App Service you should use the production settings.
     settings_module = "Quiz-App.production" if 'WEBSITE_HOSTNAME' in os.environ else 'Quiz-App.settings'
-
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

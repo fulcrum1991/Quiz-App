@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 import os
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,9 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'django-insecure-l_utjh$u^9n@z%(c_p@p2&e9cv6+0@3#w=z&c1$^r&cxgjz(kq'
-# SECRET_KEY = '14*k-50x&(ma6n_2)8*s27c^##gm6n=2_n!zn=#5tp-iv3&nd@'
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = '14*k-50x&(ma6n_2)8*s27c^##gm6n=2_n!zn=#5tp-iv3&nd@'
+#SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -145,7 +143,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
+STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 STATIC_URL = 'static/'
 
 # Default primary key field type
