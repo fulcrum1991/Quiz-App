@@ -43,4 +43,4 @@ def delete_profile(request):
     else:
         form = DeleteUserForm()
 
-    return render(request, 'accounts/delete_profile.html', {'form': form})
+    return render(request, 'accounts/../templates/accounts/delete_profile.html', {'form': form})

@@ -65,14 +65,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8BF5883ADE2046208D5CFB7093C06C26 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CAC7B26E086E4365813D79779C3714C5 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C0AEA15C06DB4F5796AE50281DF49253 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_95B5CA58BC9140728FD8A6CA2557FB09 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0483E404A5024B6D84F4EC8160916FCF }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_494BF96FDD684F30847A4C01501DC902 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'Quiz-App'
+          app-name: _Quiz-App'
           slot-name: 'Production'
           
