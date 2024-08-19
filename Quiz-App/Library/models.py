@@ -5,15 +5,15 @@ from django.contrib.auth.models import User
 # Create your models here.
 class QuizPool(models.Model):
     name = models.CharField(max_length=100)
-    creator_id = models.ForeignKey(User, default='1', on_delete=models.SET('1'))      # on_delete=models.SET(1) = absicht uid = 1
+    creator = models.ForeignKey(User, default='1', on_delete=models.SET('1'))      # on_delete=models.SET(1) = absicht uid = 1
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
 class QuizTask(models.Model):
-    pool_id = models.ForeignKey(QuizPool, default='1', on_delete=models.CASCADE)       # Wenn Pool gelöscht werden auch die fragen gelöscht
+    pool = models.ForeignKey(QuizPool, default='1', on_delete=models.CASCADE)       # Wenn Pool gelöscht werden auch die fragen gelöscht
     question = models.CharField(max_length=100)
     approved = models.BooleanField(default=False)
-    creator_id = models.ForeignKey(User, default='1', on_delete=models.SET('1'))  # on_delete=models.SET(1) = absicht uid = 1
+    creator = models.ForeignKey(User, default='1', on_delete=models.SET('1'))  # on_delete=models.SET(1) = absicht uid = 1
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -21,7 +21,7 @@ class QuizTask(models.Model):
         return str(self.question)
 
 class Answer(models.Model):
-    task_id = models.ForeignKey(QuizTask, default='1', on_delete=models.CASCADE)  # Wenn Pool gelöscht werden auch die fragen gelöscht
+    task = models.ForeignKey(QuizTask, default='1', on_delete=models.CASCADE)  # Wenn Pool gelöscht werden auch die fragen gelöscht
     creator = models.ForeignKey(User, default='1', on_delete=models.SET('1'))   # on_delete=models.SET(1) = absicht uid = 1
     answer = models.CharField(max_length=200)
     correct = models.BooleanField(default=False)
