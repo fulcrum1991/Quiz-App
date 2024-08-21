@@ -9,4 +9,7 @@ urlpatterns = [
     path('accounts/profile/', views.profile_view, name='profile'),
     path('accounts/profile_edit_form/', views.edit_profile, name='edit-profile'),
     path('accounts/delete-profile/', views.delete_profile, name='delete-profile'),
+    path('accounts/register-htmx', views.register_htmx, name='register-htmx'),
+    path('accounts/login-htmx', views.login_htmx, name='login-htmx'),
+
 ]

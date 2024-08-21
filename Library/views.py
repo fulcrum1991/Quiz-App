@@ -55,7 +55,7 @@ def create_quizpool(request):
             quizpool.save()
 
     quizpools = QuizPool.objects.all()
-    return render(request, 'library/library-content.html',
+    return render(request, 'library/../templates/library/library-content.html',
                   get_library_content(selected_pool=quizpools.last()))
 
 def change_quizpool_name(request, pool_id):
@@ -72,7 +72,7 @@ def change_quizpool_name(request, pool_id):
         quizpool.save()
 
     selected_pool = QuizPool.objects.get(id=pool_id)
-    return render(request, 'library/library-content.html',
+    return render(request, 'library/../templates/library/library-content.html',
                   get_library_content(selected_pool=selected_pool))
 
 def delete_quizpool(request, pool_id):
@@ -82,7 +82,7 @@ def delete_quizpool(request, pool_id):
 
     QuizPool.objects.get(id=pool_id).delete()
 
-    return render(request, 'library/library-content.html', get_library_content())
+    return render(request, 'library/../templates/library/library-content.html', get_library_content())
 
 #
 # QuizTasks
@@ -95,7 +95,7 @@ def get_quiztasks(request, pool_id):
     quiztasks = QuizTask.objects.filter(pool_id=pool_id)
     selected_pool = QuizPool.objects.get(id=pool_id)
 
-    return render(request, 'library/quiztasks.html',
+    return render(request, 'library/../templates/library/quiztasks.html',
                   {'quiztasks': quiztasks,
                    'selected_pool': selected_pool,})
 
@@ -119,7 +119,7 @@ def create_quiztask(request, pool_id):
     quiztasks = QuizTask.objects.filter(pool_id=pool_id)
     selected_pool = QuizPool.objects.get(id=pool_id)
 
-    return render(request, 'library/quiztasks.html',
+    return render(request, 'library/../templates/library/quiztasks.html',
                   {'quiztasks': quiztasks,
                    'selected_pool': selected_pool,})
 
@@ -139,7 +139,7 @@ def change_question(request, task_id):
 
     selected_pool = QuizPool.objects.get(id=selected_task.pool_id)
 
-    return render(request, 'library/library-content.html',
+    return render(request, 'library/../templates/library/library-content.html',
                   get_library_content(selected_pool=selected_pool, selected_task=selected_task))
 
 def delete_quiztask(request, task_id):
@@ -149,7 +149,7 @@ def delete_quiztask(request, task_id):
 
     QuizTask.objects.get(id=task_id).delete()
 
-    return render(request, 'library/library-content.html', get_library_content())
+    return render(request, 'library/../templates/library/library-content.html', get_library_content())
 
 #
 # Answers
@@ -162,7 +162,7 @@ def get_answers(request, task_id):
     answers = Answer.objects.filter(task_id=task_id)
     selected_task = QuizTask.objects.get(id=task_id)
 
-    return render(request, 'library/answers.html',
+    return render(request, 'library/../templates/library/answers.html',
                   {'answers': answers,
                    'selected_task': selected_task})
 
@@ -183,7 +183,7 @@ def create_answer(request, task_id):
 
     answers = Answer.objects.filter(task_id=task_id)
     selected_task = QuizTask.objects.get(id=task_id)
-    return render(request, 'library/answers.html',
+    return render(request, 'library/../templates/library/answers.html',
                   {'answers': answers,
                    'selected_task': selected_task})
 
@@ -203,7 +203,7 @@ def edit_answer(request, answer_id):
 
         answers = Answer.objects.filter(task_id=answer.task_id)
         selected_task = QuizTask.objects.get(id=answer.task_id)
-        return render(request, 'library/answers.html',
+        return render(request, 'library/../templates/library/answers.html',
                       {'answers': answers,
                        'selected_task': selected_task,})
 
@@ -220,6 +220,6 @@ def delete_answer(request, answer_id):
 
     answers = Answer.objects.filter(task_id=task_id)
     selected_task = QuizTask.objects.get(id=task_id)
-    return render(request, 'library/answers.html',
+    return render(request, 'library/../templates/library/answers.html',
                   {'answers': answers,
                    'selected_task': selected_task})
