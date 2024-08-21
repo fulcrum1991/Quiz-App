@@ -1,14 +1,2 @@
-asgiref
-certifi
-cycler
-Django
-django-crispy-forms
-kiwisolver
-matplotlib
-numpy
-Pillow
-pyparsing
-python-dateutil
-pytz
-six
-sqlparse
+Django~=5.1
+python-dotenv~=1.0.1
