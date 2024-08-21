@@ -1,0 +1,38 @@
+{% extends '../base.html' %}
+{% block title %}Profil{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <h2>Profil</h2>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Profildaten</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Quiz-Statistik</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Eigene Quiz</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Profildaten</h3>
+                    <p><strong>Name:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Rolle:</strong> {{ user.role }}</p>
+                    <div id="profile-result" class="mt-3"></div>
+                    <button class="btn btn-primary" hx-get="{% url 'edit-profile' %}" hx-target="#profile-result" hx-swap="innerHTML">Profildaten ändern</button>
+                    <button class="btn btn-danger" hx-post="{% url 'delete-profile' %}" hx-confirm="Sind Sie sicher, dass Sie Ihr Profil löschen möchten?" hx-target="this">Profil löschen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include HTMX script -->
+<script src="https://unpkg.com/htmx.org@1.4.0"></script>
+{% endblock %}

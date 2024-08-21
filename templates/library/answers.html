@@ -1,0 +1,49 @@
+{# verarbeitete Objekte/Variablen: answers, selected_task #}
+<div id="answers">
+    {% if selected_task %}
+    {# Zeigt die folgenden Inhalte und Steuerelemente nur, wenn ein Quiztask vorhanden ist. #}
+        <h3>{{ selected_task.question }}</h3>
+        {# Change Question#}
+        <div id="change_question">
+            <form hx-post="{% url 'change_question' selected_task.id %}" 
+                  hx-target="#library-content">
+                <input type="text" name="question" placeholder="{{ selected_task.question }}" required >
+                <input type="submit" value="Frage ändern" >
+            </form>
+        </div>
+    {# List answers#}
+        <div id="list_answers">
+            <ul>
+                {% for answer in answers %}
+                    <li>
+                        {% include 'library/answer_form.html' %}
+                    </li>
+                {% empty %}
+                    <p>Hier ist noch nichts zu sehen</p>
+                {% endfor %}
+            </ul>
+        </div>
+    {#Create Answer#}
+        {% if answers.count < 4%}
+{#            Begrenzt die Anzahl der Antworten auf 4 #}
+        <div id="create_answer">
+            <form hx-post="{% url 'create_answer' selected_task.id %}"
+                  hx-target="#answers">
+                <input type="text" name="answer" value="Antwort X" hidden="" required>
+                <input type="submit" value="Antwort hinzufügen" >
+            </form>
+        </div>
+        {% endif %}
+    {# Delete QuizTask#}
+        <div id="delete_quiztask">
+            <form hx-post="{% url 'delete_quiztask' selected_task.id %}" 
+                  hx-target="#library-content" 
+                  hx-confirm="Wenn die Frage gelöscht wird, werden auch alle dazugehörigen Inhalte gelöscht. Wirklich löschen?">
+                <input type="submit" value="Frage löschen" >
+            </form> 
+        </div>
+    {% endif %}
+</div>
+
+
+    

@@ -1,0 +1,24 @@
+{# verarbeitete Objekte/Variablen: quizpools #}
+<div id="quizpools">
+    <div id="list_quizpools">
+        <ul>
+            {% for pool in quizpools %}
+                <li >
+                    <div>
+                        <span hx-get="{% url 'get_quiztasks' pool.id %}" hx-target="#quiztasks">
+                            {{ forloop.counter }} {{ pool.name }}
+                        </span>
+                    </div>
+                </li>
+            {% empty %}
+                <p>Hier ist noch nichts zu sehen</p>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="create_quizpool">
+        <form hx-post="{% url 'create_quizpool' %}" hx-target="#library-content">
+            <input type="text" name="name" placeholder="Quizpool X" required>
+            <input type="submit" value="Fragenpool hinzufügen" >
+        </form>
+    </div>
+</div>
