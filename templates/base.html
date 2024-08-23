@@ -49,7 +49,7 @@
                         <a class="nav-link" href="/accounts/profile">Profil</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
+                <ul class="navbar-nav" hx-swap-oob="true" id="user-navbar">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <span class="navbar-text">Eingeloggt als {{ user.username }}</span>
@@ -139,5 +139,12 @@
         event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
       })
     </script>
+<script>
+    document.addEventListener('htmx:afterRequest', function(evt) {
+        if (evt.detail.triggerName === 'updateNavbar') {
+            hx.get('/update-navbar', { target: '#user-navbar' });
+        }
+    });
+</script>
 </body>
 </html>

@@ -11,6 +11,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib import messages
+from django.shortcuts import redirect
 
 from .forms import SignUpForm, CustomPasswordChangeForm, UserUpdateForm, DeleteUserForm
 
@@ -52,20 +54,29 @@ def delete_profile(request):
 
     return render(request, 'accounts/delete_profile.html', {'form': form})
 
-def login_htmx(request):  #Funktion, um Login mit HTMX zu ermöglichen
+def login_htmx(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
-            return JsonResponse({'message': 'Login erfolgreich!'}, status=200)       #Wenn Nutzerdaten korrekt -> Anmeldung
+            messages.success(request, 'Login erfolgreich!')  # Erfolgreiche Anmeldung
+
+            # Redirect zur Library-Seite und Triggern des Navbar-Updates
+            return render(request, 'library/library.html', {
+                'hx_trigger': 'updateNavbar'
+            })
         else:
-            return JsonResponse({'message': 'Ungültige Anmeldedaten.'}, status=400)  #Wenn Nutzerdaten inkorrekt -> Meldung
-    return JsonResponse({'message': 'Ungültige Anfrage.'}, status=400) #Wenn ungültige Anfrage -> Fehlermeldung
+            messages.error(request, 'Ungültige Anmeldedaten.')  # Fehlermeldung bei ungültigen Anmeldedaten
+            return redirect('accounts/login')  # Umleitung zurück zur Login-Seite
+
+    messages.error(request, 'Ungültige Anfrage.')  # Fehlermeldung bei ungültiger Anfrage
+    return redirect('accounts/login')  # Umleitung zurück zur Login-Seite
 
 
-def register_htmx(request): #Funktion, um Registrierung mit HTMX zu ermöglichen
+def register_htmx(request):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
@@ -74,23 +85,32 @@ def register_htmx(request): #Funktion, um Registrierung mit HTMX zu ermöglichen
         password2 = request.POST['password2']
 
         if password1 != password2:
-            return JsonResponse({'message': 'Passwörter stimmen nicht überein.'}, status=400) #Meldung bei falschen Passwort
+            messages.error(request, 'Passwörter stimmen nicht überein.')  # Meldung bei falschen Passwort
+            return redirect('accounts/sign-up')  # Umleitung zurück zur Registrierungsseite
 
         if User.objects.filter(username=username).exists():
-            return JsonResponse({'message': 'Benutzername bereits vergeben.'}, status=400) #Meldung, wenn Name bereits vergeben
+            messages.error(request, 'Benutzername bereits vergeben.')  # Meldung, wenn Name bereits vergeben
+            return redirect('accounts/sign-up')  # Umleitung zurück zur Registrierungsseite
 
         if User.objects.filter(email=email).exists():
-            return JsonResponse({'message': 'Email bereits registriert.'}, status=400) #Meldung, wenn E-Mail bereits vergeben
+            messages.error(request, 'Email bereits registriert.')  # Meldung, wenn E-Mail bereits vergeben
+            return redirect('accounts/sign-up')  # Umleitung zurück zur Registrierungsseite
 
         try:
             user = User.objects.create_user(username=username, email=email, password=password1)
-            # Rollenzugehörigkeit ggf. ergänzen
             user.save()
-            return JsonResponse({'message': 'Registrierung erfolgreich!'}, status=200) #Wenn Daten erfolgreich abgeglichen -> Pass
+            login(request, user)  # Der Benutzer wird automatisch eingeloggt nach der Registrierung
+            messages.success(request, 'Registrierung erfolgreich!')  # Erfolgreiche Registrierung
+            return render(request, 'library/library.html', {
+                'user': user,
+                'hx_trigger': 'updateNavbar'
+            })
         except ValidationError as e:
-            return JsonResponse({'message': str(e)}, status=400)
+            messages.error(request, str(e))  # Fehlermeldung bei ValidationError
+            return redirect('accounts/sign-up')  # Umleitung zurück zur Registrierungsseite
 
-    return JsonResponse({'message': 'Ungültige Anfrage.'}, status=400) #Wenn fehlerhafte Anfrage -> Error
+    messages.error(request, 'Ungültige Anfrage.')  # Meldung bei ungültiger Anfrage
+    return redirect('accounts/sign-up')  # Umleitung zurück zur Registrierungsseite
 
 
 @login_required
@@ -105,21 +125,37 @@ def edit_profile(request):
         email = request.POST.get('email')
 
         if not username or not email:
-            return JsonResponse({'message': 'Bitte füllen Sie alle Felder aus.'}, status=400) #Wenn Nutzername oder E-Mail nicht ausgefüllt -> Error
+            messages.error(request, 'Bitte füllen Sie alle Felder aus.')  # Fehler, wenn Felder leer sind
+            return redirect('edit_profile')  # Umleitung zurück zum Bearbeitungsformular
 
+        # Profildaten aktualisieren
         request.user.username = username
         request.user.email = email
         request.user.save()
 
-        return JsonResponse({'message': 'Profildaten erfolgreich geändert!'}, status=200) #Sofern Daten in Ordnung -> Pass
+        messages.success(request, 'Profildaten erfolgreich geändert!')  # Erfolgreiche Aktualisierung
 
-    return render(request, 'accounts/profile_edit_form.html', {'user': request.user}) #Wenn request für Bearbeitung -> profil_edit_form dynamisch auf die Seite laden
+        # Rückgabe der aktualisierten Seite und Triggern des Navbar-Updates
+        return render(request, 'accounts/profile_edit_form.html', {
+            'user': request.user,
+            'hx_trigger': 'updateNavbar'
+        })
+
+    # Rendern des Profilbearbeitungsformulars
+    return render(request, 'accounts/profile_edit_form.html', {'user': request.user})
+
 
 @login_required
 @require_http_methods(["POST"])
 def delete_profile(request):
+    # Benutzerprofil löschen
     request.user.delete()
-    return JsonResponse({'message': 'Profil erfolgreich gelöscht!'}, status=200) #Wenn Nutzer angemeldet + Löschbutton getriggered -> Löschung
+
+    # Erfolgsmeldung
+    messages.success(request, 'Profil erfolgreich gelöscht!')
+
+    # Weiterleitung zur Startseite nach dem Löschen und Triggern des Navbar-Updates
+    return redirect('home')  # Gehe zur Startseite oder zu einer anderen Zielseite
 
 def login_view(request):
     if request.method == 'POST':
@@ -130,7 +166,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile') #WennNutzerdaten korrekt -> Weiterleitung auf Profil
+                return redirect('profile') #Wenn Nutzerdaten korrekt -> Weiterleitung auf Profil
     else:
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form}) #Wenn request für Login -> Laden von Login
@@ -138,3 +174,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login') #Wenn Logout-Button betätigt -> Abmeldung
+
+@login_required
+def update_navbar(request):
+    return render(request, 'base.html')

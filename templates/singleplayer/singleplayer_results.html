@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Einzelspieler - Ergebnisse{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Ergebnisse</h2>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Gesamtergebnis: {{ correct_percentage }}% richtig</h5>
+            <p>Durchschnitt aller Spiele in diesem Pool: {{ average_percentage }}%</p>
+            <ul class="list-group mt-4">
+                {% for result in results %}
+                    <li class="list-group-item">
+                        Frage: {{ result.question.text }}<br>
+                        Deine Antwort: {{ result.your_answer }} - {% if result.is_correct %}Richtig{% else %}Falsch{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'singleplayer_overview' %}" class="btn btn-primary mt-4">Zurück zur Übersicht</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

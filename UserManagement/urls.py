@@ -11,5 +11,6 @@ urlpatterns = [
     path('accounts/delete-profile/', views.delete_profile, name='delete-profile'),
     path('accounts/register-htmx', views.register_htmx, name='register-htmx'),
     path('accounts/login-htmx', views.login_htmx, name='login-htmx'),
+    path('update-navbar/', views.update_navbar, name='update-navbar'),
 
 ]
