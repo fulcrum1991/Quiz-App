@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = '14*k-50x&(ma6n_2)8*s27c^##gm6n=2_n!zn=#5tp-iv3&nd@'
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = '14*k-50x&(ma6n_2)8*s27c^##gm6n=2_n!zn=#5tp-iv3&nd@'
+# SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -119,15 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": os.environ.get('CACHELOCATION'),
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
-}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
