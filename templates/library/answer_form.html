@@ -2,6 +2,7 @@
 <div>
 {#   Edit Answer#}
     <form hx-post="{% url 'edit_answer' answer.id %}" hx-target="#answers" class="form-inline">
+        <input type="text" name="answer" value="{{ answer.answer }}" required>
         <div class="form-check form-check-inline">
             <input type="checkbox" class="form-check-input" id="correct_switch" name="correct" value="True" {% if answer.correct %}checked{% endif %}>
             <label class="form-check-label" for="correct_switch">Richtig?</label>
