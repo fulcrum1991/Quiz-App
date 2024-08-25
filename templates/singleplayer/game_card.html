@@ -1,0 +1,24 @@
+<div id="card-body" class="card-body">
+    <div id="qestion">
+        {{ quiztask_answers.quiztask.question }}
+    </div>
+    <div id="answers">
+        <div id="answer_1">
+            {{ quiztask_answers.answers.0 }}
+        </div>
+        <div id="answer_2">
+            {{ quiztask_answers.answers.1 }}
+        </div>
+        <div id="answer_3">
+            {{ quiztask_answers.answers.2 }}
+        </div>
+        <div id="answer_4">
+            {{ quiztask_answers.answers.3 }}
+        </div>
+    </div>
+</div>
+<div id="game-navication">
+    <button class="btn btn-primary" hx-get="{% url 'previous_task' sp_game.id quiztask_answers.quiztask.id %}" hx-target="#task-card">Zurück</button>
+    <button class="btn btn-primary" hx-get="{% url 'evaluate_task' %}" hx-target="#task-card">Auswertung</button>
+    <button class="btn btn-primary" hx-get="{% url 'next_task' sp_game.id quiztask_answers.quiztask.id %}" hx-target="#task-card">Weiter</button>
+</div>

@@ -1,0 +1,39 @@
+{%  block content %}
+<div id=sp_new_game_content class="container mt-5">
+    <h1>Einzelspieler - Neues Spiel</h1>
+        <div id="list_quizpools" class="leftbox">
+            <h2>Quizpool</h2>
+                <ul class="list-group">
+                    {% for pool in quizpools %}
+                        <li class="list-group-item">
+                            <div>
+                                <span hx-get="{% url 'show_lib_content' pool.id %}" hx-target="#sp_new_game_content">
+                                    {{ forloop.counter }} {{ pool.name }}
+                                </span>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <p>Hier ist noch nichts zu sehen</p>
+                    {% endfor %}
+                </ul>
+        </div>
+        <div id="list_quiztasks" class="middlebox">
+            <h2>Fragen</h2>
+                <ul class="list-group">
+                    {% for task in quiztasks %}
+                        <li class="list-group-item">
+                            <div>
+                                    {{ forloop.counter }} {{ task.question }}
+                            </div>
+                        </li>
+                    {% empty %}
+                        <p>Hier ist noch nichts zu sehen</p>
+                    {% endfor %}
+                </ul>
+        </div>
+        <div id="start_game" class="rightbox">
+            <h2>{{ selected_pool.name }}</h2>
+            <a href="{% url 'create_game' selected_pool.id %}" class="btn btn-primary btn-lg">Spiel beginnen</a>
+        </div>
+    </div>
+{% endblock %}

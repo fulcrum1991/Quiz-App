@@ -33,7 +33,7 @@ def get_library_content(selected_pool=None, selected_task = None):
             'selected_pool': selected_pool,
             'selected_task': selected_task}
 
-def library(request):
+def show_library(request):
     # Rückgabe: Rendert die vollständige Bibliothek (library.html)
     return render(request, 'library/library.html', get_library_content())
 
@@ -87,7 +87,7 @@ def delete_quizpool(request, pool_id):
 #
 # QuizTasks
 #
-def get_quiztasks(request, pool_id):
+def show_quiztasks(request, pool_id):
     # Übergabe: ID des Quizpools, dessen Quiztasks angezeigt werden sollen.
     # Rückgabe: Rendert die Quiztask-Spalte der Bibliothek (quiztasks.html). Zusätzlich wird das ausgewählte
     # Quizpool-Objekt für die weitere Verarbeitung zurückgegeben.
@@ -97,7 +97,7 @@ def get_quiztasks(request, pool_id):
 
     return render(request, 'library/quiztasks.html',
                   {'quiztasks': quiztasks,
-                   'selected_pool': selected_pool,})
+                   'selected_pool': selected_pool, })
 
 
 #@permission_required("Library.add_quiztask", login_url='/login', raise_exception=True)
@@ -153,13 +153,17 @@ def delete_quiztask(request, task_id):
 
 #
 # Answers
-#
-def get_answers(request, task_id):
+def get_answers(task_id):
+    answers = Answer.objects.filter(task_id=task_id)
+
+    return answers
+
+def show_answers(request, task_id):
     # Übergabe: ID des Quiztasks, dessen Answers angezeigt werden sollen.
     # Rückgabe: Rendert die Antwort-Spalte der Bibliothek (answers.html). Zusätzlich wird das ausgewählte
     # Quiztask-Objekt für die weitere Verarbeitung zurückgegeben.
 
-    answers = Answer.objects.filter(task_id=task_id)
+    answers = get_answers(task_id=task_id)
     selected_task = QuizTask.objects.get(id=task_id)
 
     return render(request, 'library/answers.html',
