@@ -4,16 +4,24 @@
     </div>
     <div id="answers">
         <div id="answer_1">
-            {{ quiztask_answers.answers.0 }}
+            <span hx-get="{% url 'sp_check_answer' sp_game.id quiztask_answers.answers.0 %}" hx-target="#cardbody">
+                {{ quiztask_answers.answers.0 }}
+            </span>
         </div>
         <div id="answer_2">
-            {{ quiztask_answers.answers.1 }}
+            <span hx-get="{% url 'sp_check_answer' sp_game.id quiztask_answers.answers.1 %}" hx-target="#cardbody">
+                {{ quiztask_answers.answers.1 }}
+            </span>
         </div>
         <div id="answer_3">
-            {{ quiztask_answers.answers.2 }}
+            <span hx-get="{% url 'sp_check_answer' sp_game.id quiztask_answers.answers.2 %}" hx-target="#cardbody">
+                {{ quiztask_answers.answers.2 }}
+            </span>
         </div>
         <div id="answer_4">
-            {{ quiztask_answers.answers.3 }}
+            <span hx-get="{% url 'sp_check_answer' sp_game.id quiztask_answers.answers.3 %}" hx-target="#cardbody">
+                {{ quiztask_answers.answers.3 }}
+            </span>
         </div>
     </div>
 </div>

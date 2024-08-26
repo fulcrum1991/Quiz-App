@@ -147,59 +147,6 @@ def next_task(request, game_id, task_id):
                    })
 
 
-
-
-
-
-# def get_game_data(pool, index=0):
-#     game_data_dict = {'index': index}
-#
-#     task_answer_list = []
-#     quiztasks = QuizTask.objects.filter(pool=pool)
-#
-#     index = 0
-#     for task in quiztasks:
-#         task_dict = {'task_id': task.id,
-#                      'question': task.question}
-#
-#         answers = Answer.objects.filter(task=task)
-#         i = 1
-#         for answer in answers:
-#             task_dict['answer_'+str(i)] = (answer.id,answer.answer)
-#             i += 1
-#
-#         task_answer_list.append(task_dict)
-#         index += 1
-#
-#     game_data_dict['tasks_answers'] = task_answer_list
-#
-#     return game_data_dict
-#
-# def create_game(request, pool_id):
-#     quizpool = QuizPool.objects.get(id=pool_id)
-#     timestamp = dt.datetime.now()
-#     # Game Objekt erstellen
-#     sp_game = SPGame(name=quizpool.name + ' - ' + timestamp.strftime('%d.%m.%Y %H:%M'),
-#                      user=request.user,
-#                      pool=quizpool,)
-#     sp_game.save()
-#
-#     # SPGame_contains_Quiztask Objekt erstellen und damit Quiztasks dem Game zuordnen
-#     quiztasks = QuizTask.objects.filter(pool=quizpool)
-#
-#     for task in quiztasks:
-#         sp_game_quiztasks = SPGame_contains_Quiztask(
-#             game=sp_game,
-#             task=task,)
-#         sp_game_quiztasks.save()
-#
-#     # returns
-#     quiztask_results = SPGame_contains_Quiztask.objects.filter(game=sp_game)
-#     game_data_dict = get_game_data(sp_game.pool)
-#
-#     print(game_data_dict)
-#
-#     return render(request, 'singleplayer/sp_game.html',
-#                   {'sp_game': sp_game,
-#                    'game_data_dict': game_data_dict,
-#                    })
+def check_answer(request, game_id, answer_id):
+    print(game_id)
+    print(answer_id)
