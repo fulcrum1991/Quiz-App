@@ -15,20 +15,19 @@ import datetime as dt
 
 
 # Create your views here.
-
-
 def sp_overview(request):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
+    # Rückgabe: Rendert das Singleplayer-Menü (sp_overview.html)
     return render(request, 'singleplayer/sp_overview.html')
 
 def sp_new_game(request):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
-
+    # Rückgabe: Rendert die Seite zum Start eines neuen Spiels (sp_new_game.html). 
+    # Zusätzlich wird get_library_content() ausgeführt, um der Seite Quizpools und -Tasks 
+    # für die Darstellung zu übergeben
     return render(request, 'singleplayer/sp_new_game.html',
                   get_library_content())
 
 def show_lib_content(request, pool_id=None):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
+    # Rückgabe: 
     selected_pool = None
     if bool(pool_id):
         selected_pool = QuizPool.objects.get(id=pool_id)
@@ -36,19 +35,20 @@ def show_lib_content(request, pool_id=None):
     return render(request, 'singleplayer/sp_new_game_content.html',
                   get_library_content(selected_pool=selected_pool))
 
-
-
 def sp_resume_game(request):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
+    # Rückgabe: 
     return render(request, 'singleplayer/sp_resume_game.html')
 
 def sp_history(request):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
+    # Rückgabe: 
     return render(request, 'singleplayer/sp_history.html')
 
 
 ## Game
 def get_questions_by_game(sp_game):
+    # Erstellt eine Liste von Dictionaries. Jedes Element (Dictionary) enhählt Informationen zu einer Quiztask, bestehend aus
+    # task.id, der question und dem Status, ob diese Quiztask bereits richtig beantwortet wurde. 
+    # Rückgabe: Diese Liste
     questions_status_list = []
 
     tasks_by_game = SPGame_contains_Quiztask.objects.filter(game=sp_game)
@@ -61,6 +61,8 @@ def get_questions_by_game(sp_game):
     return questions_status_list
 
 def get_quiztask_answers(task_id):
+    # Erfragt Quiztask-Objekt und die dazugehörigen Answer-Objekte.
+    # Rückgabe: Dictionary bestehend aus einem Quiztask-Objekt und den dazugehörigen Answer-Objekten
     quiztask = QuizTask.objects.get(id=task_id)
     answers = Answer.objects.filter(task_id=task_id)
 
