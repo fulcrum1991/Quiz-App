@@ -10,8 +10,9 @@ class SPGame(models.Model):
     completed_at = models.DateTimeField(blank=True, null=True)
 
 class SPGame_contains_Quiztask(models.Model):
-    game = models.ForeignKey(SPGame, on_delete=models.CASCADE)        # check
-    task = models.ForeignKey(QuizTask, on_delete=models.CASCADE)      # check
+    game = models.ForeignKey(SPGame, on_delete=models.CASCADE)        # check CASCADE
+    task = models.ForeignKey(QuizTask, on_delete=models.SET_NULL, null=True)      # check CASCADE
+    selected_answer = models.ForeignKey(Answer, on_delete=models.SET_NULL, null=True) # check CASCADE
     correct_answered = models.BooleanField(blank=True, null=True)
     completed = models.BooleanField(default=False)
 

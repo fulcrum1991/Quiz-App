@@ -18,17 +18,19 @@ import datetime as dt
 
 
 def sp_overview(request):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
+    # Rückgabe:
     return render(request, 'singleplayer/sp_overview.html')
 
 def sp_new_game(request):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
+    # Rückgabe: Rendert die Seite zum Start eines neuen Spiels (sp_new_game.html).
+    # Zusätzlich wird get_library_content() ausgeführt, um der Seite Quizpools und -Tasks
+    # für die Darstellung zu übergeben
 
     return render(request, 'singleplayer/sp_new_game.html',
                   get_library_content())
 
 def show_lib_content(request, pool_id=None):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
+    # Rückgabe:
     selected_pool = None
     if bool(pool_id):
         selected_pool = QuizPool.objects.get(id=pool_id)
@@ -43,12 +45,15 @@ def sp_resume_game(request):
     return render(request, 'singleplayer/sp_resume_game.html')
 
 def sp_history(request):
-    # Rückgabe: Rendert die vollständige Bibliothek (library.html)
+    # Rückgabe:
     return render(request, 'singleplayer/sp_history.html')
 
 
-## Game
+# Game
 def get_questions_by_game(sp_game):
+    # Erstellt eine Liste von Dictionaries. Jedes Element (Dictionary) enhählt Informationen zu einer Quiztask, bestehend aus
+    # task.id, der question und dem Status, ob diese Quiztask bereits richtig beantwortet wurde.
+    # Rückgabe: Diese Liste
     questions_status_list = []
 
     tasks_by_game = SPGame_contains_Quiztask.objects.filter(game=sp_game)
@@ -61,6 +66,8 @@ def get_questions_by_game(sp_game):
     return questions_status_list
 
 def get_quiztask_answers(task_id):
+    # Erfragt Quiztask-Objekt und die dazugehörigen Answer-Objekte.
+    # Rückgabe: Dictionary bestehend aus einem Quiztask-Objekt und den dazugehörigen Answer-Objekten
     quiztask = QuizTask.objects.get(id=task_id)
     answers = Answer.objects.filter(task_id=task_id)
 
@@ -89,7 +96,6 @@ def create_game(request, pool_id):
     first_quiztask = quiztasks[0]
     quiztask_answers = get_quiztask_answers(first_quiztask.id)
 
-
     return render(request, 'singleplayer/sp_game.html',
                   {'sp_game': sp_game,
                    'questions_status_list':  questions_status_list,
@@ -97,56 +103,111 @@ def create_game(request, pool_id):
                    })
 
 
-def evaluate_task(request):
-    return render(request, 'singleplayer/game_card.html')
-
-def previous_task(request, game_id, task_id):
-    print(game_id, task_id)
+def render_game_card(request, game_id, task_id, action, selected_answer_id=None):
     current_game = SPGame.objects.get(id=game_id)
     quiztasks = SPGame_contains_Quiztask.objects.filter(game=current_game)
+    result = None
 
-    flag = False
-    previous_id = quiztasks.first().id
-    for task in quiztasks:
-        if task.task_id != task_id:
-            previous_id = task.task_id
-        else:
-            break
+    # Reaktion auf Navigationsbutton 'Weiter' und 'Zurück'
+    if action == 'next':
+        task_id = get_next_task(task_id, quiztasks)
+    elif action == 'previous':
+        task_id = get_previous_task(task_id, quiztasks)
+    elif action == 'select_answer':
+        pass
 
-    quiztask_answers = get_quiztask_answers(previous_id)
+    quiztask_answers = get_quiztask_answers(task_id)
 
-    print('next: ' + str(previous_id))
-    print(quiztask_answers)
+    current_task = quiztasks.get(task_id=task_id)
+    if current_task.completed == True:
+        result = get_evaluation_result(current_task.correct_answered)
+        selected_answer_id = current_task.selected_answer_id
 
     return render(request, 'singleplayer/game_card.html',
                   {'sp_game': current_game,
                    'quiztask_answers': quiztask_answers,
+                   'selected_answer_id': selected_answer_id,
+                   'result': result
                    })
-def next_task(request, game_id, task_id):
-    current_game = SPGame.objects.get(id=game_id)
-    quiztasks = SPGame_contains_Quiztask.objects.filter(game=current_game)
 
+def evaluate_task(request, game_id, task_id, selected_answer_id):
+    current_game = SPGame.objects.get(id=game_id)
+    selected_answer = Answer.objects.get(id=selected_answer_id)
+    result = None
+
+    if selected_answer.correct == True:
+        sp_game_quiztask = SPGame_contains_Quiztask.objects.get(game_id=game_id,task_id=task_id)
+        sp_game_quiztask.selected_answer = Answer.objects.get(id=selected_answer_id)
+        sp_game_quiztask.correct_answered = True
+        sp_game_quiztask.completed = True
+        sp_game_quiztask.save()
+
+        result = get_evaluation_result(True)
+
+    else:
+        sp_game_quiztask = SPGame_contains_Quiztask.objects.get(game_id=game_id,task_id=task_id)
+        sp_game_quiztask.selected_answer = Answer.objects.get(id=selected_answer_id)
+        sp_game_quiztask.correct_answered = False
+        sp_game_quiztask.completed = True
+        sp_game_quiztask.save()
+
+        result = get_evaluation_result(False)
+
+    quiztask_answers = get_quiztask_answers(task_id)
+
+    # Prüfen, ob alle Aufgaben beantwortet wurden
+    game_completed = check_game_completed(game=current_game)
+    if game_completed:
+        current_game.completed_at=dt.datetime.now()
+        current_game.save()
+
+
+    return render(request, 'singleplayer/game_card.html',
+                  {'sp_game': current_game,
+                   'quiztask_answers': quiztask_answers,
+                   'selected_answer_id': selected_answer_id,
+                   'result': result
+                   })
+
+
+# Hilfsfunktionen
+def get_next_task(task_id: int, quiztasks: SPGame_contains_Quiztask):
     flag = False
-    next_id = None
+    new_task_id = None
     for task in quiztasks:
         if flag == True:
-            next_id = task.task_id
+            new_task_id = task.task_id
             break
         if task.task_id == task_id:
             flag = True
 
-    quiztask_answers = get_quiztask_answers(next_id)
+    return new_task_id
 
 
-    print('next: ' + str(next_id))
-    print(quiztask_answers)
+def get_previous_task(task_id: int, quiztasks: SPGame_contains_Quiztask):
+    flag = False
+    new_task_id = quiztasks.first().id
+    for task in quiztasks:
+        if task.task_id != task_id:
+            new_task_id = task.task_id
+        else:
+            break
 
-    return render(request, 'singleplayer/game_card.html',
-                  {'sp_game': current_game,
-                   'quiztask_answers': quiztask_answers,
-                   })
+    return new_task_id
 
+def get_evaluation_result(correct_answered: bool):
+    result = {'correct_answered': correct_answered, 'answer_message': ''}
 
-def check_answer(request, game_id, answer_id):
-    print(game_id)
-    print(answer_id)
+    if correct_answered:
+        result['answer_message'] = 'Die Antwort ist richtig.'
+    else:
+        result['answer_message'] = 'Die Antwort ist falsch.'
+
+    return result
+
+def check_game_completed(game: SPGame):
+    unfinished_tasks = SPGame_contains_Quiztask.objects.filter(game=game, completed=False)
+    if unfinished_tasks.__len__() == 0:
+        return True
+    else:
+        return False
