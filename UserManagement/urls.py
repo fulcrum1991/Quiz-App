@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from UserManagement import views
 
 
@@ -12,5 +12,5 @@ urlpatterns = [
     path('accounts/register-htmx', views.register_htmx, name='register-htmx'),
     path('accounts/login-htmx', views.login_htmx, name='login-htmx'),
     path('update-navbar/', views.update_navbar, name='update-navbar'),
-
+    path('', include('Library.urls')),
 ]
