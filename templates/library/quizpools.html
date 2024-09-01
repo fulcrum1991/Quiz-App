@@ -5,7 +5,7 @@
             {% for pool in quizpools %}
                 <li class="list-group-item">
                     <div>
-                        <span hx-get="{% url 'get_quiztasks' pool.id %}" hx-target="#quiztasks">
+                        <span hx-get="{% url 'show_quiztasks' pool.id %}" hx-target="#quiztasks">
                             {{ forloop.counter }} {{ pool.name }}
                         </span>
                     </div>

@@ -12,20 +12,18 @@
         .leftbox {
             float: left;
             width: 33%;
-            
         }
- 
+
         .middlebox {
             float: left;
             width: 33%;
         }
- 
+
         .rightbox {
             float: right;
             width: 33%;
-            
         }
-</style>
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -40,7 +38,7 @@
                         <a class="nav-link" href="/library">Bibliothek</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Einzelspieler</a>
+                        <a class="nav-link" href="/singleplayer">Einzelspieler</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/">Mehrspieler</a>
@@ -69,62 +67,20 @@
             </div>
         </div>
     </nav>
+
+    <!-- Platzhalter für Nachrichten -->
+    <div class="container">
+        <div id="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="container main-content">
         {% block content %}
-{#        <div class="row">#}
-{#            <div class="col-md-6">#}
-{#                <h4>Fragepools</h4>#}
-{#                <table class="table table-striped">#}
-{#                    <thead>#}
-{#                        <tr>#}
-{#                            <th>ID</th>#}
-{#                            <th>Name</th>#}
-{#                        </tr>#}
-{#                    </thead>#}
-{#                    <tbody>#}
-{#                        {% for pool in fragepools %}#}
-{#                        <tr>#}
-{#                            <td>{{ pool.id }}</td>#}
-{#                            <td>{{ pool.name }}</td>#}
-{#                        </tr>#}
-{#                        {% endfor %}#}
-{#                    </tbody>#}
-{#                </table>#}
-{#            </div>#}
-{#            <div class="col-md-6">#}
-{#                <h4>Fragen</h4>#}
-{#                <table class="table table-striped">#}
-{#                    <thead>#}
-{#                        <tr>#}
-{#                            <th>ID</th>#}
-{#                            <th>Frage</th>#}
-{#                            <th>Antworten</th>#}
-{#                            <th>Richtige Antwort</th>#}
-{#                            <th>Bearbeiten</th>#}
-{#                        </tr>#}
-{#                    </thead>#}
-{#                    <tbody>#}
-{#                        {% for frage in fragen %}#}
-{#                        <tr>#}
-{#                            <td>{{ frage.id }}</td>#}
-{#                            <td>{{ frage.frage }}</td>#}
-{#                            <td>#}
-{#                                <ul>#}
-{#                                    {% for antwort in frage.antworten %}#}
-{#                                    <li>{{ antwort }}</li>#}
-{#                                    {% endfor %}#}
-{#                                </ul>#}
-{#                            </td>#}
-{#                            <td></td>#}
-{#                            <td>#}
-{#                                <a href="{% url 'edit_frage' frage.id %}" class="btn btn-primary btn-sm">Bearbeiten</a>#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                        {% endfor %}#}
-{#                    </tbody>#}
-{#                </table>#}
-{#            </div>#}
-{#        </div>#}
         {% endblock %}
     </div>
 
@@ -139,12 +95,5 @@
         event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
       })
     </script>
-<script>
-    document.addEventListener('htmx:afterRequest', function(evt) {
-        if (evt.detail.triggerName === 'updateNavbar') {
-            hx.get('/update-navbar', { target: '#user-navbar' });
-        }
-    });
-</script>
 </body>
 </html>

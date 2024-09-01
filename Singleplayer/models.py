@@ -1,15 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
-from Library.models import QuizTask
+from Library.models import QuizPool, QuizTask, Answer
 
 # Create your models here.
-class Quiz(models.Model):
-    title = models.CharField(max_length=100)
+class SPGame(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    completed_at = models.DateTimeField()
+    pool = models.ForeignKey(QuizPool, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    completed = models.BooleanField(blank=True, default=False)
+    completed_at = models.DateTimeField(blank=True, null=True)
+    correct_percent = models.FloatField(default=0)
 
-class Quiz_contains_Quiztask(models.Model):
-    quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)          # check
-    task_id = models.ForeignKey(QuizTask, on_delete=models.CASCADE)      # check
-    correct_answered = models.BooleanField()
-    completed = models.BooleanField()
+class SPGame_contains_Quiztask(models.Model):
+    game = models.ForeignKey(SPGame, on_delete=models.CASCADE)        # check CASCADE
+    task = models.ForeignKey(QuizTask, on_delete=models.SET_NULL, null=True)      # check CASCADE
+    selected_answer = models.ForeignKey(Answer, on_delete=models.SET_NULL, null=True) # check CASCADE
+    correct_answered = models.BooleanField(blank=True, null=True)
+    completed = models.BooleanField(default=False)
+

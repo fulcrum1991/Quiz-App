@@ -7,7 +7,7 @@
             {% for task in quiztasks %}
                 <li class="list-group-item">
                     <div>
-                        <span hx-get="{% url 'get_answers' task.id %}" hx-target="#answers">
+                        <span hx-get="{% url 'show_answers' task.id %}" hx-target="#answers">
                             {{ forloop.counter }} {{ task.question }}
                         </span>
                     </div>
