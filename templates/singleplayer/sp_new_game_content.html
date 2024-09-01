@@ -3,19 +3,19 @@
     <h1>Einzelspieler - Neues Spiel</h1>
         <div id="list_quizpools" class="leftbox">
             <h2>Quizpool</h2>
-                <ul class="list-group">
-                    {% for pool in quizpools %}
-                        <li class="list-group-item">
-                            <div>
-                                <span hx-get="{% url 'show_lib_content' pool.id %}" hx-target="#sp_new_game_content">
-                                    {{ forloop.counter }} {{ pool.name }}
-                                </span>
-                            </div>
-                        </li>
-                    {% empty %}
-                        <p>Hier ist noch nichts zu sehen</p>
-                    {% endfor %}
-                </ul>
+            <ul class="list-group">
+                {% for pool in quizpools %}
+                    <li class="list-group-item">
+                        <div>
+                            <span hx-get="{% url 'show_lib_content' pool.id %}" hx-target="#sp_new_game_content">
+                                {{ forloop.counter }} {{ pool.name }}
+                            </span>
+                        </div>
+                    </li>
+                {% empty %}
+                    <p>Hier ist noch nichts zu sehen</p>
+                {% endfor %}
+            </ul>
         </div>
         <div id="list_quiztasks" class="middlebox">
             <h2>Fragen</h2>

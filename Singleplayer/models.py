@@ -4,10 +4,12 @@ from Library.models import QuizPool, QuizTask, Answer
 
 # Create your models here.
 class SPGame(models.Model):
-    name = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     pool = models.ForeignKey(QuizPool, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    completed = models.BooleanField(blank=True, default=False)
     completed_at = models.DateTimeField(blank=True, null=True)
+    correct_percent = models.FloatField(default=0)
 
 class SPGame_contains_Quiztask(models.Model):
     game = models.ForeignKey(SPGame, on_delete=models.CASCADE)        # check CASCADE

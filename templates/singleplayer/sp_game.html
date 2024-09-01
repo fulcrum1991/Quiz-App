@@ -1,4 +1,8 @@
-{# Context: {'sp_game': sp_game, 'question_answer_list': question_answer_list,}) #}
+<!-- Context: 
+ - sp_game: 
+ - questions_list
+ - question_answer_list
+ -->
 
 {% extends 'base.html' %}
 {% block title %}Einzelspieler - Spiel{% endblock %}
@@ -9,7 +13,7 @@
         <div id="list_quiztasks" class="leftbox">
             <h2>{{ sp_game.name }}</h2>
                 <ul class="list-group">
-                    {% for task in questions_status_list %}
+                    {% for task in questions_list %}
                         <li class="list-group-item">
                             <div>
                                 {{ forloop.counter }} {{ task.question }} {{ task.correct_answered }}
@@ -21,7 +25,11 @@
                 </ul>
         </div>
         <div id='task-card' class="card mt-4">
-            {% include 'singleplayer/game_card.html' %}
+            {% if sp_game.completed_at %}
+                {% include 'singleplayer/game_result_card.html' %}
+            {% else %}
+                {% include 'singleplayer/quiztask_card.html' %}
+            {% endif %}
         </div>
 </div>
 {% endblock %}

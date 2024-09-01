@@ -1,0 +1,51 @@
+<!-- Context: 
+ - finished_games: list SPGame
+ - quiztasks: list Quiztasks
+ - selected_game: int game_id
+ -->
+
+{%  block content %}
+<div id=sp_history_content class="container mt-5">
+    <h1>Einzelspieler - Historie</h1>
+        <div id="list_quizpools" class="leftbox">
+            <h2>Spiel</h2>
+            <ul class="list-group">
+                {% for game in finished_games %}
+                    <li class="list-group-item">
+                        <div>
+                            <span hx-get="{% url 'show_game_content' game.id %}" hx-target="#sp_history_content">
+                                {{ forloop.counter }} {{ game.name }} {{ game.pool_id }}
+                            </span>
+                        </div>
+                    </li>
+                {% empty %}
+                    <p>Hier ist noch nichts zu sehen</p>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id='task-card' class="card mt-4">
+            {% include 'singleplayer/game_result_card.html' %}
+        </div>
+{#        <div id="list_quiztasks" class="middlebox">#}
+{#            <h2>Fragen</h2>#}
+{#            <ul class="list-group">#}
+{#                {% for task in quiztasks %}#}
+{#                    <li class="list-group-item">#}
+{#                        <div>#}
+{#                                {{ forloop.counter }} {{ task.question }}#}
+{#                        </div>#}
+{#                    </li>#}
+{#                {% empty %}#}
+{#                    <p>Hier ist noch nichts zu sehen</p>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        </div>#}
+        
+{#        <div id="start_game" class="rightbox">#}
+{#        {% if selected_game %}#}
+{#            <h2>{{ selected_game.name }}</h2>#}
+{#            <a href="{% url 'sp_game' selected_game.id %}" class="btn btn-primary btn-lg">Spiel fortsetzen</a>#}
+{#        {% endif %}#}
+{#        </div>#}
+    </div>
+{% endblock %}

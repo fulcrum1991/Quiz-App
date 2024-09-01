@@ -1,0 +1,87 @@
+<!-- Context: 
+- sp_game : 
+- quiztask_answers : 
+- sp_select_answer_id : ID der ausgewählten Antwort
+- result : Ergebnis nach Auswertung
+-->
+
+<div id="card-body" class="card-body">
+    <div id="result">
+        {% if result %}
+            {{ result.correct_answered }}
+            {{ result.answer_message }}
+        {% endif %}
+    </div>
+    <div id="question">
+        {{ quiztask_answers.quiztask.question }}
+    </div>
+    <div id="answers">
+        <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">Auswahl</th>
+                  <th scope="col">Antwort</th>
+                  <th scope="col">Begründung</th>
+                </tr>
+            </thead>
+            <tbody>   
+            {% for answer in quiztask_answers.answers %}
+                <tr>
+                    <td>
+                        {% if selected_answer_id == answer.id %} X {% endif %}
+                    </td>
+                    <th scope="row">
+                        <span hx-get="{% url 'sp_select_answer' sp_game.id quiztask_answers.quiztask.id answer.id %}" hx-target="#task-card">
+                            {{ answer.answer }}
+                        </span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {% if result %}
+                            {{ answer.explanation }} 
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody> 
+        </table>
+{#        <div id="answer_1">#}
+{#            <span hx-get="{% url 'sp_select_answer' sp_game.id quiztask_answers.quiztask.id quiztask_answers.answers.0.id %}" hx-target="#task-card">#}
+{#                {{ quiztask_answers.answers.0.answer }}#}
+{#                {% if selected_answer_id == 0 %} X {% endif %}#}
+{#            </span>#}
+{#            {% if result %}#}
+{#                {{ quiztask_answers.answers.0.explanation }} #}
+{#            {% endif %}#}
+{#        </div>#}
+{#        <div id="answer_2">#}
+{#            <span hx-get="{% url 'sp_select_answer' sp_game.id quiztask_answers.quiztask.id quiztask_answers.answers.1.id %}" hx-target="#task-card">#}
+{#                {{ quiztask_answers.answers.1.answer }}#}
+{#                {% if selected_answer_id == 0 %} X {% endif %}#}
+{#            </span>#}
+{#        </div>#}
+{#        <div id="answer_3">#}
+{#            <span hx-get="{% url 'sp_select_answer' sp_game.id quiztask_answers.quiztask.id quiztask_answers.answers.2.id %}" hx-target="#task-card">#}
+{#                {{ quiztask_answers.answers.2.answer }}#}
+{#                {% if selected_answer_id == 0 %} X {% endif %}#}
+{#            </span>#}
+{#        </div>#}
+{#        <div id="answer_4">#}
+{#            <span hx-get="{% url 'sp_select_answer' sp_game.id quiztask_answers.quiztask.id quiztask_answers.answers.3.id %}" hx-target="#task-card">#}
+{#                {{ quiztask_answers.answers.3.answer }}#}
+{#                {% if selected_answer_id == 0 %} X {% endif %}#}
+{#            </span>#}
+{#        </div>#}
+    </div>
+</div>
+<div id="game-navigation">
+    <button class="btn btn-primary" hx-get="{% url 'previous_task' sp_game.id quiztask_answers.quiztask.id %}" hx-target="#task-card">Zurück</button>
+    {% if selected_answer_id and not sp_game.completed%}
+        <button class="btn btn-primary" hx-get="{% url 'evaluate_task' sp_game.id quiztask_answers.quiztask.id selected_answer_id %}" hx-target="#task-card">Auswertung</button>
+    {% endif %} 
+    {% if sp_game.completed %}
+        <button class="btn btn-primary" hx-get="{% url 'game_result' sp_game.id %}" hx-target="#task-card">Spielergebnis anzeigen</button>
+    {% endif %} 
+    <button class="btn btn-primary" hx-get="{% url 'next_task' sp_game.id quiztask_answers.quiztask.id %}" hx-target="#task-card">Weiter</button>
+</div>

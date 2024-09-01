@@ -1,0 +1,45 @@
+{# Context: #}
+{# sp_game : #}
+{# quiztask_answers : #}
+{# (geerbt) sp_select_answer_id : ID der ausgewählten Antwort #}
+{# result : Ergebnis nach Auswertung #}
+{# (game) questions_list: #}
+{# (history) avg_correct_percent': avg_correct_percent #}
+{# (history) games_count #}
+{# (history) quiztask_stats #}
+
+<div id="card-body" class="card-body">
+    <h2>{{ sp_game.name }}</h2>
+    <p>Datum: {{ sp_game.completed_at }}</p>
+    <div id="game_stats">
+        <p>Fragen richtig beantwortet: {{ sp_game.correct_percent }} </p>
+        <p>Durchschnittlich richtig beantwortete Fragen mit diesem Pool: {{ avg_correct_percent }}</p>
+        <p>Spiele mit diesem Quizpool: {{ games_count }}</p>
+    </div>
+    <div id="list_quiztasks">
+        <table class="table">
+            <thead>
+                <td scope="col">#</td>
+                <td scope="col">Frage</td>
+                <td scope="col">Letzte Antwort</td>
+                <td scope="col">Richtig beantwortet</td>
+                <td scope="col">Falsch beantwortet</td>
+            </thead>
+            <tbody>
+                {% for id, stats in quiztask_stats.items %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ stats.question }}</td>
+                    <td>{% if stats.correct_answered %} Richtig {% else %} Falsch {% endif %}</td>
+                    <td>{{ stats.correct }}</td>
+                    <td>{{ stats.wrong }}</td>
+    {#                {{ forloop.counter }} {{ stats.question }} {{ stats.correct_answered }} {{ stats.correct }} {{ stats.wrong }}#}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="game-navigation">
+    <a class="btn btn-primary" href="/singleplayer">Zurück zu Einzelspieler</a>
+</div>
