@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+<div>
+    <h3>Quiz Session Lobby</h3>
+    <p>Session Code: {{ session.code }}</p>
+    <h4>Participants:</h4>
+    <ul id="participants-list">
+        {% for participant in session.participants.all %}
+            <li>{{ participant.username }}</li>
+        {% endfor %}
+    </ul>
+    {% if request.user == session.host %}
+        <button hx-get="{% url 'start_quiz_session' session.code %}" hx-target="#session-area" hx-swap="innerHTML">Start Quiz</button>
+    {% endif %}
+</div>

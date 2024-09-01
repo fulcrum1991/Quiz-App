@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+<div>
+    <h3>Create a new Quiz Session</h3>
+    <form method="POST" hx-post="{% url 'create_quiz_session' %}" hx-target="#session-area" hx-swap="innerHTML">
+        {% csrf_token %}
+        <button type="submit">Create Session</button>
+    </form>
+</div>

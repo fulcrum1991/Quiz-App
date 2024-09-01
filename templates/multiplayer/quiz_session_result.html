@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+<div>
+    <h3>Quiz Results</h3>
+    <ul>
+        {% for result in session.player_answers.all %}
+            <li>{{ result.player.username }}: {{ result.is_correct|yesno:"Correct,Incorrect" }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'multiplayer' %}">Return to Multiplayer</a>
+</div>

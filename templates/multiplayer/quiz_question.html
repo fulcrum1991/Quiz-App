@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+<div>
+    <h3>Question {{ question.number }}</h3>
+    <p>{{ question.text }}</p>
+    <form method="POST" hx-post="{% url 'submit_answer' session.code question.id %}" hx-target="#question-area" hx-swap="innerHTML">
+        {% csrf_token %}
+        {% for answer in question.answers.all %}
+            <div>
+                <input type="radio" name="answer" value="{{ answer.id }}"> {{ answer.text }}
+            </div>
+        {% endfor %}
+        <button type="submit">Submit Answer</button>
+    </form>
+</div>

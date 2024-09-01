@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+<div>
+    <h3>Join a Quiz Session</h3>
+    <form method="POST" hx-post="{% url 'join_quiz_session' %}" hx-target="#session-area" hx-swap="innerHTML">
+        {% csrf_token %}
+        <input type="text" name="session_code" placeholder="Enter Session Code">
+        <button type="submit">Join Session</button>
+    </form>
+</div>

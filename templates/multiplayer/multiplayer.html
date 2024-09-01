@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Multiplayer</h2>
+
+<div>
+    <button hx-get="{% url 'create_quiz_session' %}" hx-target="#session-area" hx-swap="innerHTML">Create New Session</button>
+    <button hx-get="{% url 'join_quiz_session' %}" hx-target="#session-area" hx-swap="innerHTML">Join Session</button>
+</div>
+
+<div id="session-area">
+    <!-- Hier werden die dynamischen Inhalte geladen -->
+</div>
+{% endblock %}
