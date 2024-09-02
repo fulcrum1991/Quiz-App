@@ -1,19 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 # Create your models here.
 class QuizPool(models.Model):
-    name = models.CharField(max_length=100)
-    creator = models.ForeignKey(User, default='1', on_delete=models.SET('1'))      # on_delete=models.SET(1) = absicht uid = 1
+    name = models.CharField(max_length=250)
+    creator = models.ForeignKey(User, default='1', on_delete=models.SET_NULL, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
 class QuizTask(models.Model):
-    pool = models.ForeignKey(QuizPool, default='1', on_delete=models.CASCADE)       # Wenn Pool gelöscht werden auch die fragen gelöscht
-    question = models.CharField(max_length=100)
+    pool = models.ForeignKey(QuizPool, default='1', on_delete=models.CASCADE)
+    question = models.CharField(max_length=500)
     approved = models.BooleanField(default=False)
-    creator = models.ForeignKey(User, default='1', on_delete=models.SET('1'))  # on_delete=models.SET(1) = absicht uid = 1
+    creator = models.ForeignKey(User, default='1', on_delete=models.SET_NULL, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -21,11 +20,11 @@ class QuizTask(models.Model):
     #     return str(self.question)
 
 class Answer(models.Model):
-    task = models.ForeignKey(QuizTask, default='1', on_delete=models.CASCADE)  # Wenn Pool gelöscht werden auch die fragen gelöscht
-    creator = models.ForeignKey(User, default='1', on_delete=models.SET('1'))   # on_delete=models.SET(1) = absicht uid = 1
-    answer = models.CharField(max_length=200)
+    task = models.ForeignKey(QuizTask, default='1', on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, default='1', on_delete=models.SET_NULL, null=True)
+    answer = models.CharField(max_length=500)
     correct = models.BooleanField(default=False)
-    explanation = models.CharField(max_length=200)
+    explanation = models.CharField(max_length=500)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
