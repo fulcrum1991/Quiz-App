@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadReque
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -204,17 +205,13 @@ def edit_profile(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
 
-        # Überprüfung, ob alle Felder ausgefüllt sind
+        # Überprüfen, ob die Profildaten leer sind
         if not username or not email:
             messages.error(request, 'Bitte füllen Sie alle Felder aus.')
 
-            # Überprüfung, ob es sich um eine HTMX-Anfrage handelt
             if request.headers.get('HX-Request'):
-                # Fehlernachricht ausgeben und konsumieren
                 error_messages = list(get_messages(request))
                 return HttpResponse('<div class="alert alert-danger">Bitte füllen Sie alle Felder aus.</div>')
-
-            # Nicht-HTMX-Anfrage: Umleitung zur Bearbeitungsseite
             return redirect('edit_profile')
 
         # Profildaten aktualisieren
@@ -222,11 +219,32 @@ def edit_profile(request):
         request.user.email = email
         request.user.save()
 
+        # Passwortänderungsformular initialisieren
+        password_change_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+
+        # Überprüfen, ob das Passwortänderungsformular ausgefüllt und gültig ist
+        if password_change_form.is_valid():
+            # Passwort ändern und die Session aktualisieren
+            user = password_change_form.save()
+            update_session_auth_hash(request, user)  # Wichtig, damit die Sitzung erhalten bleibt
+            messages.success(request, 'Passwort erfolgreich geändert!')
+
+            if request.headers.get('HX-Request'):
+                response = HttpResponse('<div class="alert alert-success">Passwort erfolgreich geändert!</div>')
+                list(get_messages(request))
+                return response
+        elif any([request.POST.get('old_password'), request.POST.get('new_password1'), request.POST.get('new_password2')]):
+            # Wenn eines der Passwortfelder ausgefüllt ist, aber das Formular nicht gültig ist
+            messages.error(request, 'Bitte prüfen Sie Ihre Eingaben zum Passwort.')
+
+            if request.headers.get('HX-Request'):
+                error_messages = list(get_messages(request))
+                return HttpResponse('<div class="alert alert-danger">Bitte prüfen Sie Ihre Eingaben zum Passwort.</div>')
+
+        # Erfolgreiches Update der Profildaten
         messages.success(request, 'Profildaten erfolgreich geändert!')
 
-        # Überprüfung, ob es sich um eine HTMX-Anfrage handelt
         if request.headers.get('HX-Request'):
-            # Erfolgsnachricht ausgeben und Navbar aktualisieren
             response = HttpResponse(f'''
                 <div class="alert alert-success">Profildaten erfolgreich geändert!</div>
                 <ul class="navbar-nav" hx-swap-oob="true" id="user-navbar">
@@ -241,33 +259,59 @@ def edit_profile(request):
                     </li>
                 </ul>
             ''')
-
-            # Nachrichten konsumieren, um sie aus der Session zu entfernen
             list(get_messages(request))
             return response
 
-        # Nicht-HTMX-Anfrage: Erfolgsnachricht anzeigen und zur Bearbeitungsseite zurückkehren
-        return render(request, 'accounts/profile_edit_form.html', {
-            'user': request.user,
-            'hx_trigger': 'updateNavbar'
-        })
+        return redirect('edit_profile')
 
-    # Rendern des Profilbearbeitungsformulars für GET-Anfragen
-    return render(request, 'accounts/profile_edit_form.html', {'user': request.user})
+    # GET-Anfrage: Rendern des Profilbearbeitungsformulars und des Passwortänderungsformulars
+    password_change_form = CustomPasswordChangeForm(user=request.user)
+    return render(request, 'accounts/profile_edit_form.html', {
+        'user': request.user,
+        'password_change_form': password_change_form
+    })
 
 
+@csrf_exempt
 @login_required
 @require_http_methods(["POST"])
 def delete_profile(request):
-    # Benutzerprofil löschen
-    request.user.delete()
+    if request.method == 'POST':
+        # Benutzer löschen
+        user = request.user
+        user.delete()
 
-    # Erfolgsmeldung
-    messages.success(request, 'Profil erfolgreich gelöscht!')
+        # Nutzer ausloggen
+        logout(request)
 
-    # Weiterleitung zur Startseite nach dem Löschen und Triggern des Navbar-Updates
-    return redirect('home')  # Gehe zur Startseite oder zu einer anderen Zielseite
+        # Erfolgsmeldung
+        messages.success(request, 'Profil erfolgreich gelöscht!')
 
+        # HTMX-Anfrage: Navbar aktualisieren und auf Startseite umleiten
+        if request.headers.get('HX-Request'):
+            response = HttpResponse(f'''
+                <div class="alert alert-success">Profil erfolgreich gelöscht!</div>
+
+                <!-- Navbar auf den Zustand eines ausgeloggten Nutzers zurücksetzen -->
+                <ul class="navbar-nav ml-auto" hx-swap-oob="true" id="user-navbar">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{request.build_absolute_uri('/login/')}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{request.build_absolute_uri('/register/')}">Registrieren</a>
+                    </li>
+                </ul>
+            ''')
+
+            # Konsumiere Nachrichten, um Duplikate zu vermeiden
+            list(get_messages(request))
+            response['HX-Redirect'] = '/'  # Leitet nach erfolgreicher Löschung auf die Startseite um
+            return response
+
+        # Nicht-HTMX: Erfolgsnachricht und Weiterleitung zur Startseite
+        return redirect('library')
+
+    return redirect('profile')
 
 def login_view(request):
     if request.method == 'POST':
