@@ -1,7 +1,5 @@
-{# verarbeitete Objekte/Variablen: quiztasks, selected_pool #}
 <div id="quiztasks">
     <h3>{{ selected_pool.name }}</h3>
-{# List Quiztasks #}
     <div id="list_quiztasks">
         <ul class="list-group">
             {% for task in quiztasks %}
@@ -37,7 +35,6 @@
               hx-target="#library-content" 
               hx-confirm="Wenn {{ selected_pool.name }} gelöscht wird, werden auch alle dazugehörigen Fragen gelöscht. Wirklich löschen?">
             <input type="submit" class="btn btn-danger" value="Quizpool {{ selected_pool.name }} löschen">
-
         </form>
     </div>
     {% endif %}
