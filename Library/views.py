@@ -201,7 +201,7 @@ def edit_answer(request, answer_id):
         # Diese Form wird nicht weiterverarbeitet, sondern nur genutzt, um die übergebene 'question' zu validieren.
         answer = Answer.objects.get(id=answer_id)
         answer.answer = request.POST.get('answer', None)
-        answer.hint = request.POST.get('hint', None)
+        answer.explanation = request.POST.get('explanation', None)
         answer.correct = request.POST.get('correct', 'False')
         answer.save()
 

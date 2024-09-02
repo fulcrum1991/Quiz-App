@@ -7,7 +7,7 @@
             <input type="checkbox" class="form-check-input" id="correct_switch" name="correct" value="True" {% if answer.correct %}checked{% endif %}>
             <label class="form-check-label" for="correct_switch">Richtig?</label>
         </div>
-        <input type="text" name="hint" class="form-control mb-2 mr-sm-2" placeholder="Hinweis X" value="{{ answer.hint }}">
+        <input type="text" name="explanation" class="form-control mb-2 mr-sm-2" placeholder="Begründung X" value="{{ answer.explanation }}">
         <input type="submit" class="btn btn-secondary" value="Antwort speichern">
     </form>
 </div>
