@@ -17,10 +17,11 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['username']
 
+from django.contrib.auth.forms import PasswordChangeForm
+
 class CustomPasswordChangeForm(PasswordChangeForm):
-    class Meta:
-        model = User
-        fields = ['password']
+    pass
+
 
 class DeleteUserForm(forms.Form):
     confirm = forms.BooleanField(required=True, label='Profil löschen bestätigen')

@@ -1,4 +1,4 @@
-<!-- edit_profile_form.html -->
+<!-- profile_edit_form.html -->
 <form method="post" hx-post="{% url 'edit-profile' %}" hx-target="#profile-result" hx-swap="innerHTML">
     {% csrf_token %}
     <div class="mb-3">
@@ -9,5 +9,21 @@
         <label for="email" class="form-label">Email</label>
         <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
     </div>
-    <button type="submit" class="btn btn-primary w-100">Speichern</button>
+
+    <hr>
+    <h4>Passwort ändern</h4>
+    <div class="mb-3">
+        <label for="old_password" class="form-label">Altes Passwort</label>
+        <input type="password" class="form-control" id="old_password" name="old_password">
+    </div>
+    <div class="mb-3">
+        <label for="new_password1" class="form-label">Neues Passwort</label>
+        <input type="password" class="form-control" id="new_password1" name="new_password1">
+    </div>
+    <div class="mb-3">
+        <label for="new_password2" class="form-label">Neues Passwort bestätigen</label>
+        <input type="password" class="form-control" id="new_password2" name="new_password2">
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Änderungen speichern</button>
 </form>
