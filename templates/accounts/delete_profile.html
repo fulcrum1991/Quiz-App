@@ -1,18 +1,25 @@
-<!-- delete_profile.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profil löschen</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Messages anzeigen -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <h1>Profil löschen</h1>
     <p>Möchten Sie wirklich Ihr Profil löschen? Diese Aktion kann nicht rückgängig gemacht werden.</p>
 
-    <form method="post">
+    <form method="post" action="{% url 'delete_profile' %}">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Profil löschen</button>
-        <a href="{% url 'profile' %}">Abbrechen</a>
+        <button type="submit" class="btn btn-danger">Profil löschen</button>
+        <a href="{% url 'profile' %}" class="btn btn-secondary">Abbrechen</a>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}
