@@ -1,14 +1,12 @@
-{# verarbeitete Objekte/Variablen: quiztasks, selected_pool #}
 <div id="quiztasks">
     <h3>{{ selected_pool.name }}</h3>
-{# List Quiztasks #}
     <div id="list_quiztasks">
         <ul class="list-group">
             {% for task in quiztasks %}
                 <li class="list-group-item">
                     <div>
-                        <span hx-get="{% url 'show_answers' task.id %}" hx-target="#answers">
-                            {{ forloop.counter }} {{ task.question }}
+                        <span hx-get="{% url 'get_answers' task.id %}" hx-target="#answers">
+                            {{ task.question }}
                         </span>
                     </div>
                 </li>
@@ -18,30 +16,25 @@
         </ul>
     </div>
     {% if quizpools or selected_pool %}
-    {# Zeigt die folgenden Steuerelemente nur, wenn ein Quizpool vorhanden ist. #}
-{# Create Quiztask #}
-    <div id="create_quiztask" class="mt-3">
+    <div id="create_quiztask" class="mt-3 text-center">
         <form hx-post="{% url 'create_quiztask' selected_pool.id %}"
               hx-target="#quiztasks">
             <input type="text" name="question" class="form-control mb-2" placeholder="Frage X" required>
             <input type="submit" class="btn btn-primary" value="Frage hinzufügen">
         </form>
     </div>
-{# Change Quizpool Name#}
-    <div id="change_quizpool_name" class="mt-3">
+    <div id="change_quizpool_name" class="mt-3 text-center">
         <form hx-post="{% url 'change_quizpool_name' selected_pool.id %}" 
               hx-target="#library-content">
             <input type="text" name="name" class="form-control mb-2" placeholder="{{ selected_pool.name }}" required>
             <input type="submit" class="btn btn-warning" value="Name ändern">
         </form>
     </div>
-    {# Delete Quitpool#}
-    <div id="delete_quizpool" class="mt-3">
+    <div id="delete_quizpool" class="mt-3 text-center">
         <form hx-post="{% url 'delete_quizpool' selected_pool.id %}" 
               hx-target="#library-content" 
               hx-confirm="Wenn {{ selected_pool.name }} gelöscht wird, werden auch alle dazugehörigen Fragen gelöscht. Wirklich löschen?">
             <input type="submit" class="btn btn-danger" value="Quizpool {{ selected_pool.name }} löschen">
-
         </form>
     </div>
     {% endif %}

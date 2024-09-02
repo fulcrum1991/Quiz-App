@@ -5,8 +5,8 @@
             {% for pool in quizpools %}
                 <li class="list-group-item">
                     <div>
-                        <span hx-get="{% url 'show_quiztasks' pool.id %}" hx-target="#quiztasks">
-                            {{ forloop.counter }} {{ pool.name }}
+                        <span hx-get="{% url 'get_quiztasks' pool.id %}" hx-target="#quiztasks">
+                            {{ pool.name }}
                         </span>
                     </div>
                 </li>
@@ -15,7 +15,7 @@
             {% endfor %}
         </ul>
     </div>
-    <div id="create_quizpool" class="mt-3">
+    <div id="create_quizpool" class="mt-3 text-center">
         <form hx-post="{% url 'create_quizpool' %}" hx-target="#library-content">
             <input type="text" name="name" class="form-control mb-2" placeholder="Quizpool X" required>
             <input type="submit" class="btn btn-primary" value="Fragenpool hinzufügen">
