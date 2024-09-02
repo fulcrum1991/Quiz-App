@@ -21,6 +21,7 @@ def create_quiz_session(request):
         return render(request, 'multiplayer/quiz_session_lobby.html', {'session': session})
     return render(request, 'multiplayer/create_quiz_session.html')
 
+
 @login_required
 def join_quiz_session(request):
     if request.method == 'POST':
@@ -29,6 +30,7 @@ def join_quiz_session(request):
         session.participants.add(request.user)
         return render(request, 'multiplayer/quiz_session_lobby.html', {'session': session})
     return render(request, 'multiplayer/join_quiz_session.html')
+
 
 @login_required
 def start_quiz_session(request, session_code):
@@ -40,6 +42,7 @@ def start_quiz_session(request, session_code):
             'question': question,
         })
     return redirect('quiz_session_results', session_code=session_code)
+
 
 @login_required
 def submit_answer(request, session_code, question_id):
@@ -63,6 +66,8 @@ def submit_answer(request, session_code, question_id):
             'question': next_question,
         })
     return redirect('quiz_session_results', session_code=session_code)
+
+
 def create_quiz_session(request):
     if request.method == 'POST':
         session_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))

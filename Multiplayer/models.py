@@ -3,6 +3,7 @@ from django.db import models
 from Library.models import QuizPool
 from Library.models import QuizTask
 
+
 # Create your models here.
 class QuizSession(models.Model):
     def __init__(self, *args, **kwargs):
