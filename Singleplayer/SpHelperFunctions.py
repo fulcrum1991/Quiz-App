@@ -1,6 +1,4 @@
 # Hilfsfunktionen zu Singleplayer/views.py
-from django.core.exceptions import ObjectDoesNotExist
-
 from Library.models import QuizTask, Answer
 from Singleplayer.models import SPGame_contains_Quiztask, SPGame
 
@@ -146,7 +144,7 @@ def get_pool_stats(game: SPGame):
 
     # Queryset: Games from the same quiz pool from the same user
     games_with_pool = SPGame.objects.filter(pool_id=game.pool_id, user_id=game.user_id, completed=True)
-
+    print(games_with_pool)
     # Count of games in the quiz pool
     games_count = games_with_pool.__len__()
 
@@ -156,21 +154,18 @@ def get_pool_stats(game: SPGame):
     for game in games_with_pool:
         gametasks = SPGame_contains_Quiztask.objects.filter(game=game)
         for gametask in gametasks:
-            try:
-                if gametask.task_id not in quiztask_stats.keys():
-                    quiztask_stats[gametask.task_id] = {
-                        'question': QuizTask.objects.get(id=gametask.task_id).question,
-                        'correct_answered': gametask.correct_answered,
-                        'correct': 0,
-                        'wrong': 0}
-                # Increase the count of correct answers if the answer is correct
-                if gametask.correct_answered:
-                    quiztask_stats[gametask.task_id]['correct'] += 1
-                # Increase the count of wrong answers if the answer is incorrect
-                elif gametask.correct_answered == False:
-                    quiztask_stats[gametask.task_id]['wrong'] += 1
-            except ObjectDoesNotExist:
-                print("QuizTask with id {} does not exist.".format(gametask.task_id))
+            if gametask.task_id not in quiztask_stats.keys():
+                quiztask_stats[gametask.task_id] = {
+                    'question': QuizTask.objects.get(id=gametask.task_id).question,
+                    'correct_answered': gametask.correct_answered,
+                    'correct': 0,
+                    'wrong': 0}
+            # Increase the count of correct answers if the answer is correct
+            if gametask.correct_answered:
+                quiztask_stats[gametask.task_id]['correct'] += 1
+            # Increase the count of wrong answers if the answer is incorrect
+            elif gametask.correct_answered == False:
+                quiztask_stats[gametask.task_id]['wrong'] += 1
 
     # Computing average of correct answers percentage
     correct_percent_list = []
