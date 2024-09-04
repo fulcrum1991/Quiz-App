@@ -19,9 +19,16 @@ from django.urls import path, include
 
 
 urlpatterns = [
+    # This is the default path for Django Admin. By visiting 'admin/' in the browser, you will see the
+    # admin dashboard provided by Django.
     path('admin/', admin.site.urls),
+    # This default path includes Django's built-in authentication URLs for login, logout,
+    # password change, etc.
+    path('', include('django.contrib.auth.urls')),
+    # By including '*.urls', Django searches for urlpatterns in the apps' urls.py files.
     path('', include('Library.urls')),
     path('', include('UserManagement.urls')),
-    path('', include('django.contrib.auth.urls')),           # Including the pages for login and logout
     path('', include('Singleplayer.urls')),
+    #path('', include('Multiplayer.urls')),
 ]
+
