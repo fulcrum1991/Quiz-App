@@ -16,8 +16,6 @@ class QuizTask(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    # def __str__(self):
-    #     return str(self.question)
 
 class Answer(models.Model):
     task = models.ForeignKey(QuizTask, default='1', on_delete=models.CASCADE)
@@ -28,5 +26,3 @@ class Answer(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    # def __str__(self):
-    #     return str(self.answer + " : " + str(self.correct))

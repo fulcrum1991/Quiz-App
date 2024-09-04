@@ -1,41 +1,38 @@
+{# Used Django context objects:#}
+{#- selected_pool: The selected quiz pool.#}
+{#- quiztasks: The list of quiz tasks in the selected pool.#}
+{#- task: A single task from the quiztasks.#}
+{#- user: The currently authenticated user.#}
+
 <div id="quiztasks">
-    <h3>{{ selected_pool.name }}</h3>
+    <h3>{{ selected_pool.name }}</h3> <!-- Displaying the name of the selected quiz pool -->
     <div id="list_quiztasks">
         <ul class="list-group">
-            {% for task in quiztasks %}
+            <!-- Start of a loop to go through each task in quiztasks -->
+            {% for task in quiztasks %} 
                 <li class="list-group-item">
                     <div>
+                      <!-- Fetching the answers for the task and displaying the question -->
                         <span hx-get="{% url 'get_answers' task.id %}" hx-target="#answers">
                             {{ task.question }}
                         </span>
                     </div>
                 </li>
-            {% empty %}
+            <!-- Message indicating no tasks if quiztasks is empty -->
+            {% empty %} 
                 <p>Hier ist noch nichts zu sehen</p>
             {% endfor %}
         </ul>
     </div>
-    {% if quizpools or selected_pool %}
+    <!-- Displaying options if a pool is selected and user is authenticated -->
+    {% if selected_pool and user.is_authenticated %} 
     <div id="create_quiztask" class="mt-3 text-center">
+        <!-- Form to create a new quiz task -->
         <form hx-post="{% url 'create_quiztask' selected_pool.id %}"
               hx-target="#quiztasks">
             <input type="text" name="question" class="form-control mb-2" placeholder="Frage X" required>
             <input type="submit" class="btn btn-primary" value="Frage hinzufügen">
         </form>
     </div>
-    <div id="change_quizpool_name" class="mt-3 text-center">
-        <form hx-post="{% url 'change_quizpool_name' selected_pool.id %}" 
-              hx-target="#library-content">
-            <input type="text" name="name" class="form-control mb-2" placeholder="{{ selected_pool.name }}" required>
-            <input type="submit" class="btn btn-warning" value="Name ändern">
-        </form>
-    </div>
-    <div id="delete_quizpool" class="mt-3 text-center">
-        <form hx-post="{% url 'delete_quizpool' selected_pool.id %}" 
-              hx-target="#library-content" 
-              hx-confirm="Wenn {{ selected_pool.name }} gelöscht wird, werden auch alle dazugehörigen Fragen gelöscht. Wirklich löschen?">
-            <input type="submit" class="btn btn-danger" value="Quizpool {{ selected_pool.name }} löschen">
-        </form>
-    </div>
-    {% endif %}
+    {%  endif %}
 </div>

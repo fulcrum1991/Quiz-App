@@ -1,21 +1,28 @@
-{% extends 'base.html' %}
-{% block title %}Einzelspieler - Ergebnisse{% endblock %}
+{# Context parameters: #}
+{# correct_percentage: A variable that holds the percentage of correct answers for the current game.#}
+{# average_percentage: A variable that holds the average percentage of correct answers across all games in this pool.#}
+{# results: A list of result objects#}
 
-{% block content %}
+{% extends 'base.html' %}
+{% block title %}Einzelspieler - Ergebnisse{% endblock %} <!-- Set the page title -->
+
+{% block content %} 
 <div class="container mt-5">
     <h2>Ergebnisse</h2>
     <div class="card mt-4">
         <div class="card-body">
-            <h5 class="card-title">Gesamtergebnis: {{ correct_percentage }}% richtig</h5>
-            <p>Durchschnitt aller Spiele in diesem Pool: {{ average_percentage }}%</p>
+            <h5 class="card-title">Gesamtergebnis: {{ correct_percentage }}% richtig</h5> <!-- Display the percentage of correct answers -->
+            <p>Durchschnitt aller Spiele in diesem Pool: {{ average_percentage }}%</p> <!-- Display the average percentage of all games in this pool -->
             <ul class="list-group mt-4">
-                {% for result in results %}
+                {% for result in results %} <!-- Iterate over each result in results -->
                     <li class="list-group-item">
-                        Frage: {{ result.question.text }}<br>
-                        Deine Antwort: {{ result.your_answer }} - {% if result.is_correct %}Richtig{% else %}Falsch{% endif %}
+                        Frage: {{ result.question.text }}<br> <!-- Show the question text -->
+                        Deine Antwort: {{ result.your_answer }} - <!-- Show the player's answer -->
+                        {% if result.is_correct %}Richtig{% else %}Falsch{% endif %} <!-- Indicate if the answer was correct or wrong -->
                     </li>
                 {% endfor %}
             </ul>
+            <!-- Link to the singleplayer overview page -->
             <a href="{% url 'singleplayer_overview' %}" class="btn btn-primary mt-4">Zurück zur Übersicht</a>
         </div>
     </div>

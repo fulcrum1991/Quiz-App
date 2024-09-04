@@ -2,14 +2,17 @@
     <div id="library-content" class="container">
         <h1>Bibliothek</h1>
         <div class="row">
+{# Quizpool section #}
             <div class="col-4 leftbox" style="border-right: 1px solid #ccc; padding-right: 15px;">
                 <h2>Quizpool</h2>
                 {% include 'library/quizpools.html' %}
             </div>
+{# Quiztask section #}
             <div class="col-4 middlebox" style="border-right: 1px solid #ccc; padding-right: 15px; padding-left: 15px;">
                 <h2>Fragen</h2>
                 {% include 'library/quiztasks.html' %}
             </div>
+{# Answer section #}
             <div class="col-4 rightbox" style="padding-left: 15px;">
                 <h2>Frage bearbeiten</h2>
                 {% include 'library/answers.html' %}

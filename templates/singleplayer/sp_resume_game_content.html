@@ -1,47 +1,52 @@
-<!-- Context: 
- - unfinished_games: list SPGame
- - quiztasks: list Quiztasks
- - selected_game: int game_id
- -->
+{# Context parameters: #}
+{# unfinished_games: A list of game objects. #}
+{# quiztasks: A list of quiz task objects. #}
+{# selected_game: The game object currently selected by the user. #}
 
 {%  block content %}
 <div id=sp_resume_game_content class="container mt-5">
     <h1>Einzelspieler - Spiel fortsetzen</h1>
-        <div id="list_quizpools" class="leftbox">
-            <h2>Spiel</h2>
-            <ul class="list-group">
-                {% for game in unfinished_games %}
-                    <li class="list-group-item">
-                        <div>
-                            <span hx-get="{% url 'show_game_content' game.id %}" hx-target="#sp_resume_game_content">
-                                {{ forloop.counter }} {{ game.name }} {{ game.pool_id }}
-                            </span>
-                        </div>
-                    </li>
-                {% empty %}
-                    <p>Hier ist noch nichts zu sehen</p>
-                {% endfor %}
-            </ul>
-        </div>
-        <div id="list_quiztasks" class="middlebox">
-            <h2>Fragen</h2>
-            <ul class="list-group">
-                {% for task in quiztasks %}
-                    <li class="list-group-item">
-                        <div>
-                                {{ forloop.counter }} {{ task.question }}
-                        </div>
-                    </li>
-                {% empty %}
-                    <p>Hier ist noch nichts zu sehen</p>
-                {% endfor %}
-            </ul>
-        </div>
-        <div id="start_game" class="rightbox">
-        {% if selected_game %}
-            <h2>{{ selected_game.name }}</h2>
-            <a href="{% url 'sp_game' selected_game.id %}" class="btn btn-primary btn-lg">Spiel fortsetzen</a>
-        {% endif %}
-        </div>
+    
+    <!-- List of unfinished games -->
+    <div id="list_quizpools" class="leftbox">
+        <h2>Spiel</h2>
+        <ul class="list-group">
+            {% for game in unfinished_games %}
+                <li class="list-group-item">
+                    <div>
+                        <span hx-get="{% url 'show_game_content' game.id %}" hx-target="#sp_resume_game_content">
+                            {{ forloop.counter }} {{ game.name }} {{ game.pool_id }}
+                        </span>
+                    </div>
+                </li>
+            {% empty %}
+                <p>Hier ist noch nichts zu sehen</p>
+            {% endfor %}
+        </ul>
     </div>
+
+    <!-- Question list -->
+    <div id="list_quiztasks" class="middlebox">
+        <h2>Fragen</h2>
+        <ul class="list-group">
+            {% for task in quiztasks %}
+                <li class="list-group-item">
+                    <div>
+                        {{ forloop.counter }} {{ task.question }}
+                    </div>
+                </li>
+            {% empty %}
+                <p>Hier ist noch nichts zu sehen</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Button for resuming the selected game -->
+    <div id="start_game" class="rightbox">
+    {% if selected_game %}
+        <h2>{{ selected_game.name }}</h2>
+        <a href="{% url 'sp_game' selected_game.id %}" class="btn btn-primary btn-lg">Spiel fortsetzen</a>
+    {% endif %}
+    </div>
+</div>
 {% endblock %}
