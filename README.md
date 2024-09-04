@@ -1,4 +1,5 @@
 
+# README
 ## Quiz-App
 - [Logo]
 
@@ -16,15 +17,25 @@ Development Team :
 - Benjamin Orbon (Pütz)
 Web URL : https://quiz-app-f4ajb6d9hydqdgf8.germanywestcentral-01.azurewebsites.net/
 
-Entwicklungsumgebung:
+**Entwicklungsumgebung:**
 - Windows 11 Evalation als VM
 - Pycharm
 - mit Python 3.12 Interpreter
 - Django Framework
 - SQLite als lokale Datenbank
 
-Bereitstellungsumgebung  
+**Bereitstellungsumgebung:**  
 - Microsoft Azure App Services
+
+**Frameworks und Bibliotheken**
+- Django 5.0.7
+- python-dotenv 1.0.1
+- whitenoise 6.6.0
+- django-redis 5.4.0
+- crispy-bootstrap5
+- gunicorn 20.1.0
+- psycopg2-binary 2.9.9
+- htmx 2.0.0
 
 **Beschreibung der Projektentwicklung**
 Das Projekt IU-Quiz ist eine Quiz-Anwendung, die in Django, ein leistungsfähiges Python-Framework für webbasierte Anwendungen, implementiert ist.
