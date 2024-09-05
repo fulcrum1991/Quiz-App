@@ -21,6 +21,12 @@ from .forms import SignUpForm, CustomPasswordChangeForm, UserUpdateForm, DeleteU
 
 # Create your views here.
 def sign_up(request):
+    """
+    Registers a new user with the given request data.
+
+    :param request (HttpRequest): The HTTP request object containing the user sign up data.
+
+    """
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -33,6 +39,18 @@ def sign_up(request):
 
 @login_required(login_url='/login')
 def profile(request):
+    """
+    Profile Method
+
+    This method is responsible for handling the profile page for logged-in users. It requires a logged-in user to
+    access and can be used in conjunction with the `@login_required` decorator.
+
+    :param request: The HTTP request object.
+
+    :returns: If the HTTP request method is 'POST' and both the user form and password form are valid, this method
+    saves the user's updated information and changes the user's password (if provided). It then updates the session
+    authentication hash to keep the user logged in. Finally, it redirects the user to the profile page.
+    """
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         password_form = CustomPasswordChangeForm(request.user, request.POST)
@@ -46,6 +64,18 @@ def profile(request):
 
 @login_required
 def delete_profile(request):
+    """
+    Deletes the user's profile.
+
+    This method requires the user to be logged in. If the request method is POST,
+    the method validates the form data and if the "confirm" field is set to True,
+    the user's profile is deleted. The method then logs out the user, displays a
+    success message and redirects the user to the home page.
+
+    :param request: The HTTP request object.
+
+    :returns: HttpResponseRedirect: A response that redirects the user to the home page.
+    """
     if request.method == 'POST':
         form = DeleteUserForm(request.POST)
         if form.is_valid() and form.cleaned_data['confirm']:
@@ -61,6 +91,15 @@ def delete_profile(request):
 
 
 def login_htmx(request):
+    """
+    Logs in a user using HTMX request.
+
+    :param request: The HTTP request object.
+
+    :returns: If the request method is 'POST' and the authentication is successful, it returns an HTTP response that includes a success message and a refreshed navigation bar with the logged-in username. The response also includes a header for HTMX redirection to the '/library' page.
+    - If the authentication fails, it returns an HTTP response with an error message. If the request is an HTMX request, it only returns the error message as a HTML div. Otherwise, it redirects to the '/login' page.
+    - If the request method is not 'POST', it returns an HTTP response with a "Bad Request" status and a message indicating an invalid request.
+    """
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -109,6 +148,14 @@ def login_htmx(request):
 
 
 def register_htmx(request):
+    """
+    Registers a user with HTMX capabilities.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    :returns: HttpResponse or None: The HTTP response object or None.
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -195,12 +242,44 @@ def register_htmx(request):
 
 @login_required
 def profile_view(request):
+    """
+    This function is used to render the user's profile page.
+
+    :param request: The HTTP request object.
+    """
     return render(request, 'accounts/profile.html', {'user': request.user})  #Ermöglicht Navigation, wenn angemeldet
 
 
 @login_required
 @require_http_methods(["GET", "POST"])
 def edit_profile(request):
+    """
+    Edit the user profile.
+
+    This method is decorated with `@login_required` and `@require_http_methods(["GET", "POST"])` to ensure that the user
+    is authenticated and that only GET and POST requests are allowed.
+
+    :param request: The request object sent by the client.
+
+    Returns:
+    - If the request method is POST and the profile data is successfully updated, the method may return an HttpResponse
+    object with a success message if the request header contains 'HX-Request'. In this case, an HTTP response with an
+    HTML div containing the success message is returned.
+    - If the request method is POST and the profile data is not valid (missing fields or invalid password change form),
+    the method may return an HttpResponse object with an error message if the request header contains 'HX-Request'.
+    In this case, an HTTP response with an HTML div containing the error message is returned.
+    - If the request method is POST and the profile data is valid but the password change form is not filled or not
+    valid, the method may return an HttpResponse object with an error message if the request header contains
+    'HX-Request'. In this case, an HTTP response with an HTML div containing the error message is returned.
+    - If the request method is GET, the method returns a rendered template 'accounts/profile_edit_form.html' with the
+    following context variables:
+
+        - 'user': The currently authenticated user.
+        - 'password_change_form': An instance of CustomPasswordChangeForm for changing the user's password.
+
+    Note: The `CustomPasswordChangeForm` is a custom form used for password changes.
+
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -276,6 +355,19 @@ def edit_profile(request):
 @login_required
 @require_http_methods(["POST"])
 def delete_profile(request):
+    """
+    Deletes the user profile and performs additional actions such as logging out the user and displaying a success
+    message.
+
+    :param request: The HTTP request object containing metadata about the request.
+
+    Returns:
+    - If the request is a HTMX request, an HttpResponse object with a success message and a redirect header to the
+    homepage is returned.
+    - If the request is not a HTMX request, a HttpResponseRedirect object is returned to redirect the user to the
+    homepage.
+
+    """
     if request.method == 'POST':
         # Benutzer löschen
         user = request.user
@@ -314,6 +406,11 @@ def delete_profile(request):
     return redirect('profile')
 
 def login_view(request):
+    """
+    This method represents the login view of a web application. It is responsible for handling the login functionality.
+
+    :param request: The HTTP request object containing metadata about the request.
+    """
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -329,10 +426,26 @@ def login_view(request):
 
 
 def logout_view(request):
+    """
+    Log out the user and redirect them to the login page.
+
+    :param request: The HTTP request object.
+    :type request: HttpRequest
+    """
     logout(request)
     return redirect('login')  #Wenn Logout-Button betätigt -> Abmeldung
 
 
 @login_required
 def update_navbar(request):
+    """
+    Updates the navigation bar.
+
+    This method is triggered when the user initiates an update to the navigation bar.
+    It requires the user to be logged in, as indicated by the @login_required decorator.
+
+    :param request: The HTTP request object.
+
+    :returns: HttpResponse: The rendered base.html template.
+    """
     return render(request, 'base.html')
