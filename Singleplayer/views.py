@@ -380,17 +380,31 @@ def show_game_content(request, game_id=None):
 #
 def sp_history(request):
     """
-    The `sp_history` function allows users to view their game history.
+    Handles HTTP requests to show statistics of finished games for the logged-in user.
+    Renders singleplayer history page with all the necessary information.
 
-    :param request: An HTTP request instance.
-    :return: Render of Single Player History Page HTML template.
+    :param request: Django HttpRequest object, which carries the metadata for the view.
 
-    The function fetches all the completed games of the current user using
-    `get_finished_games` function with user's id as a parameter and then renders
-    the 'singleplayer/sp_history.html' template with the list of user's completed games.
+    :return: HttpResponse for 'singleplayer/sp_history.html' which includes statistics for finished games
+    for the currently-logged in user.
     """
 
-    # Fetch all completed games of the current user and uns them to render the HTML template
+    # Get all finished games for the currently logged-in user
     finished_games = get_finished_games(request.user.id)
+    # Initializing placeholders for the last game and corresponding pool statistics
+
+    sp_game = None
+    pool_stats = None
+
+    # If there are any finished games
+    if finished_games:
+        sp_game = finished_games.last()
+        pool_stats = get_pool_stats(sp_game)
+
     return render(request, 'singleplayer/sp_history.html',
-                  {'finished_games': finished_games})
+                  {'finished_games': finished_games,
+                   'sp_game': sp_game,
+                   'avg_correct_percent': pool_stats['avg_correct_percent'],
+                   'games_count': pool_stats['games_count'],
+                   'quiztask_stats': pool_stats['quiztask_stats']
+                   })
