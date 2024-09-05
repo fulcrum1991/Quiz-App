@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
@@ -119,7 +120,10 @@ def delete_quizpool(request, pool_id:int):
 
     :return: Renders the fully updated library (using 'library-content.html').
     """
-    QuizPool.objects.get(id=pool_id).delete()
+    print(request.user)
+    print(Group.objects.filter(user=request.user))
+
+    #QuizPool.objects.get(id=pool_id).delete()
 
     return render(request, 'library/library-content.html', get_library_content())
 
