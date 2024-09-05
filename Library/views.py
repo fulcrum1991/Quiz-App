@@ -1,5 +1,5 @@
 from django.contrib.auth.models import Group
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.http import require_http_methods
@@ -100,12 +100,15 @@ def change_quizpool_name(request, pool_id:int):
     """
 
     selected_pool = QuizPool.objects.get(id=pool_id)
-    # Check that the request's form data is valid, but this validation isn't used for further processing
-    if (QuizPoolForm(request.POST).is_valid()):
-        # Retrieve the specific QuizPool from the database, Update it's name and save it back to the database
+    # Check if the user is the creator of the QuizPool or belongs to the 'dozent' group
+    user_groups = Group.objects.filter(user=request.user)
+    if request.user == selected_pool.creator or user_groups.filter(name='dozent').exists():
+        # Check that the request's form data is valid, but this validation isn't used for further processing
+        if (QuizPoolForm(request.POST).is_valid()):
+            # Retrieve the specific QuizPool from the database, Update it's name and save it back to the database
 
-        selected_pool.name = request.POST.get('name', None)
-        selected_pool.save()
+            selected_pool.name = request.POST.get('name', None)
+            selected_pool.save()
 
     # Render the updated library content with the specified quiz pool's name changed
     return render(request, 'library/library-content.html',
@@ -113,17 +116,21 @@ def change_quizpool_name(request, pool_id:int):
 
 def delete_quizpool(request, pool_id:int):
     """
-    Deletes the selected quiz pool.
+    Delete QuizPool
 
-    :param request: The HTTP request.
-    :param pool_id: The ID of the quiz pool to delete.
+    Deletes a QuizPool from the database if the user is the creator of the QuizPool or belongs to the 'dozent' group.
 
-    :return: Renders the fully updated library (using 'library-content.html').
+    :param request: The HTTP request object.
+    :param pool_id: The ID of the QuizPool to be deleted.
+
+    :returns: HttpResponse: The rendered HTML response of the library content page.
     """
-    print(request.user)
-    print(Group.objects.filter(user=request.user))
+    pool = QuizPool.objects.get(id=pool_id)
 
-    #QuizPool.objects.get(id=pool_id).delete()
+    # Check if the user is the creator of the QuizPool or belongs to the 'dozent' group
+    user_groups = Group.objects.filter(user=request.user)
+    if request.user == pool.creator or user_groups.filter(name='dozent').exists():
+        pool.delete()
 
     return render(request, 'library/library-content.html', get_library_content())
 
@@ -185,22 +192,30 @@ def create_quiztask(request, pool_id:int):
 
 def change_question(request, task_id:int):
     """
-    Change the name of a selected Quiztask.
+    Change the question of a quiz task.
 
-    :param request: The HTTP request object
-    :param task_id: ID of the Quiztask to change
-    :return: A HttpResponse object that renders HTML full library with this changed Quizpool as selected Quizpool
+    :param request: The HTTP request object.
+    :param task_id: The ID of the quiz task to be updated.
 
+    The method fetches the selected quiz task based on the given task ID.
+    It then checks if the user is the creator of the quiz pool or belongs to the 'dozent' group.
+    If the user has the necessary permissions and the provided form data is valid, the method updates the question of the selected quiz task with the new question text obtained from the request.
+    Finally, it fetches the quiz pool related to the updated quiz task and renders the updated full library with the changed quiz pool and quiz task.
+
+    :return: Rendered template 'library/library-content.html' with context variables.
     """
     # Fetch the selected QuizTask
     selected_task = QuizTask.objects.get(id=task_id)
 
-    # Check whether form data is valid
-    if QuizTaskForm(request.POST).is_valid():
-        # If valid, fetch the new question text from the request and update the selected QuizTask
-        new_question = request.POST.get('question', None)
-        selected_task.question = new_question
-        selected_task.save()
+    # Check if the user is the creator of the QuizPool or belongs to the 'dozent' group
+    user_groups = Group.objects.filter(user=request.user)
+    if request.user == selected_task.creator or user_groups.filter(name='dozent').exists():
+        # Check whether form data is valid
+        if QuizTaskForm(request.POST).is_valid():
+            # If valid, fetch the new question text from the request and update the selected QuizTask
+            new_question = request.POST.get('question', None)
+            selected_task.question = new_question
+            selected_task.save()
 
     # Fetch the QuizPool related to the updated QuizTask and render updated full library with
     # changed Quizpool and QuizTask
@@ -210,15 +225,20 @@ def change_question(request, task_id:int):
 
 def delete_quiztask(request, task_id:int):
     """
-    This method is used to delete a specific QuizTask from the library.
+    Delete Quiz Task.
 
-    :param request: The HTTP request object.
-    :param task_id: The ID of the QuizTask to be deleted.
+    This method is used to delete a quiz task from the system.
 
-    :return: A rendered response of the updated library content (library-content.html) after deletion.
+    :param request: The request object for the current HTTP request.
+    :param task_id: The ID of the quiz task to be deleted.
+
+    :returns: HttpResponse: The rendered response with the updated library content.
     """
-
-    QuizTask.objects.get(id=task_id).delete()
+    selected_task  = QuizTask.objects.get(id=task_id)
+    # Check if the user is the creator of the QuizPool or belongs to the 'dozent' group
+    user_groups = Group.objects.filter(user=request.user)
+    if request.user == selected_task.creator or user_groups.filter(name='dozent').exists():
+        selected_task.delete()
 
     return render(request, 'library/library-content.html', get_library_content())
 
@@ -232,10 +252,6 @@ def get_answers(task_id:int):
     :param task_id: The ID of the task.
 
     :return: List[Answer]: The list of answers for the given task.
-
-    Example:
-    >>> get_answers(123)
-    [<Answer object>, <Answer object>, <Answer object>]
     """
     answers = Answer.objects.filter(task_id=task_id)
 
@@ -262,13 +278,24 @@ def show_answers(request, task_id:int):
 
 def create_answer(request, task_id:int):
     """
-    Create an answer for a given task ID.
+    Create an answer for a given task.
 
-    :param request: The HTTP request object, should be a POST request with answer data.
-    :param task_id: ID of the QuizTask for which a new answer is created.
+    :param request: The Django Request object.
+    :param task_id: The ID of the task to create an answer for.
 
-    :return: HttpResponse object that renders 'library/answers.html' with existing answers for the QuizTask.
+    Behavior:
+        - Fetches the QuizTask object with the given task_id.
+        - Handles POST request:
+            - Validates the form.
+            - Creates a new Answer instance and sets the creator and task fields.
+            - Saves the answer to the database.
+        - Fetches the QuizTask object and related answers.
+        - Renders the 'library/answers.html' template with the answers and selected_task.
+
+    :return: A HttpResponse that renders HTML template 'library/answers.html' with QuizTask answers.
     """
+
+    selected_task = QuizTask.objects.get(id=task_id)
 
     # Handle POST request: Validate form, create new Answer instance, save to DB
     if request.method == 'POST':
@@ -277,7 +304,7 @@ def create_answer(request, task_id:int):
         if form.is_valid():
             answer = form.save(commit=False)
             answer.creator = request.user
-            answer.task = QuizTask.objects.get(id=task_id)
+            answer.task = selected_task
             answer.save()
 
     # Fetch QuizTask instance and related answers, render 'library/answers.html'
@@ -298,22 +325,27 @@ def edit_answer(request, answer_id:int):
        :return: HttpResponse: Renders the updated answer column of the library (answers.html).
             Also returns the selected QuizTask object for further processing.
        """
+    answer = Answer.objects.get(id=answer_id)
+    selected_task = QuizTask.objects.get(id=answer.task_id)
 
-    # Handle POST request: Validate form, make changes to the Answer instance, save to DB
-    if (AnswerForm(request.POST).is_valid()):
-        # This form is not processed further, but only to validate the passed 'question'.
-        answer = Answer.objects.get(id=answer_id)
-        answer.answer = request.POST.get('answer', None)
-        answer.explanation = request.POST.get('explanation', None)
-        answer.correct = request.POST.get('correct', 'False')
-        answer.save()
+    # Check if the user is the creator of the QuizPool or belongs to the 'dozent' group
+    user_groups = Group.objects.filter(user=request.user)
+    if request.user == selected_task.creator or user_groups.filter(name='dozent').exists():
 
-        # Get all answers that relate to the current task and render the updated answer column of the library
-        answers = Answer.objects.filter(task_id=answer.task_id)
-        selected_task = QuizTask.objects.get(id=answer.task_id)
-        return render(request, 'library/answers.html',
-                      {'answers': answers,
-                       'selected_task': selected_task,})
+        # Handle POST request: Validate form, make changes to the Answer instance, save to DB
+        if (AnswerForm(request.POST).is_valid()):
+            # This form is not processed further, but only to validate the passed 'question'.
+            answer.answer = request.POST.get('answer', None)
+            answer.explanation = request.POST.get('explanation', None)
+            answer.correct = request.POST.get('correct', 'False')
+            answer.save()
+
+            # Get all answers that relate to the current task and render the updated answer column of the library
+            answers = Answer.objects.filter(task_id=answer.task_id)
+            selected_task = QuizTask.objects.get(id=answer.task_id)
+            return render(request, 'library/answers.html',
+                          {'answers': answers,
+                           'selected_task': selected_task,})
 
 def delete_answer(request, answer_id:int):
     """
@@ -328,9 +360,13 @@ def delete_answer(request, answer_id:int):
     """
     # Get the task_id for returning the selected QuizTask
     task_id = Answer.objects.get(id=answer_id).task_id
+    selected_task = QuizTask.objects.get(id=task_id)
 
-    # Delete the Answer record from the database
-    Answer.objects.get(id=answer_id).delete()
+    # Check if the user is the creator of the QuizPool or belongs to the 'dozent' group
+    user_groups = Group.objects.filter(user=request.user)
+    if request.user == selected_task.creator or user_groups.filter(name='dozent').exists():
+        # Delete the Answer record from the database
+        Answer.objects.get(id=answer_id).delete()
 
     # Get all answers that relate to the current task and render the updated answer column of the library
     answers = Answer.objects.filter(task_id=task_id)
