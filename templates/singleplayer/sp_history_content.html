@@ -14,7 +14,7 @@
                             <!-- Make AJAX request when the game name is clicked -->
                             <!-- `game.id` is the id of the current game -->
                             <span hx-get="{% url 'show_game_content' game.id %}" hx-target="#sp_history_content">
-                                {{ forloop.counter }} {{ game.name }} {{ game.pool_id }} <!-- Show game's name and the id of the quiz pool it belongs to -->
+                                {{ forloop.counter }} {{ game.name }} <!-- Show game's name and the id of the quiz pool it belongs to -->
                             </span>
                         </div>
                     </li>

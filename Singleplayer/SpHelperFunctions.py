@@ -1,4 +1,6 @@
 # Hilfsfunktionen zu Singleplayer/views.py
+from django.core.exceptions import ObjectDoesNotExist
+
 from Library.models import QuizTask, Answer
 from Singleplayer.models import SPGame_contains_Quiztask, SPGame
 
@@ -144,28 +146,30 @@ def get_pool_stats(game: SPGame):
 
     # Queryset: Games from the same quiz pool from the same user
     games_with_pool = SPGame.objects.filter(pool_id=game.pool_id, user_id=game.user_id, completed=True)
-    print(games_with_pool)
+
     # Count of games in the quiz pool
     games_count = games_with_pool.__len__()
 
     # Count of correct/wrong answers per question
     # {'id': {'correct': 0, 'wrong': 0}}
-    quiztask_stats = {}
+    quiztask_stats = get_quiztask_stats(game)
+    for task in quiztask_stats:
+        quiztask_stats[task]['correct'] = 0
+        quiztask_stats[task]['wrong'] = 0
+
     for game in games_with_pool:
         gametasks = SPGame_contains_Quiztask.objects.filter(game=game)
+
         for gametask in gametasks:
-            if gametask.task_id not in quiztask_stats.keys():
-                quiztask_stats[gametask.task_id] = {
-                    'question': QuizTask.objects.get(id=gametask.task_id).question,
-                    'correct_answered': gametask.correct_answered,
-                    'correct': 0,
-                    'wrong': 0}
-            # Increase the count of correct answers if the answer is correct
-            if gametask.correct_answered:
-                quiztask_stats[gametask.task_id]['correct'] += 1
-            # Increase the count of wrong answers if the answer is incorrect
-            elif gametask.correct_answered == False:
-                quiztask_stats[gametask.task_id]['wrong'] += 1
+            try:
+                # Increase the count of correct answers if the answer is correct
+                if gametask.correct_answered:
+                    quiztask_stats[gametask.task_id]['correct'] += 1
+                # Increase the count of wrong answers if the answer is incorrect
+                elif gametask.correct_answered == False:
+                    quiztask_stats[gametask.task_id]['wrong'] += 1
+            except ObjectDoesNotExist:
+                print("QuizTask with id {} does not exist.".format(gametask.task_id))
 
     # Computing average of correct answers percentage
     correct_percent_list = []
@@ -177,6 +181,43 @@ def get_pool_stats(game: SPGame):
     return {'avg_correct_percent': avg_correct_percent,
             'games_count': games_count,
             'quiztask_stats': quiztask_stats}
+
+def get_quiztask_stats(game: SPGame):
+    """
+        Generates a dictionary object representing game statistics based on the SPGame object passed.
+        Each key-value pair in the dictionary represents a unique QuizTask's statistics.
+
+        :param game: The SPGame object for which the statistics are to be computed.
+
+        :return: A dictionary object with QuizTask id as keys. Each key's value is another dictionary containing
+        details (question, selected answer, correction status, and the correct answer) for that specific QuizTask.
+        """
+
+    # Extracts all QuizTasks linked with the game
+    gametasks = game.spgame_contains_quiztask_set.all()
+
+    # An empty dictionary to hold each QuizTask's statistics
+    quiztask_stats = {}
+
+    # Iteration over each QuizTask associated with the game
+    for gametask in gametasks:
+        # Fetch the QuizTask object linked with gametask
+        quiztask = QuizTask.objects.get(id=gametask.task_id)
+        # Get the Answer object which was selected in this gametask
+        selected_answer = Answer.objects.get(id=gametask.selected_answer_id).answer
+        # Get the Answer object which is actually correct for this QuizTask
+        right_answer = Answer.objects.get(task=quiztask, correct=True).answer
+
+        # Add the QuizTask's details in the statistics dictionary
+        quiztask_stats[gametask.task_id] = {
+            'question': quiztask.question,
+            'selected_answer': selected_answer,
+            'was_correct': gametask.correct_answered,
+            'right_answer': right_answer,
+        }
+    return quiztask_stats
+
+
 
 def get_unfinished_games(user_id: int):
     """
