@@ -5,6 +5,8 @@
     <div id="list_quiztasks">
         <ul class="list-group">
             {% for task in quiztasks %}
+                {{ task }}              {# debug in production #}
+                {{ task.id }}
                 <li class="list-group-item">
                     <div>
                         <span hx-get="{% url 'get_answers' task.id %}" hx-target="#answers">
