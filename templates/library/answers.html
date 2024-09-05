@@ -7,7 +7,8 @@
 <div id="answers">
     {% if selected_task %} <!-- Checking if there are selected tasks -->
         <h3>{{ selected_task.question }}</h3> <!-- Displaying selected task question -->
-        {%  if user.is_authenticated %}  <!-- Check if user is authenticated -->
+        {%  if user.is_authenticated %}  <!-- Check if user has permission or is in the right group -->
+        {% if user.groups.all.0.name == 'dozent' or selected_task.creator.id == request.user.id%}
         <div id="change_question" class="mt-3 text-center">
             <!-- Form to change the question of task -->
             <form hx-post="{% url 'change_question' selected_task.id %}"
@@ -16,6 +17,7 @@
                 <input type="submit" class="btn btn-warning" value="Frage ändern"> <!-- Button to submit the changed question -->
             </form>
         </div>
+        {% endif %}
         {% endif %}
         <div id="list_answers" class="mt-3">
             <ul class="list-group">
@@ -30,6 +32,7 @@
             </ul>
         </div>
         {% if user.is_authenticated %} <!-- Check if user is authenticated -->
+        {% if user.groups.all.0.name == 'dozent' or selected_task.creator.id == request.user.id%} <!-- Check if user has permission or is in the right group -->
             <!-- Check if the count of answers is less than 4 -->
         {% if answers.count < 4%}
         <div id="create_answer" class="mt-3 text-center">
@@ -49,6 +52,7 @@
                 <input type="submit" class="btn btn-danger" value="Frage löschen"> <!-- Button to delete the question -->
             </form>
         </div>
+        {% endif %}
         {% endif %}
     {% endif %}
 </div>

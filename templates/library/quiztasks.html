@@ -34,5 +34,25 @@
             <input type="submit" class="btn btn-primary" value="Frage hinzufügen">
         </form>
     </div>
+    {# Change Quizpool Name#}
+    {% if user.groups.all.0.name == 'dozent' or selected_pool.creator.id == request.user.id%} <!-- Check if user has permission or is in the right group -->
+        <div id="change_quizpool_name" class="mt-3">
+            <form hx-post="{% url 'change_quizpool_name' selected_pool.id %}" 
+                  hx-target="#library-content">
+                <input type="text" name="name" class="form-control mb-2" placeholder="{{ selected_pool.name }}" required>
+                <input type="submit" class="btn btn-warning" value="Name ändern">
+            </form>
+        </div>
+    {% endif %}
+    {# Delete Quitpool#}
+     {% if user.groups.all.0.name == 'dozent' or selected_pool.creator.id == request.user.id%} <!-- Check if user has permission or is in the right group -->          
+        <div id="delete_quizpool" class="mt-3">
+            <form hx-post="{% url 'delete_quizpool' selected_pool.id %}" 
+                  hx-target="#library-content" 
+                  hx-confirm="Wenn {{ selected_pool.name }} gelöscht wird, werden auch alle dazugehörigen Fragen gelöscht. Wirklich löschen?">
+                <input type="submit" class="btn btn-danger" value="Quizpool {{ selected_pool.name }} löschen">
+            </form>
+        </div>
+    {% endif %}
     {%  endif %}
 </div>
