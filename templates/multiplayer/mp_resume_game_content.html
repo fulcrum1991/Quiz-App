@@ -1,0 +1,12 @@
+<!-- templates/multiplayer/mp_resume_game_content.html -->
+
+{% for game in unfinished_games %}
+    <div class="game-entry">
+        <h3>{{ game.name }}</h3>
+        <p>Gegner: {% if game.player1 == request.user %}{{ game.player2 }}{% else %}{{ game.player1 }}{% endif %}</p>
+        <p>Quiz-Pool: {{ game.pool.name }}</p>
+        <a href="{% url 'render_game' game.id %}" class="btn btn-primary">Spiel fortsetzen</a>
+    </div>
+{% empty %}
+    <p>Du hast keine unvollständigen Spiele.</p>
+{% endfor %}

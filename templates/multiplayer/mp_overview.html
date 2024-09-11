@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Multiplayer Übersicht</h1>
+<div>
+    <a href="{% url 'multiplayer:mp_new_game' %}">Neues Spiel starten</a>
+</div>
+<div>
+    <a href="{% url 'multiplayer:mp_resume_game' %}">Fortsetzen</a>
+</div>
+<div>
+    <a href="{% url 'multiplayer:mp_history' %}">Spielverlauf</a>
+</div>
+{% endblock %}

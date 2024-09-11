@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('UserManagement.urls')),
     path('', include('django.contrib.auth.urls')),           # Including the pages for login and logout
     path('', include('Singleplayer.urls')),
+    path('', include('Multiplayer.urls')),
 ]

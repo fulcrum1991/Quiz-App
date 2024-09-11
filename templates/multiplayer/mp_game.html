@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Multiplayer-Spiel: {{ game.name }}</h1>
+<p>Spieler 1: {{ game.player1.username }}</p>
+<p>Spieler 2: {{ game.player2.username }}</p>
+
+<div id="quiztask-container" hx-get="{% url 'multiplayer:render_quiztask_card' game_id=game.id task_id=current_task.id action='display' %}" hx-trigger="load, every 5s" hx-swap="outerHTML">
+    <!-- Quizaufgabe wird hier dynamisch neu geladen -->
+    <div id="quiztask-card">
+        <p>Frage wird geladen...</p> <!-- Platzhalter, falls das Laden länger dauert -->
+    </div>
+</div>
+
+{% endblock %}
+
+
