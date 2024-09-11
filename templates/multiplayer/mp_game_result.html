@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Spielergebnisse</h1>
+<p>Spieler 1 ({{ game.player1.username }}): {{ player1_percent }}%</p>
+<p>Spieler 2 ({{ game.player2.username }}): {{ player2_percent }}%</p>
+
+<!-- Weitere Details, z.B. richtige Antworten -->
+<p>Spieler 1 hat {{ stats.player1_correct }} von {{ stats.total_questions }} richtig beantwortet.</p>
+<p>Spieler 2 hat {{ stats.player2_correct }} von {{ stats.total_questions }} richtig beantwortet.</p>
+{% endblock %}
+

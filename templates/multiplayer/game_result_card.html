@@ -1,0 +1,52 @@
+{# Context: #}
+{# mp_game : Multiplayer Game Instance #}
+{# player_stats : list of player-specific stats, including quiztask_answers and results #}
+{# avg_correct_percent : average percentage of correct answers for this quiz pool #}
+{# games_count : number of games played with this quiz pool #}
+{# quiztask_stats : statistics of each quiz task #}
+
+<div id="card-body" class="card-body">
+    <h2>{{ mp_game.name }}</h2>
+    <p>Datum: {{ mp_game.completed_at }}</p>
+    <div id="game_stats">
+        <p>Fragen richtig beantwortet: {{ mp_game.correct_percent }} </p>
+        <p>Durchschnittlich richtig beantwortete Fragen mit diesem Pool: {{ avg_correct_percent }}</p>
+        <p>Spiele mit diesem Quizpool: {{ games_count }}</p>
+    </div>
+    <div id="player_list">
+        <h3>Spieler Ergebnisse</h3>
+        <ul class="list-group">
+            {% for player_stat in player_stats %}
+                <li class="list-group-item">
+                    <h4>{{ player_stat.player.username }}</h4>
+                    <p>Richtig beantwortet: {{ player_stat.correct_percent }}%</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="list_quiztasks">
+        <table class="table">
+            <thead>
+                <td scope="col">#</td>
+                <td scope="col">Frage</td>
+                <td scope="col">Letzte Antwort</td>
+                <td scope="col">Richtig beantwortet</td>
+                <td scope="col">Falsch beantwortet</td>
+            </thead>
+            <tbody>
+                {% for id, stats in quiztask_stats.items %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ stats.question }}</td>
+                    <td>{% if stats.correct_answered %} Richtig {% else %} Falsch {% endif %}</td>
+                    <td>{{ stats.correct }}</td>
+                    <td>{{ stats.wrong }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="game-navigation">
+    <a class="btn btn-primary" href="/multiplayer">Zurück zu Mehrspieler</a>
+</div>

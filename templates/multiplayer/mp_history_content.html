@@ -1,0 +1,17 @@
+<!-- templates/multiplayer/mp_history_content.html -->
+
+{% for game in finished_games %}
+    <div class="game-entry">
+        <h3>{{ game.name }}</h3>
+        <p>Gegner: {% if game.player1 == request.user %}{{ game.player2 }}{% else %}{{ game.player1 }}{% endif %}</p>
+        <p>Quiz-Pool: {{ game.pool.name }}</p>
+        <p>Ergebnis:</p>
+        <ul>
+            <li>{{ request.user }}: {{ game.player1_percent if game.player1 == request.user else game.player2_percent }}%</li>
+            <li>{{ game.player2 if game.player1 == request.user else game.player1 }}: {{ game.player2_percent if game.player1 == request.user else game.player1_percent }}%</li>
+        </ul>
+        <a href="{% url 'mp_game_result' game.id %}" class="btn btn-secondary">Ergebnisse anzeigen</a>
+    </div>
+{% empty %}
+    <p>Du hast keine abgeschlossenen Spiele.</p>
+{% endfor %}

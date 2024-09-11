@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Wähle einen Fragenpool für das Multiplayer-Spiel</h1>
+<div>
+    {% for pool in pools %}
+        <div>
+            <a href="{% url 'multiplayer:join_game' pool_id=pool.id %}">{{ pool.name }}</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

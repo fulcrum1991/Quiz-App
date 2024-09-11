@@ -1,0 +1,22 @@
+{% load static %}
+<!-- mp_no_task.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keine Aufgaben verfügbar</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Optional: Link zu deinen CSS-Dateien -->
+</head>
+<body>
+    <div class="container">
+        <h1>Keine Aufgaben verfügbar</h1>
+        <p>Es scheint, dass momentan keine Aufgaben für dieses Spiel verfügbar sind.</p>
+        <p>Bitte warte einen Moment oder kehre zur Lobby zurück, um es erneut zu versuchen.</p>
+        
+        <!-- Option zum Zurückkehren zur Lobby -->
+        <a href="{% url 'multiplayer:mp_lobby' game.id %}" class="btn btn-primary">Zurück zur Lobby</a>
+    </div>
+</body>
+</html>
