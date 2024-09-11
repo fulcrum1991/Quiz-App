@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Spielverlauf</h1>
+<div>
+    {% if finished_games %}
+        <ul>
+            {% for game in finished_games %}
+                <li>
+                    {{ game.name }} 
+                    (Spieler 1: {{ game.player1.username }}, Spieler 2: {{ game.player2.username }})
+                    <a href="{% url 'multiplayer:mp_game_result' game_id=game.id %}">Ergebnisse ansehen</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Keine abgeschlossenen Spiele vorhanden.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
