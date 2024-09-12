@@ -3,7 +3,7 @@
 import datetime as dt
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 
 from Library.models import QuizPool, Answer, QuizTask
@@ -98,6 +98,7 @@ def render_quiztask_card(request, game_id, task_id, action):
     task = MPGame_contains_Quiztask.objects.get(id=task_id, game=game)
 
     if action == 'select_answer':
+        # Nur der Spieler, der an der Reihe ist, darf antworten
         if task.current_turn == request.user:
             selected_answer_id = request.POST.get('selected_answer')
 
@@ -109,25 +110,29 @@ def render_quiztask_card(request, game_id, task_id, action):
                     else:
                         task.player2_answer = answer
 
+                    # Wechsle den Zug zum nächsten Spieler
                     task.current_turn = get_next_turn(task.current_turn, game.player1, game.player2)
                     task.save()
-
                 except Answer.DoesNotExist:
-                    return HttpResponse("Selected answer does not exist.", status=400)
+                    return HttpResponseBadRequest("Selected answer does not exist.")
             else:
-                return HttpResponse("No answer selected.", status=400)
+                return HttpResponseBadRequest("No answer selected.")
 
+        # Überprüfen, ob beide Spieler geantwortet haben
         if task.player1_answer and task.player2_answer:
             task.completed = True
             task.save()
-            print(f"Task {task.id} abgeschlossen.")
 
+    # Lade die Antworten für die aktuelle Quizaufgabe
     quiztask_answers = get_quiztask_answers(task.task.id)
+
+    # Falls die Seite erneut gerendert wird, gib eine HttpResponse zurück
     return render(request, 'multiplayer/quiztask_card.html', {
         'game': game,
         'task': task,
         'quiztask_answers': quiztask_answers,
     })
+
 
 
 
@@ -224,6 +229,7 @@ def assign_tasks_to_game(game):
         MPGame_contains_Quiztask.objects.create(game=game, task=task, current_turn=game.player1)
     print(f"{len(tasks)} Aufgaben wurden dem Spiel {game.id} zugewiesen.")
 
+
 @login_required(login_url='/login')
 def mp_lobby_content(request, game_id):
     game = get_object_or_404(MPGame, id=game_id)
@@ -234,6 +240,7 @@ def mp_lobby_content(request, game_id):
 
     # Zeige die Lobby-Ansicht, wenn das Spiel nicht voll ist
     return render(request, 'multiplayer/mp_lobby_content.html', {'game': game})
+
 
 @login_required(login_url='/login')
 def quiztask_status(request, game_id):
@@ -248,11 +255,18 @@ def quiztask_status(request, game_id):
 
     quiztask_answers = get_quiztask_answers(current_task.task.id)
 
-    return render(request, 'multiplayer/quiztask_status.html', {
+    # Render the updated task and answers
+    return render(request, 'multiplayer/partials/answer_form.html', {
         'game': game,
-        'current_task': current_task,
+        'task': current_task,
         'quiztask_answers': quiztask_answers,
     })
+
+
+
+
+
+
 
 
 
