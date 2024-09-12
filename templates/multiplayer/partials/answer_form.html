@@ -1,0 +1,36 @@
+<div id="question-container"
+     {% if task.current_turn != request.user %}
+        hx-get="{% url 'multiplayer:quiztask_status' game_id=game.id %}"
+        hx-trigger="every 2s"
+        hx-target="#question-container"
+        hx-swap="outerHTML"
+     {% endif %}>
+
+     
+    <h2>Frage: {{ quiztask_answers.quiztask.question }}</h2>
+    
+    {% if task.current_turn == request.user %}
+        <!-- Zeige Antwortformular nur, wenn der Benutzer an der Reihe ist -->
+        <div>
+            <form method="POST" 
+                  hx-post="{% url 'multiplayer:render_quiztask_card' game_id=task.game.id task_id=task.id action='select_answer' %}" 
+                  hx-swap="outerHTML">
+                {% csrf_token %}
+                {% for answer in quiztask_answers.answers %}
+                <div>
+                    <input type="radio" name="selected_answer" value="{{ answer.id }}" id="answer{{ answer.id }}">
+                    <label for="answer{{ answer.id }}">{{ answer.answer }}</label>
+                </div>
+                {% endfor %}
+                <button type="submit">Antwort senden</button>
+            </form>
+        </div>
+    {% else %}
+        <!-- Wenn der Spieler nicht am Zug ist, zeige eine Nachricht -->
+        <p>Warten auf den anderen Spieler...</p>
+    {% endif %}
+</div>
+
+
+
+
