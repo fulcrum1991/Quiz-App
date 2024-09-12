@@ -16,5 +16,6 @@ urlpatterns = [
     path('history/', views.mp_history, name='mp_history'),
     path('content/', views.show_game_content, name='show_game_content'),
     path('lobby-content/<int:game_id>/', views.mp_lobby_content, name='mp_lobby_content'),
+    path('game/<int:game_id>/quiztask_status/', views.quiztask_status, name='quiztask_status'),
 ]
 

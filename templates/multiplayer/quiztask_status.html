@@ -2,11 +2,17 @@
 
 {% if current_task.current_turn == request.user %}
     <!-- Der aktuelle Spieler ist dran -->
-    <form hx-post="{% url 'multiplayer:select_answer' game.id current_task.id %}">
-        {% for answer in quiztask_answers %}
-            <button type="submit" name="answer" value="{{ answer.id }}">{{ answer.text }}</button>
-        {% endfor %}
-    </form>
+    <form method="POST" hx-post="{% url 'multiplayer:render_quiztask_card' game_id=task.game.id task_id=task.id action='select_answer' %}" hx-swap="outerHTML">
+    {% csrf_token %}
+    {% for answer in quiztask_answers.answers %}
+    <div>
+        <input type="radio" name="selected_answer" value="{{ answer.id }}" id="answer{{ answer.id }}">
+        <label for="answer{{ answer.id }}">{{ answer.answer }}</label>
+    </div>
+    {% endfor %}
+    <button type="submit">Antwort senden</button>
+</form>
+
 {% else %}
     <!-- Warten auf den anderen Spieler -->
     <p>Warten auf den anderen Spieler...</p>

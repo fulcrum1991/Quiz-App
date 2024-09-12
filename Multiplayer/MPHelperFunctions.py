@@ -3,10 +3,12 @@
 from .models import MPGame_contains_Quiztask
 
 def get_next_turn(current_turn, player1, player2):
+    # Wenn der aktuelle Spieler Player1 ist, setze den Turn auf Player2, sonst auf Player1
     if current_turn == player1:
         return player2
     else:
         return player1
+
 
 def get_mp_game_stats(mp_game):
     tasks = MPGame_contains_Quiztask.objects.filter(game=mp_game)

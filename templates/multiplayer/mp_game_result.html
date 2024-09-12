@@ -1,12 +1,13 @@
-{% extends "base.html" %}
-
+<!-- mp_game_result.html -->
 {% block content %}
-<h1>Spielergebnisse</h1>
-<p>Spieler 1 ({{ game.player1.username }}): {{ player1_percent }}%</p>
-<p>Spieler 2 ({{ game.player2.username }}): {{ player2_percent }}%</p>
+    <h2>Spielergebnisse</h2>
+    <p>Spieler 1 ({{ game.player1.username }}): {{ player1_percent }}%</p>
+    <p>Spieler 2 ({{ game.player2.username }}): {{ player2_percent }}%</p>
+    
+    <p>{{ game.player1.username }} hat {{ stats.player1_correct }} von {{ stats.total_questions }} richtig beantwortet.</p>
+    <p>{{ game.player2.username }} hat {{ stats.player2_correct }} von {{ stats.total_questions }} richtig beantwortet.</p>
 
-<!-- Weitere Details, z.B. richtige Antworten -->
-<p>Spieler 1 hat {{ stats.player1_correct }} von {{ stats.total_questions }} richtig beantwortet.</p>
-<p>Spieler 2 hat {{ stats.player2_correct }} von {{ stats.total_questions }} richtig beantwortet.</p>
+    <a href="{% url 'multiplayer:mp_new_game' %}" class="btn btn-primary">Noch einmal spielen</a>
 {% endblock %}
+
 
