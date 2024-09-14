@@ -5,18 +5,25 @@
 <p>Spielername: {{ user.username }}</p>
 <p>Fragenpool: {{ game.pool.name }}</p>
 
-<div id="lobby-container" hx-get="{% url 'multiplayer:mp_lobby_content' game_id=game.id %}" hx-trigger="load, every 5s" hx-swap="outerHTML">
-    <!-- Inhalt der Lobby wird hier dynamisch neu geladen -->
+<!-- Dieser Container lädt die Lobby-Daten regelmäßig nach -->
+<div id="lobby-container" 
+     hx-get="{% url 'multiplayer:mp_lobby_content' game_id=game.id %}" 
+     hx-trigger="load, every 5s" 
+     hx-swap="outerHTML">
     <p>Spieler 1: {{ game.player1.username }}</p>
     <p>Spieler 2: {% if game.player2 %}{{ game.player2.username }}{% else %}Warten auf Spieler 2...{% endif %}</p>
 </div>
-<div id="question-container"
-     {% if game.is_full %}
-        hx-get="{% url 'multiplayer:render_game' game_id=game.id %}"
-        hx-trigger="every 2s"
-        hx-target="#question-container"
-        hx-swap="outerHTML"
-     {% endif %}>
+
+<!-- Dieser Container wird aktualisiert, wenn das Spiel voll ist -->
+<div id="game-status-container"
+     hx-get="{% url 'multiplayer:check_game_status' game_id=game.id %}"
+     hx-trigger="every 2s"
+     hx-swap="outerHTML">
+     <!-- Initiale leere Anzeige -->
 </div>
+
 {% endblock %}
+
+
+
 

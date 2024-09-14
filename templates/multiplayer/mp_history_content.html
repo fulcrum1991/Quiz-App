@@ -1,17 +1,33 @@
 <!-- templates/multiplayer/mp_history_content.html -->
 
 {% for game in finished_games %}
-    <div class="game-entry">
-        <h3>{{ game.name }}</h3>
-        <p>Gegner: {% if game.player1 == request.user %}{{ game.player2 }}{% else %}{{ game.player1 }}{% endif %}</p>
-        <p>Quiz-Pool: {{ game.pool.name }}</p>
-        <p>Ergebnis:</p>
-        <ul>
-            <li>{{ request.user }}: {{ game.player1_percent if game.player1 == request.user else game.player2_percent }}%</li>
-            <li>{{ game.player2 if game.player1 == request.user else game.player1 }}: {{ game.player2_percent if game.player1 == request.user else game.player1_percent }}%</li>
-        </ul>
-        <a href="{% url 'mp_game_result' game.id %}" class="btn btn-secondary">Ergebnisse anzeigen</a>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">{{ game.name }}</h3>
+            <p class="card-text">
+                <strong>Gegner:</strong> {% if game.player1 == request.user %}{{ game.player2 }}{% else %}{{ game.player1 }}{% endif %}
+            </p>
+            <p class="card-text">
+                <strong>Quiz-Pool:</strong> {{ game.pool.name }}
+            </p>
+            <p class="card-text">
+                <strong>Ergebnis:</strong>
+            </p>
+            <ul class="list-group mb-3">
+                <li class="list-group-item">
+                    {{ request.user }}: 
+                    <span class="badge bg-success">{{ game.player1_percent if game.player1 == request.user else game.player2_percent }}%</span>
+                </li>
+                <li class="list-group-item">
+                    {{ game.player2 if game.player1 == request.user else game.player1 }}: 
+                    <span class="badge bg-danger">{{ game.player2_percent if game.player1 == request.user else game.player1_percent }}%</span>
+                </li>
+            </ul>
+            <a href="{% url 'mp_game_result' game.id %}" class="btn btn-secondary">Ergebnisse anzeigen</a>
+        </div>
     </div>
 {% empty %}
-    <p>Du hast keine abgeschlossenen Spiele.</p>
+    <div class="alert alert-info" role="alert">
+        Du hast keine abgeschlossenen Spiele.
+    </div>
 {% endfor %}

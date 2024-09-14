@@ -6,30 +6,45 @@
         hx-swap="outerHTML"
      {% endif %}>
 
-     
-    <h2>Frage: {{ quiztask_answers.quiztask.question }}</h2>
-    
+    <div class="card mb-4">
+        <div class="card-body text-center">
+            <h2 class="card-title">Frage</h2>
+            <p class="card-text">{{ quiztask_answers.quiztask.question }}</p>
+        </div>
+    </div>
+
     {% if task.current_turn == request.user %}
         <!-- Zeige Antwortformular nur, wenn der Benutzer an der Reihe ist -->
-        <div>
-            <form method="POST" 
-                  hx-post="{% url 'multiplayer:render_quiztask_card' game_id=task.game.id task_id=task.id action='select_answer' %}" 
-                  hx-swap="outerHTML">
-                {% csrf_token %}
-                {% for answer in quiztask_answers.answers %}
-                <div>
-                    <input type="radio" name="selected_answer" value="{{ answer.id }}" id="answer{{ answer.id }}">
-                    <label for="answer{{ answer.id }}">{{ answer.answer }}</label>
-                </div>
-                {% endfor %}
-                <button type="submit">Antwort senden</button>
-            </form>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST"
+                      hx-post="{% url 'multiplayer:render_quiztask_card' game_id=task.game.id task_id=task.id action='select_answer' %}"
+                      hx-swap="outerHTML">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% for answer in quiztask_answers.answers %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="selected_answer" value="{{ answer.id }}" id="answer{{ answer.id }}">
+                            <label class="form-check-label" for="answer{{ answer.id }}">
+                                {{ answer.answer }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4 text-center">
+                        <button type="submit" class="btn btn-primary">Antwort senden</button>
+                    </div>
+                </form>
+            </div>
         </div>
     {% else %}
         <!-- Wenn der Spieler nicht am Zug ist, zeige eine Nachricht -->
-        <p>Warten auf den anderen Spieler...</p>
+        <div class="alert alert-info text-center mt-4">
+            Warten auf den anderen Spieler...
+        </div>
     {% endif %}
 </div>
+
 
 
 

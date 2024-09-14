@@ -3,8 +3,9 @@
 import datetime as dt
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
 from Library.models import QuizPool, Answer, QuizTask
 from Singleplayer.SpHelperFunctions import get_quiztask_answers
@@ -71,15 +72,16 @@ def render_game(request, game_id):
 
     # Hole alle Aufgaben des Spiels
     tasks = MPGame_contains_Quiztask.objects.filter(game=game)
+
     # Hole die erste nicht abgeschlossene Aufgabe
     current_task = tasks.filter(completed=False).first()
 
     if current_task is None:
-        # Wenn es keine offenen Aufgaben mehr gibt, Spiel als abgeschlossen markieren
+        # Wenn es keine offenen Aufgaben mehr gibt, markiere das Spiel als abgeschlossen
         game.completed = True
         game.save()
 
-        # Weiterleitung zur Spielergebnis-Seite
+        # Weiterleitung zur Spiel-Resultat-Seite
         return redirect('multiplayer:mp_game_result', game_id=game.id)
 
     # Hole die Antworten für die aktuelle Quizaufgabe
@@ -182,9 +184,19 @@ def mp_game_result(request, game_id):
 
 @login_required(login_url='/login')
 def mp_resume_game(request):
-    unfinished_games = MPGame.objects.filter(completed=False, player1=request.user) | MPGame.objects.filter(
-        completed=False, player2=request.user)
-    return render(request, 'multiplayer/mp_resume_game.html', {'unfinished_games': unfinished_games})
+    # Finde alle unvollendeten Spiele des aktuellen Benutzers
+    unfinished_games = MPGame.objects.filter(
+        completed=False
+    ).filter(
+        player1=request.user
+    ) | MPGame.objects.filter(
+        completed=False, player2=request.user
+    )
+
+    return render(request, 'multiplayer/mp_resume_game.html', {
+        'unfinished_games': unfinished_games
+    })
+
 
 
 @login_required(login_url='/login')
@@ -234,11 +246,12 @@ def assign_tasks_to_game(game):
 def mp_lobby_content(request, game_id):
     game = get_object_or_404(MPGame, id=game_id)
 
-    # Wenn das Spiel vollständig ist, leite zum Spiel weiter
+    # Wenn das Spiel vollständig ist, sende einen Redirect-Header für HTMX
     if game.is_full():
-        return redirect('multiplayer:render_game', game_id=game.id)
+        response = JsonResponse({'location': reverse('multiplayer:render_game', args=[game.id])})
+        response['HX-Redirect'] = reverse('multiplayer:render_game', args=[game.id])
+        return response
 
-    # Zeige die Lobby-Ansicht, wenn das Spiel nicht voll ist
     return render(request, 'multiplayer/mp_lobby_content.html', {'game': game})
 
 
@@ -261,6 +274,19 @@ def quiztask_status(request, game_id):
         'task': current_task,
         'quiztask_answers': quiztask_answers,
     })
+
+
+@login_required(login_url='/login')
+def check_game_status(request, game_id):
+    game = get_object_or_404(MPGame, id=game_id)
+
+    if game.is_full():
+        return redirect('multiplayer:render_game', game_id=game.id)
+
+    return HttpResponse("")
+
+
+
 
 
 

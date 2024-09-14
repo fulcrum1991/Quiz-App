@@ -1,13 +1,29 @@
-<!-- mp_game_result.html -->
+{% extends "base.html" %}
 {% block content %}
-    <h2>Spielergebnisse</h2>
-    <p>Spieler 1 ({{ game.player1.username }}): {{ player1_percent }}%</p>
-    <p>Spieler 2 ({{ game.player2.username }}): {{ player2_percent }}%</p>
-    
-    <p>{{ game.player1.username }} hat {{ stats.player1_correct }} von {{ stats.total_questions }} richtig beantwortet.</p>
-    <p>{{ game.player2.username }} hat {{ stats.player2_correct }} von {{ stats.total_questions }} richtig beantwortet.</p>
-
-    <a href="{% url 'multiplayer:mp_new_game' %}" class="btn btn-primary">Noch einmal spielen</a>
+<div class="container mt-5">
+    <div class="card text-center">
+        <div class="card-header">
+            <h2>Spielergebnisse</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Spieler 1: {{ game.player1.username }}</h5>
+                    <p class="lead">Ergebnis: <strong>{{ player1_percent }}%</strong></p>
+                    <p>{{ game.player1.username }} hat <strong>{{ stats.player1_correct }}</strong> von <strong>{{ stats.total_questions }}</strong> richtig beantwortet.</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Spieler 2: {{ game.player2.username }}</h5>
+                    <p class="lead">Ergebnis: <strong>{{ player2_percent }}%</strong></p>
+                    <p>{{ game.player2.username }} hat <strong>{{ stats.player2_correct }}</strong> von <strong>{{ stats.total_questions }}</strong> richtig beantwortet.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'multiplayer:mp_new_game' %}" class="btn btn-primary">Noch einmal spielen</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 
