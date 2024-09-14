@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.4.6 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" modified="2024-09-04T09:49:28.078Z" etag="4ijlqddne26fljl-SqHU" version="24.4.6" type="device" pages="4">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 OPR/112.0.0.0 (Edition std-2)" version="24.7.14" pages="5">
   <diagram id="cDPQLl5SmuDZNO5qdsiz" name="Standardnavigation">
     <mxGraphModel dx="1420" dy="-20" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
@@ -1362,6 +1362,257 @@
         </mxCell>
         <mxCell id="mWb17q_ndCCdATJxdYXX-3" value="Verfügbar wenn alle Fragen ausgewertet wurden" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
           <mxGeometry x="530" y="5505" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="HMOja6O70Mnkh-SDQdkN" name="Multiplayer">
+    <mxGraphModel dx="2033" dy="-1222" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ZLEozxVGKBUG8KeO907A-1" value="&lt;pre&gt;&lt;span style=&quot;font-family: Helvetica; white-space: normal;&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;UF7 - Mehrspieler - Aktion wählen&lt;/font&gt;&lt;/span&gt;&lt;/pre&gt;" style="text;whiteSpace=wrap;html=1;strokeColor=default;verticalAlign=middle;spacing=2;labelPosition=center;verticalLabelPosition=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry y="2340" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-2" value="Flow-Optionen im Menü für das Einzelspieler Quiz" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeColor=default;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="220" y="2340" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-3" value="Views:&lt;div style=&quot;font-size: 8px;&quot;&gt;&lt;ul style=&quot;font-size: 8px;&quot;&gt;&lt;li style=&quot;font-size: 8px;&quot;&gt;Mehrspieler&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;textShadow=0;strokeColor=default;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="660" y="2340" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;strokeWidth=1;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;endArrow=classic;fillColor=none;gradientColor=none;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="ZLEozxVGKBUG8KeO907A-5" target="ZLEozxVGKBUG8KeO907A-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-5" value="View: Mehrspieler" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="30" y="2650" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-6" value="View: Mehrspieler - Neues Spiel" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="700" y="2500" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-7" value="Neues Spiel &lt;br&gt;beginnen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="ZLEozxVGKBUG8KeO907A-10" target="ZLEozxVGKBUG8KeO907A-12">
+          <mxGeometry x="-0.5789" y="45" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-8" value="Bereits begonnenes &lt;br&gt;Spiel fortsetzen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ZLEozxVGKBUG8KeO907A-10" target="ZLEozxVGKBUG8KeO907A-14">
+          <mxGeometry x="-0.0435" y="20" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-9" value="Ergebnisse beendeter &lt;br&gt;Spiele ansehen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ZLEozxVGKBUG8KeO907A-10" target="ZLEozxVGKBUG8KeO907A-15">
+          <mxGeometry x="-0.4386" y="-65" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-10" value="Absicht" style="rhombus;whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="215" y="2650" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ZLEozxVGKBUG8KeO907A-12" target="ZLEozxVGKBUG8KeO907A-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-12" value="Neues Spiel" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="430" y="2510" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ZLEozxVGKBUG8KeO907A-14" target="ZLEozxVGKBUG8KeO907A-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-14" value="Spiel Fortsetzen" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="430" y="2660" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-15" value="Historie" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="430" y="2810" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-16" value="View: Mehrspieler- Spiel fortsetzen" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="700" y="2650" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-17" value="View: Mehrspieler - Historie" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="700" y="2800" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZLEozxVGKBUG8KeO907A-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="ZLEozxVGKBUG8KeO907A-15" target="ZLEozxVGKBUG8KeO907A-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-1" value="&lt;pre&gt;&lt;span style=&quot;font-family: Helvetica; white-space: normal;&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;UF8 -&amp;nbsp; Mehrspieler - Spiel starten&lt;/font&gt;&lt;/span&gt;&lt;/pre&gt;" style="text;whiteSpace=wrap;html=1;strokeColor=default;verticalAlign=middle;spacing=2;labelPosition=center;verticalLabelPosition=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry y="2920" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-2" value="Flow für die Auswahl eines Quizpools und dem starten eines Mehrspieler Quiz&#39;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeColor=default;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="220" y="2920" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-3" value="Views:&lt;div style=&quot;font-size: 8px;&quot;&gt;&lt;ul style=&quot;font-size: 8px;&quot;&gt;&lt;li style=&quot;font-size: 8px;&quot;&gt;Mehrspieler- Neues Spiel&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;textShadow=0;strokeColor=default;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="660" y="2920" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;strokeWidth=1;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;endArrow=classic;fillColor=none;gradientColor=none;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="-5uG6YW7xq3rEps0PHDF-5" target="-5uG6YW7xq3rEps0PHDF-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="215" y="3260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-5" value="View: Mehrspieler - Neues Spiel" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="30" y="3230" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="-5uG6YW7xq3rEps0PHDF-7" target="-5uG6YW7xq3rEps0PHDF-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-7" value="Klick [Pool x] um ein Quizpool für das Spiel auszuwählen" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="190" y="3240" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="-5uG6YW7xq3rEps0PHDF-9" target="-5uG6YW7xq3rEps0PHDF-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-9" value="Anzeige der enthaltenen Fragen" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="410" y="3240" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-10" value="View: Mehrspieler - Spiel" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="850" y="3230" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="-5uG6YW7xq3rEps0PHDF-12" target="-5uG6YW7xq3rEps0PHDF-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-5uG6YW7xq3rEps0PHDF-12" value="Klick [Spiel beginnen] um das Spiel zu beginnen" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="630" y="3240" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-1" value="&lt;pre&gt;&lt;span style=&quot;font-family: Helvetica; white-space: normal;&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;UF9 - Mehrspieler - Spielen&lt;/font&gt;&lt;/span&gt;&lt;/pre&gt;" style="text;whiteSpace=wrap;html=1;strokeColor=default;verticalAlign=middle;spacing=2;labelPosition=center;verticalLabelPosition=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry x="10" y="3360" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-2" value="Spielablauf" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeColor=default;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="230" y="3360" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-3" value="Views:&lt;div style=&quot;font-size: 8px;&quot;&gt;&lt;ul style=&quot;font-size: 8px;&quot;&gt;&lt;li style=&quot;font-size: 8px;&quot;&gt;Mehrspieler - Spiel&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;textShadow=0;strokeColor=default;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="670" y="3360" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-5" value="View: Mehrspieler- Spielen&amp;nbsp;" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="30" y="3550" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-8" value="Frage &lt;br&gt;beantworten" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="IeIo4BOUN6EDnnnoKxnn-5" target="IeIo4BOUN6EDnnnoKxnn-12">
+          <mxGeometry x="1" y="171" relative="1" as="geometry">
+            <mxPoint x="170" y="151" as="offset" />
+            <mxPoint x="160" y="3740" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="190" y="3580" />
+              <mxPoint x="190" y="3580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="IeIo4BOUN6EDnnnoKxnn-12" target="IeIo4BOUN6EDnnnoKxnn-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-12" value="Anzeige Frage x mit den jeweiligen Antworten" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="190" y="3560" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="IeIo4BOUN6EDnnnoKxnn-17" target="IeIo4BOUN6EDnnnoKxnn-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-17" value="Klick [Antwort senden]" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="410" y="3560" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="IeIo4BOUN6EDnnnoKxnn-19" target="IeIo4BOUN6EDnnnoKxnn-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-19" value="Aktueller Zug wird auf anderen Spieler gewechselt" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="630" y="3560" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-22" value="Klick [Antwort senden]" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="827" y="3560" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="IeIo4BOUN6EDnnnoKxnn-22" target="IeIo4BOUN6EDnnnoKxnn-40">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="3770" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="IeIo4BOUN6EDnnnoKxnn-36" target="IeIo4BOUN6EDnnnoKxnn-19">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="680" y="3490" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1001" y="3770" />
+              <mxPoint x="1001" y="3490" />
+              <mxPoint x="690" y="3490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-36" value="Anzeige nachfolgender Frage" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="630" y="3750" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="IeIo4BOUN6EDnnnoKxnn-40" target="IeIo4BOUN6EDnnnoKxnn-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-39" value="Nein" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="IeIo4BOUN6EDnnnoKxnn-38">
+          <mxGeometry x="-0.2381" y="-1" relative="1" as="geometry">
+            <mxPoint x="2" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-40" value="Letze Frage?" style="rhombus;whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="430" y="3740" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-44" value="View: Einzelspieler - Ergebnis" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="837" y="3820" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IeIo4BOUN6EDnnnoKxnn-45" value="Ja" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="IeIo4BOUN6EDnnnoKxnn-40" target="IeIo4BOUN6EDnnnoKxnn-44">
+          <mxGeometry x="-0.283" y="-15" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="585" y="3850" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ef7kRwH9BY6BhtkJ0lsL-1" value="&lt;pre&gt;&lt;span style=&quot;font-family: Helvetica; white-space: normal;&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;UF10 - Mehrspieler - Spiel fortsetzen&lt;/font&gt;&lt;/span&gt;&lt;/pre&gt;" style="text;whiteSpace=wrap;html=1;strokeColor=default;verticalAlign=middle;spacing=2;labelPosition=center;verticalLabelPosition=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry y="3930" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ef7kRwH9BY6BhtkJ0lsL-2" value="Flow für die Auswahl eines begonnenen Spiels zum Fortsetzen des Quiz&#39;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeColor=default;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="220" y="3930" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ef7kRwH9BY6BhtkJ0lsL-3" value="Views:&lt;div style=&quot;font-size: 8px;&quot;&gt;&lt;ul style=&quot;font-size: 8px;&quot;&gt;&lt;li style=&quot;font-size: 8px;&quot;&gt;Mehrspieler - Spiel fortsetzen&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;textShadow=0;strokeColor=default;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="660" y="3930" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ef7kRwH9BY6BhtkJ0lsL-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;strokeWidth=1;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;endArrow=classic;fillColor=none;gradientColor=none;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ef7kRwH9BY6BhtkJ0lsL-5" target="Ef7kRwH9BY6BhtkJ0lsL-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="215" y="4270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ef7kRwH9BY6BhtkJ0lsL-5" value="View: Mehrspieler - Spiel fortsetzen" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="30" y="4240" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ef7kRwH9BY6BhtkJ0lsL-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Ef7kRwH9BY6BhtkJ0lsL-7" target="Ef7kRwH9BY6BhtkJ0lsL-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="410" y="4270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ef7kRwH9BY6BhtkJ0lsL-7" value="Klick [Pool x ] um ein angefangenes Spiel fortzusetzen" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="190" y="4250" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ef7kRwH9BY6BhtkJ0lsL-10" value="View: Mehrspieler - Spiel 1" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="430" y="4240" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-1" value="&lt;pre&gt;&lt;span style=&quot;font-family: Helvetica; white-space: normal;&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;UF11 - Mehrspieler - Historie anzeigen&lt;/font&gt;&lt;/span&gt;&lt;/pre&gt;" style="text;whiteSpace=wrap;html=1;strokeColor=default;verticalAlign=middle;spacing=2;labelPosition=center;verticalLabelPosition=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry y="4390" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-2" value="Flow zum Anzeigen der Ergebnisse abgeschlossener Vergangener Spiele." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeColor=default;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="220" y="4390" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-3" value="Views:&lt;div style=&quot;font-size: 8px;&quot;&gt;&lt;ul style=&quot;font-size: 8px;&quot;&gt;&lt;li style=&quot;font-size: 8px;&quot;&gt;Mehrspieler - Historie&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;textShadow=0;strokeColor=default;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="660" y="4390" width="420" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;strokeWidth=1;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;endArrow=classic;fillColor=none;gradientColor=none;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="xfU04HsRk06LAqLzU0ZM-5" target="xfU04HsRk06LAqLzU0ZM-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="215" y="4730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-5" value="View: Mehrspieler - Historie" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="30" y="4700" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="xfU04HsRk06LAqLzU0ZM-7" target="xfU04HsRk06LAqLzU0ZM-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-7" value="Klick [Ergebnisse anzeigen] für ausgewählten Fragepool&amp;nbsp;" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="190" y="4710" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xfU04HsRk06LAqLzU0ZM-9" target="xfU04HsRk06LAqLzU0ZM-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="630" y="4730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-9" value="Anzeige der Spielergebnisse" style="whiteSpace=wrap;html=1;rounded=0;shadow=1;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=8;align=center;" vertex="1" parent="1">
+          <mxGeometry x="410" y="4710" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="xfU04HsRk06LAqLzU0ZM-10" value="View: Mehrspieler - Historie" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fontFamily=Verdana;fontSize=8;fontColor=default;labelBackgroundColor=none;resizable=0;rounded=0;shadow=1;strokeColor=default;align=center;verticalAlign=middle;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="630" y="4700" width="100" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
