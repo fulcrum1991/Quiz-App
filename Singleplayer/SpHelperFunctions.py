@@ -1,4 +1,6 @@
 # Hilfsfunktionen zu Singleplayer/views.py
+import logging
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from Library.models import QuizTask, Answer
@@ -42,30 +44,26 @@ def get_quiztask_answers(task_id: int):
 def get_next_task(task_id: int, quiztasks: SPGame_contains_Quiztask):
     """
     Returns the id of the next task in the provided `quiztasks`.
-
-    :param task_id: The id of the current task.
-    :param quiztasks: A set of Quiz tasks to search the next task from.
-
-    :return: The id of the next task. If no next task is found, returns None.
     """
-
     if not quiztasks:
-        raise ValueError("Quiz tasks list is empty or None.")
+        logging.error("Quiz tasks list is empty or None.")
+        return None
 
-    # Prüfen, ob der task_id in quiztasks enthalten ist
-    if not any(task.task_id == task_id for task in quiztasks):
-        raise ValueError(f"Task ID {task_id} not found in quiz tasks.")
+    quiztasks_sorted = sorted(quiztasks, key=lambda x: x.task_id)
 
     flag = False
     new_task_id = None
-    for task in quiztasks:
-        if flag:
-            new_task_id = task.task_id
-            break
+    for i, task in enumerate(quiztasks_sorted):
         if task.task_id == task_id:
-            flag = True
+            if i + 1 < len(quiztasks_sorted):
+                new_task_id = quiztasks_sorted[i + 1].task_id
+            break
+
+    if new_task_id is None:
+        logging.warning(f"No next task found for task_id {task_id}. Remaining tasks: {[task.task_id for task in quiztasks_sorted]}")
 
     return new_task_id
+
 
 
 def get_previous_task(task_id: int, quiztasks: SPGame_contains_Quiztask):
