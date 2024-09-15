@@ -3,50 +3,62 @@
 {# quiztasks: A list of quiz task objects. #}
 {# selected_game: The game object currently selected by the user. #}
 
-{%  block content %}
-<div id=sp_resume_game_content class="container mt-5">
-    <h1>Einzelspieler - Spiel fortsetzen</h1>
-    
-    <!-- List of unfinished games -->
-    <div id="list_quizpools" class="leftbox">
-        <h2>Spiel</h2>
-        <ul class="list-group">
-            {% for game in unfinished_games %}
-                <li class="list-group-item">
-                    <div>
-                        <span hx-get="{% url 'show_game_content' game.id %}" hx-target="#sp_resume_game_content">
-                            {{ forloop.counter }} {{ game.name }} {{ game.pool_id }}
-                        </span>
-                    </div>
-                </li>
-            {% empty %}
-                <p>Hier ist noch nichts zu sehen</p>
-            {% endfor %}
-        </ul>
+{% block content %}
+<div id="sp_resume_game_content" class="container mt-5">
+    <h1 class="text-center mb-4">Einzelspieler - Spiel fortsetzen</h1>
+
+    <!-- Liste der unfertigen Spiele -->
+    <div id="list_quizpools" class="mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">Unfertige Spiele</h2>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for game in unfinished_games %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <span hx-get="{% url 'show_game_content' game.id %}" hx-target="#sp_resume_game_content">
+                                {{ forloop.counter }}. {{ game.name }} (Pool ID: {{ game.pool_id }})
+                            </span>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">Es sind keine unfertigen Spiele verfügbar.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
-    <!-- Question list -->
-    <div id="list_quiztasks" class="middlebox">
-        <h2>Fragen</h2>
-        <ul class="list-group">
-            {% for task in quiztasks %}
-                <li class="list-group-item">
-                    <div>
-                        {{ forloop.counter }} {{ task.question }}
-                    </div>
-                </li>
-            {% empty %}
-                <p>Hier ist noch nichts zu sehen</p>
-            {% endfor %}
-        </ul>
+    <!-- Fragenliste -->
+    <div id="list_quiztasks" class="mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h2 class="h5 mb-0">Fragen</h2>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for task in quiztasks %}
+                    <li class="list-group-item">
+                        <div>
+                            {{ forloop.counter }}. {{ task.question }}
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">Keine Fragen verfügbar.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
-    <!-- Button for resuming the selected game -->
-    <div id="start_game" class="rightbox">
-    {% if selected_game %}
-        <h2>{{ selected_game.name }}</h2>
-        <a href="{% url 'sp_game' selected_game.id %}" class="btn btn-primary btn-lg">Spiel fortsetzen</a>
-    {% endif %}
+    <!-- Button für Spiel fortsetzen -->
+    <div class="text-center mt-4">
+        {% if selected_game %}
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title h5">{{ selected_game.name }}</h2>
+                    <a href="{% url 'sp_game' selected_game.id %}" class="btn btn-primary btn-lg">Spiel fortsetzen</a>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -38,6 +38,7 @@ def get_quiztask_answers(task_id: int):
 
     return {'quiztask': quiztask, 'answers': answers}
 
+
 def get_next_task(task_id: int, quiztasks: SPGame_contains_Quiztask):
     """
     Returns the id of the next task in the provided `quiztasks`.
@@ -48,16 +49,24 @@ def get_next_task(task_id: int, quiztasks: SPGame_contains_Quiztask):
     :return: The id of the next task. If no next task is found, returns None.
     """
 
+    if not quiztasks:
+        raise ValueError("Quiz tasks list is empty or None.")
+
+    # Prüfen, ob der task_id in quiztasks enthalten ist
+    if not any(task.task_id == task_id for task in quiztasks):
+        raise ValueError(f"Task ID {task_id} not found in quiz tasks.")
+
     flag = False
     new_task_id = None
     for task in quiztasks:
-        if flag == True:
+        if flag:
             new_task_id = task.task_id
             break
         if task.task_id == task_id:
             flag = True
 
     return new_task_id
+
 
 def get_previous_task(task_id: int, quiztasks: SPGame_contains_Quiztask):
     """

@@ -3,31 +3,40 @@
 {# questions_list: A list of task objects. #}
 
 {% extends 'base.html' %}
-{% block title %}Einzelspieler - Spiel{% endblock %} <!-- Set the page title -->
+{% block title %}Einzelspieler - Spiel{% endblock %}
 
-{% block content %} 
+{% block content %}
 <div class="container mt-5">
-    <h1>Einzelspieler</h1>
-    <div id="list_quiztasks" class="leftbox">
-        <h2>{{ sp_game.name }}</h2> <!-- Show the game's name -->
-        <ul class="list-group">
-            {% for task in questions_list %} <!-- Iterate over each task in question_list -->
-                <li class="list-group-item">
-                    <div>
-                        {{ task.question }} {{ task.correct_answered }} <!-- Show task's question and whether it was correctly answered -->
-                    </div>
-                </li>
-            {% empty %}
-                <p>Hier ist noch nichts zu sehen</p> 
-            {% endfor %}
-        </ul>
+    <h1 class="text-center mb-4">Einzelspieler</h1>
+
+    <!-- Quiz Task List -->
+    <div id="list_quiztasks" class="mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">{{ sp_game.name }}</h2>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for task in questions_list %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <span>{{ task.question }}</span>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">Hier ist noch nichts zu sehen</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-    <div id='task-card' class="card mt-4">
-        {% if sp_game.completed_at %} <!-- If the game is completed include game result card -->
+
+    <!-- Game or Task Card -->
+    <div id="task-card" class="card shadow-sm mt-4">
+        {% if sp_game.completed_at %}
             {% include 'singleplayer/game_result_card.html' %}
-        {% else %} <!-- Else include quiztask card -->
+        {% else %}
             {% include 'singleplayer/quiztask_card.html' %}
         {% endif %}
     </div>
 </div>
 {% endblock %}
+

@@ -254,7 +254,6 @@ def mp_lobby_content(request, game_id):
 
     return render(request, 'multiplayer/mp_lobby_content.html', {'game': game})
 
-
 @login_required(login_url='/login')
 def quiztask_status(request, game_id):
     game = get_object_or_404(MPGame, id=game_id)
@@ -280,10 +279,14 @@ def quiztask_status(request, game_id):
 def check_game_status(request, game_id):
     game = get_object_or_404(MPGame, id=game_id)
 
+    # Wenn das Spiel voll ist, leite zur Spielseite weiter
     if game.is_full():
-        return redirect('multiplayer:render_game', game_id=game.id)
+        return JsonResponse({'HX-Redirect': reverse('multiplayer:render_game', args=[game.id])})
 
+    # Wenn das Spiel noch nicht voll ist, gib eine leere Antwort zurück
     return HttpResponse("")
+
+
 
 
 

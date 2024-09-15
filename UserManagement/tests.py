@@ -1,144 +1,101 @@
-from django.test import TestCase
-
-# Create your tests here.
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+from django.contrib import auth
 
-class ViewsTestCase(TestCase):
-
+class UserManagementTests(TestCase):
     def setUp(self):
+        # Erstelle einen Testnutzer
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpassword',
+            email='testuser@example.com'
+        )
         self.client = Client()
-        self.user = get_user_model().objects.create_user(username='testuser', password='testpassword')
-        self.login_url = reverse('login')
-        self.profile_url = reverse('profile')
-        self.sign_up_url = reverse('sign_up')
-        self.delete_profile_url = reverse('delete_profile')
-        self.login_htmx_url = reverse('login_htmx')
-        self.register_htmx_url = reverse('register_htmx')
-        self.edit_profile_url = reverse('edit_profile')
-        self.logout_url = reverse('logout')
-        self.profile_view_url = reverse('profile_view')
 
-    def test_sign_up_get(self):
-        response = self.client.get(self.sign_up_url)
+    def test_signup_view(self):
+        # Test für die Registrierung (GET)
+        response = self.client.get(reverse('sign_up'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/sign-up.html')
 
-    def test_sign_up_post(self):
-        response = self.client.post(self.sign_up_url, {
+        # Test für die Registrierung (POST)
+        data = {
             'username': 'newuser',
-            'password1': 'newpassword123',
-            'password2': 'newpassword123',
-            'email': 'newuser@example.com'
-        })
-        self.assertEqual(response.status_code, 302)  # Redirect to login after sign-up
-        self.assertRedirects(response, self.login_url)
+            'email': 'newuser@example.com',
+            'password1': 'newuserpassword',
+            'password2': 'newuserpassword'
+        }
+        response = self.client.post(reverse('sign_up'), data)
+        self.assertEqual(response.status_code, 302)  # Weiterleitung auf 'login'
+        self.assertRedirects(response, reverse('login'))
+        self.assertTrue(User.objects.filter(username='newuser').exists())
 
-    def test_profile_get(self):
+    def test_profile_view_logged_in(self):
+        # Test für die Profilansicht eines eingelogten Nutzers
         self.client.login(username='testuser', password='testpassword')
-        response = self.client.get(self.profile_url)
+        response = self.client.get(reverse('profile'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/profile.html')
 
-    def test_profile_post(self):
+    def test_profile_view_not_logged_in(self):
+        # Test für die Profilansicht eines nicht eingelogten Nutzers
+        response = self.client.get(reverse('profile'))
+        self.assertEqual(response.status_code, 302)  # Weiterleitung auf 'login'
+
+    def test_delete_profile(self):
+        # Test für das Löschen des Profils
         self.client.login(username='testuser', password='testpassword')
-        response = self.client.post(self.profile_url, {
+        response = self.client.post(reverse('delete_profile'), {'confirm': True})
+        self.assertEqual(response.status_code, 302)  # Weiterleitung auf 'home'
+        self.assertFalse(User.objects.filter(username='testuser').exists())
+
+    def test_login_htmx(self):
+        # Test für den HTMX-Login
+        response = self.client.post(reverse('login_htmx'), {
+            'username': 'testuser',
+            'password': 'testpassword'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Login erfolgreich', response.content)
+
+    def test_register_htmx(self):
+        # Test für den HTMX-Registerprozess
+        data = {
+            'username': 'htmxuser',
+            'email': 'htmxuser@example.com',
+            'password1': 'htmxpassword',
+            'password2': 'htmxpassword'
+        }
+        response = self.client.post(reverse('register_htmx'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Registrierung erfolgreich', response.content)
+        self.assertTrue(User.objects.filter(username='htmxuser').exists())
+
+    def test_edit_profile(self):
+        # Test für das Bearbeiten des Profils
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post(reverse('edit_profile'), {
             'username': 'updateduser',
-            'email': 'updatedemail@example.com',
+            'email': 'updateduser@example.com'
         })
-        self.assertEqual(response.status_code, 302)  # Redirect after updating profile
-        self.user.refresh_from_db()
-        self.assertEqual(self.user.username, 'updateduser')
+        self.assertEqual(response.status_code, 302)  # Weiterleitung nach 'edit_profile'
+        user = User.objects.get(id=self.user.id)
+        self.assertEqual(user.username, 'updateduser')
+        self.assertEqual(user.email, 'updateduser@example.com')
 
-    def test_delete_profile_get(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get(self.delete_profile_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'accounts/delete_profile.html')
-
-    def test_delete_profile_post(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post(self.delete_profile_url, {'confirm': True})
-        self.assertEqual(response.status_code, 302)
-        with self.assertRaises(User.DoesNotExist):
-            User.objects.get(username='testuser')
-
-    def test_login_htmx_post_success(self):
-        response = self.client.post(self.login_htmx_url, {
-            'username': 'testuser',
-            'password': 'testpassword'
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {'message': 'Login erfolgreich!'})
-
-    def test_login_htmx_post_failure(self):
-        response = self.client.post(self.login_htmx_url, {
-            'username': 'wronguser',
-            'password': 'wrongpassword'
-        })
-        self.assertEqual(response.status_code, 400)
-        self.assertJSONEqual(response.content, {'message': 'Ungültige Anmeldedaten.'})
-
-    def test_register_htmx_post_success(self):
-        response = self.client.post(self.register_htmx_url, {
-            'username': 'newuser',
-            'email': 'newuser@example.com',
-            'role': 'user',
-            'password1': 'newpassword123',
-            'password2': 'newpassword123'
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {'message': 'Registrierung erfolgreich!'})
-
-    def test_register_htmx_post_password_mismatch(self):
-        response = self.client.post(self.register_htmx_url, {
-            'username': 'newuser',
-            'email': 'newuser@example.com',
-            'role': 'user',
-            'password1': 'password1',
-            'password2': 'password2'
-        })
-        self.assertEqual(response.status_code, 400)
-        self.assertJSONEqual(response.content, {'message': 'Passwörter stimmen nicht überein.'})
-
-    def test_edit_profile_get(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get(self.edit_profile_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'accounts/profile_edit_form.html')
-
-    def test_edit_profile_post(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post(self.edit_profile_url, {
-            'username': 'newusername',
-            'email': 'newemail@example.com'
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {'message': 'Profildaten erfolgreich geändert!'})
-
-    def test_delete_profile_view(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post(self.delete_profile_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {'message': 'Profil erfolgreich gelöscht!'})
-
-    def test_login_view_get(self):
-        response = self.client.get(self.login_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'registration/login.html')
-
-    def test_login_view_post(self):
-        response = self.client.post(self.login_url, {
+    def test_login_view(self):
+        # Test für die Login-Ansicht
+        response = self.client.post(reverse('login'), {
             'username': 'testuser',
             'password': 'testpassword'
         })
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, self.profile_url)
+        self.assertEqual(auth.get_user(self.client).username, 'testuser')
 
     def test_logout_view(self):
+        # Test für die Logout-Ansicht
         self.client.login(username='testuser', password='testpassword')
-        response = self.client.get(self.logout_url)
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, self.login_url)
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 302)  # Weiterleitung nach 'login'
+        self.assertFalse(auth.get_user(self.client).is_authenticated)

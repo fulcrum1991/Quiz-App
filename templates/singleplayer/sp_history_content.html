@@ -2,14 +2,14 @@
  - finished_games: list of finished SPGame objects
  -->
 
-{%  block content %}  
+{%  block content %}
     <div id="sp_history_content" class="container mt-5">
         <h1>Einzelspieler - Historie</h1>
         <div id="list_quizpools" class="leftbox">
             <h2>Spiel</h2>
             <ul class="list-group">
                 {% for game in finished_games %}  <!-- Iterate over each finished game -->
-                    <li class="list-group-item">  
+                    <li class="list-group-item">
                         <div>
                             <!-- Make AJAX request when the game name is clicked -->
                             <!-- `game.id` is the id of the current game -->
@@ -19,7 +19,7 @@
                         </div>
                     </li>
                 {% empty %}
-                    <p>Hier ist noch nichts zu sehen</p>  
+                    <p>Hier ist noch nichts zu sehen</p>
                 {% endfor %}
             </ul>
         </div>

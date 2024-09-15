@@ -7,24 +7,40 @@
 {# (history) games_count #}
 {# (history) quiztask_stats #}
 
-<div id="card-body" class="card-body">
-    <h2>{{ sp_game.name }}</h2>
-    <p>Datum: {{ sp_game.completed_at }}</p>
-    <div id="game_stats">
-        <p>Fragen richtig beantwortet: {{ sp_game.correct_percent }} %</p>
-        <p>Durchschnittlich richtig beantwortete Fragen mit diesem Pool: {{ avg_correct_percent }} %</p>
-        <p>Spiele mit diesem Quizpool: {{ games_count }}</p>
+<div id="card-body" class="card shadow-sm p-4 mb-5 bg-white rounded">
+    <h2 class="text-center mb-4">{{ sp_game.name }}</h2>
+
+    <!-- Game completion date -->
+    <p class="text-muted">Datum: {{ sp_game.completed_at }}</p>
+
+    <!-- Game statistics -->
+    <div id="game_stats" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Fragen richtig beantwortet:</strong> {{ sp_game.correct_percent }} %</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Durchschnittlich richtig beantwortete Fragen mit diesem Pool:</strong> {{ avg_correct_percent }} %</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Spiele mit diesem Quizpool:</strong> {{ games_count }}</p>
+            </div>
+        </div>
     </div>
-    <div id="list_quiztasks">
-        <table class="table">
-            <thead>
-                <td scope="col">#</td>
-                <td scope="col">Frage</td>
-                <td scope="col">Deine Antwort</td>
-                <td scope="col">Ergebnis</td>
-                <td scope="col">Richtige Antwort</td>
-                <td scope="col">Wie oft richtig beantwortet</td>
-                <td scope="col">Wie oft falsch beantwortet</td>
+
+    <!-- Quiz task statistics -->
+    <div id="list_quiztasks" class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Frage</th>
+                    <th scope="col">Deine Antwort</th>
+                    <th scope="col">Ergebnis</th>
+                    <th scope="col">Richtige Antwort</th>
+                    <th scope="col">Wie oft richtig beantwortet</th>
+                    <th scope="col">Wie oft falsch beantwortet</th>
+                </tr>
             </thead>
             <tbody>
                 {% for id, stats in quiztask_stats.items %}
@@ -32,8 +48,18 @@
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ stats.question }}</td>
                     <td>{{ stats.selected_answer }}</td>
-                    <td>{% if stats.was_correct %} Richtig {% else %} Falsch {% endif %}</td>
-                    <td>{% if not stats.was_correct %} {{ stats.right_answer }} {% endif %}</td>
+                    <td>
+                        <span class="badge {% if stats.was_correct %} bg-success {% else %} bg-danger {% endif %}">
+                            {% if stats.was_correct %} Richtig {% else %} Falsch {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        {% if not stats.was_correct %}
+                            {{ stats.right_answer }}
+                        {% else %}
+                            <span class="text-muted">N/A</span>
+                        {% endif %}
+                    </td>
                     <td>{{ stats.correct }}</td>
                     <td>{{ stats.wrong }}</td>
                 </tr>
@@ -41,7 +67,9 @@
             </tbody>
         </table>
     </div>
-</div>
-<div id="game-navigation">
-    <a class="btn btn-primary" href="/singleplayer">Zurück zu Einzelspieler</a>
+
+    <!-- Navigation buttons -->
+    <div id="game-navigation" class="text-center mt-4">
+        <a class="btn btn-outline-primary" href="/singleplayer">Zurück zu Einzelspieler</a>
+    </div>
 </div>

@@ -1,28 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Warten auf zweiten Spieler...</h1>
-<p>Spielername: {{ user.username }}</p>
-<p>Fragenpool: {{ game.pool.name }}</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="text-center">Lobby: Warten auf zweiten Spieler...</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Spielername:</strong> {{ user.username }}</p>
+                    <p><strong>Fragenpool:</strong> {{ game.pool.name }}</p>
 
-<!-- Dieser Container lädt die Lobby-Daten regelmäßig nach -->
-<div id="lobby-container" 
-     hx-get="{% url 'multiplayer:mp_lobby_content' game_id=game.id %}" 
-     hx-trigger="load, every 5s" 
-     hx-swap="outerHTML">
-    <p>Spieler 1: {{ game.player1.username }}</p>
-    <p>Spieler 2: {% if game.player2 %}{{ game.player2.username }}{% else %}Warten auf Spieler 2...{% endif %}</p>
+                    <!-- Dieser Container lädt die Lobby-Daten regelmäßig nach -->
+                    <div id="lobby-container"
+                         hx-get="{% url 'multiplayer:mp_lobby_content' game_id=game.id %}"
+                         hx-trigger="load, every 5s"
+                         hx-swap="outerHTML">
+                        <p><strong>Spieler 1:</strong> {{ game.player1.username }}</p>
+                        <p><strong>Spieler 2:</strong>
+                            {% if game.player2 %}
+                                {{ game.player2.username }}
+                            {% else %}
+                                <em class="text-muted">Warten auf Spieler 2...</em>
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <!-- Button für Spiel verlassen -->
+                    <div class="text-center mt-4">
+                        <a href="{% url 'multiplayer:mp_overview' %}" class="btn btn-danger">
+                            Lobby verlassen
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamischer Weiterleitungscontainer -->
+            <div id="game-status-container"
+                 hx-get="{% url 'multiplayer:check_game_status' game_id=game.id %}"
+                 hx-trigger="load, every 2s"
+                 hx-swap="outerHTML">
+                <!-- Hier wird dynamisch der Status des Spiels überprüft -->
+            </div>
+        </div>
+    </div>
 </div>
-
-<!-- Dieser Container wird aktualisiert, wenn das Spiel voll ist -->
-<div id="game-status-container"
-     hx-get="{% url 'multiplayer:check_game_status' game_id=game.id %}"
-     hx-trigger="every 2s"
-     hx-swap="outerHTML">
-     <!-- Initiale leere Anzeige -->
-</div>
-
 {% endblock %}
+<script>
+    document.body.addEventListener('htmx:beforeOnLoad', function(evt) {
+        var redirectLocation = evt.detail.xhr.getResponseHeader("HX-Redirect");
+        if (redirectLocation) {
+            window.location.href = redirectLocation;
+        }
+    });
+</script>
+
 
 
 

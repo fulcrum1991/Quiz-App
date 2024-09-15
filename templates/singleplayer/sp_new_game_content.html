@@ -1,47 +1,62 @@
-{# Context Parameters: #}
-{# quizpools: A list of quizpools. #}
-{# quiztasks: A list of quiztasks. #}
-{# selected_pool: Represents the selected quiz pool. It has an attribute name and id.#}
-
-{%  block content %} 
+{% block content %} 
     <div id="sp_new_game_content" class="container mt-5">
-        <h1>Einzelspieler - Neues Spiel</h1>
-        <div id="list_quizpools" class="leftbox">
-            <h2>Quizpool</h2>
-            <ul class="list-group">
-                {% for pool in quizpools %}  <!-- Iterate over each quiz pool in quizpools -->
-                    <li class="list-group-item"> 
-                        <div>
-                            <!-- Make AJAX request when the pool name is clicked -->
-                            <!-- `pool.id` is the id of the current quiz pool -->
-                            <span hx-get="{% url 'show_lib_content' pool.id %}" hx-target="#sp_new_game_content">
-                                {{ pool.name }} <!-- Show pool`s name -->
-                            </span>
-                        </div>
-                    </li>
-                {% empty %}
-                    <p>Hier ist noch nichts zu sehen</p> 
-                {% endfor %}
-            </ul>
+        <h1 class="text-center mb-4">Einzelspieler - Neues Spiel</h1>
+        
+        <!-- Grid Layout for better organization -->
+        <div class="row">
+            <!-- Quizpool list -->
+            <div id="list_quizpools" class="col-lg-6 col-md-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="h5 mb-0">Quizpool</h2>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for pool in quizpools %}
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span hx-get="{% url 'show_lib_content' pool.id %}" hx-target="#sp_new_game_content" class="text-primary quiz-pool-link">
+                                        {{ pool.name }}
+                                    </span>
+                                    <span class="badge bg-info text-dark">ID: {{ pool.id }}</span>
+                                </div>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item text-muted">Hier ist noch nichts zu sehen</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Quiz tasks list -->
+            <div id="list_quiztasks" class="col-lg-6 col-md-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-secondary text-white">
+                        <h2 class="h5 mb-0">Fragen</h2>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for task in quiztasks %}
+                            <li class="list-group-item">
+                                <div>
+                                    {{ task.question }}
+                                </div>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item text-muted">Hier ist noch nichts zu sehen</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div id="list_quiztasks" class="middlebox">
-            <h2>Fragen</h2>
-            <ul class="list-group">
-                {% for task in quiztasks %}  <!-- Iterate over each task in quiztasks -->
-                    <li class="list-group-item"> 
-                        <div>
-                            {{ task.question }}  <!-- Show the task's question -->
-                        </div>
-                    </li>
-                {% empty %}
-                    <p>Hier ist noch nichts zu sehen</p> 
-                {% endfor %}
-            </ul>
-        </div>
-        <div id="start_game" class="rightbox">
-            <h2>{{ selected_pool.name }}</h2>  <!-- show the name of the selected quizpool -->
-                       <!-- `create_game` is a view name -->
-            <a href="{% url 'create_game' selected_pool.id %}" class="btn btn-primary btn-lg">Spiel beginnen</a>
+
+        <!-- Start Game Button -->
+        <div class="row">
+            <div class="col text-center mt-4">
+                <h2 class="h5 mb-3 text-muted">{{ selected_pool.name }}</h2>
+                <a href="{% url 'create_game' selected_pool.id %}" class="btn btn-success btn-lg">
+                    Spiel beginnen
+                </a>
+            </div>
         </div>
     </div>
 {% endblock %}
+
