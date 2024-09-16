@@ -71,8 +71,8 @@ Das Django-Projekt gliedert sich in die folgenden Apps:
 - Quiz-App
 - UserManagement
 - Library
-- Multiplayer
 - Singleplayer
+- Multiplayer
 
 Nachfolgend sind die wichtigsten Datei des Projekts beschrieben.
 
@@ -153,8 +153,8 @@ Diese App behandelt das Darstellen und Managen von Quiz' im Einzelspielermodus. 
 - Anzeigen der Ergebnisse beendeter Spiele
 
 - Singleplayer/views.py
-	- Die views.py-Datei enthält Funktionen zur Behandlung von Single-Player-Spielanfragen. Sie enthält Funktionen zur Überblicksanzeige des Spiels (sp_overview), zur Erstellung eines neuen Spiels (sp_new_game, create_game), zur Verarbeitung des Spiels und der Quizkarten (render_game, render_quiztask_card, evaluate_task, render_game_result_card), zur Fortsetzung von Spielen (sp_resume_game), und zum Anzeigen von Spielinhalten und -verlauf (show_lib_content, show_game_content, sp_history).
-- Singleplayer/SpHelperFunctions.py
+	- Die views.py-Datei enthält Funktionen zur Behandlung von SingleplayerSpielanfragen. Sie enthält Funktionen zur Überblicksanzeige des Spiels (sp_overview), zur Erstellung eines neuen Spiels (sp_new_game, create_game), zur Verarbeitung des Spiels und der Quizkarten (render_game, render_quiztask_card, evaluate_task, render_game_result_card), zur Fortsetzung von Spielen (sp_resume_game), und zum Anzeigen von Spielinhalten und -verlauf (show_lib_content, show_game_content, sp_history).
+- Singleplayer/SPHelperFunctions.py
 	- Diese Datei bietet unterstützende Funktionen für die views.py. Diese Funktionen helfen beim Erstellen, Anzeigen, Bewerten und Fortsetzen von Spielen. 
 - Singleplayermodels.py
 	- In dieser models.oy sind folgende Modelle definiert:
@@ -177,7 +177,19 @@ Diese App behandelt das Darstellen und Managen von Quiz' im Einzelspielermodus. 
 - UF11 - Einzelspieler - Historie anzeigen
 
 #### Multiplayer
-- folgt
+Diese App behandelt das Darstellen und Managen von Quiz' im Mehrspielermodus. U.a.:
+- Neue Spiele starten
+- Begonnene Spiele Fortsetzen
+- Anzeigen der Ergebnisse beendeter Spiele
+
+- Multiplayer/views.py
+	- Die views.py-Datei enthält Funktionen zur Behandlung von Multiplayer-Spielanfragen. Sie enthält Funktionen zur Überblicksanzeige des Spiels (mp_overview), zur Erstellung eines neuen Spiels (mp_new_game, create_game), zur Verarbeitung des Spiels und der Quizkarten (render_game, render_quiztask_card, evaluate_task, render_game_result_card), zur Fortsetzung von Spielen (mp_resume_game), und zum Anzeigen von Spielinhalten und -verlauf (show_lib_content, show_game_content, mp_history).
+- Multiplayer/MPHelperFunctions.py
+	- Diese Datei bietet unterstützende Funktionen für die views.py. Diese Funktionen helfen beim Erstellen, Anzeigen, Bewerten und Fortsetzen von Spielen. 
+- Multiplayermodels.py
+	- In dieser models.oy sind folgende Modelle definiert:
+		- MPGame: wird verwendet, um einzelne Spielinstanzen zu speichern.
+		- MPGame_contains_Quiztask: wird verwendet, um eine Beziehung zwischen MPGame und QuizTask zu definieren - also welche Fragen wurden in welchem Spiel gestellt.
 
 
 
