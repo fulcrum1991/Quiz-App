@@ -17,11 +17,20 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['username']
 
-from django.contrib.auth.forms import PasswordChangeForm
 
 class CustomPasswordChangeForm(PasswordChangeForm):
-    pass
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_password')
+        if not self.user.check_password(old_password):
+            raise forms.ValidationError("Das alte Passwort ist falsch.")
+        return old_password
 
+    def clean_new_password2(self):
+        new_password1 = self.cleaned_data.get('new_password1')
+        new_password2 = self.cleaned_data.get('new_password2')
+        if new_password1 and new_password2 and new_password1 != new_password2:
+            raise forms.ValidationError("Die beiden Passwörter stimmen nicht überein.")
+        return new_password2
 
 class DeleteUserForm(forms.Form):
     confirm = forms.BooleanField(required=True, label='Profil löschen bestätigen')

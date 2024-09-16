@@ -178,8 +178,8 @@ def mp_game_result(request, game_id):
         'game': game,
         'player1_percent': player1_percent,
         'player2_percent': player2_percent,
+        'stats': stats  # Stelle sicher, dass das aktualisierte 'stats' Dictionary übergeben wird
     })
-
 
 
 @login_required(login_url='/login')

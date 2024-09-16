@@ -16,13 +16,21 @@ def get_mp_game_stats(mp_game):
     player2_correct = tasks.filter(player2_answer__correct=True).count()
     total_tasks = tasks.count()
 
-    player1_percent = (player1_correct / total_tasks) * 100
-    player2_percent = (player2_correct / total_tasks) * 100
+    if total_tasks > 0:
+        player1_percent = (player1_correct / total_tasks) * 100
+        player2_percent = (player2_correct / total_tasks) * 100
+    else:
+        player1_percent = 0
+        player2_percent = 0
 
     return {
-        'player1_percent': player1_percent,
-        'player2_percent': player2_percent,
+        'player1_correct': player1_correct,  # Anzahl korrekter Antworten Spieler 1
+        'player2_correct': player2_correct,  # Anzahl korrekter Antworten Spieler 2
+        'total_questions': total_tasks,      # Gesamtanzahl der Fragen
+        'player1_percent': player1_percent,  # Prozentwert Spieler 1
+        'player2_percent': player2_percent   # Prozentwert Spieler 2
     }
+
 
 def check_mp_game_completed(game):
     # Prüfen, ob alle Aufgaben abgeschlossen sind

@@ -37,7 +37,7 @@ def sign_up(request):
     return render(request, 'registration/sign-up.html', {'form': form})
 
 
-@login_required(login_url='/login')
+@login_required
 def profile(request):
     """
     Profile Method
@@ -55,11 +55,34 @@ def profile(request):
         user_form = UserUpdateForm(request.POST, instance=request.user)
         password_form = CustomPasswordChangeForm(request.user, request.POST)
 
+        # Überprüfen, ob das User-Formular und das Passwort-Formular beide gültig sind
         if user_form.is_valid() and password_form.is_valid():
+            # User-Formular speichern
             user_form.save()
+
+            # Passwort-Formular speichern
             user = password_form.save()
-            update_session_auth_hash(request, user)  #Nutzer bleibt auch nach dem Ändern der Daten eingeloggt
+            update_session_auth_hash(request, user)  # Nutzer bleibt eingeloggt
+
+            messages.success(request, 'Profil und Passwort wurden erfolgreich aktualisiert.')
             return redirect('profile')
+
+        # Falls eines der Formulare nicht gültig ist
+        else:
+            if not user_form.is_valid():
+                messages.error(request, 'Bitte prüfen Sie Ihre Profildaten.')
+            if not password_form.is_valid():
+                messages.error(request, 'Bitte prüfen Sie Ihre Eingaben zum Passwort.')
+
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+        password_form = CustomPasswordChangeForm(request.user)
+
+    return render(request, 'accounts/profile_edit_form.html', {
+        'user_form': user_form,
+        'password_form': password_form,
+    })
+
 
 
 @login_required
