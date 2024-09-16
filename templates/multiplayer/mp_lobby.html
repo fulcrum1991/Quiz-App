@@ -12,7 +12,6 @@
                     <p><strong>Spielername:</strong> {{ user.username }}</p>
                     <p><strong>Fragenpool:</strong> {{ game.pool.name }}</p>
 
-                    <!-- Dieser Container lädt die Lobby-Daten regelmäßig nach -->
                     <div id="lobby-container"
                          hx-get="{% url 'multiplayer:mp_lobby_content' game_id=game.id %}"
                          hx-trigger="load, every 5s"
@@ -27,7 +26,6 @@
                         </p>
                     </div>
 
-                    <!-- Button für Spiel verlassen -->
                     <div class="text-center mt-4">
                         <a href="{% url 'multiplayer:mp_overview' %}" class="btn btn-danger">
                             Lobby verlassen
@@ -36,25 +34,45 @@
                 </div>
             </div>
 
-            <!-- Dynamischer Weiterleitungscontainer -->
+            <!-- Dynamischer Status-Check-Container -->
             <div id="game-status-container"
                  hx-get="{% url 'multiplayer:check_game_status' game_id=game.id %}"
                  hx-trigger="load, every 2s"
-                 hx-swap="outerHTML">
-                <!-- Hier wird dynamisch der Status des Spiels überprüft -->
+                 hx-swap="none"
+                 hx-on="htmx:afterRequest:checkRedirect">
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
+
 <script>
-    document.body.addEventListener('htmx:beforeOnLoad', function(evt) {
-        var redirectLocation = evt.detail.xhr.getResponseHeader("HX-Redirect");
-        if (redirectLocation) {
-            window.location.href = redirectLocation;
+    // Überprüfung der Antwort und Weiterleitung
+    function checkRedirect(event) {
+        var responseText = event.detail.xhr.responseText;
+        try {
+            var jsonResponse = JSON.parse(responseText);
+            if (jsonResponse.redirect_url) {
+                window.location.href = jsonResponse.redirect_url;
+            }
+        } catch (e) {
+            console.error("Fehler beim Verarbeiten der JSON-Antwort: ", e);
+        }
+    }
+
+    // Manuelle HTMX Event Listener-Registrierung (Sicherheitshalber)
+    document.addEventListener('htmx:afterRequest', function (event) {
+        if (event.detail.target.id === 'game-status-container') {
+            checkRedirect(event);
         }
     });
 </script>
+{% endblock %}
+
+
+
+
+
+
 
 
 
