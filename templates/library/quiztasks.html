@@ -9,7 +9,7 @@
     <div id="list_quiztasks">
         <ul class="list-group">
             <!-- Start of a loop to go through each task in quiztasks -->
-            {% for task in quiztasks %} 
+            {% for task in quiztasks %}
                 <li class="list-group-item">
                     <div>
                       <!-- Fetching the answers for the task and displaying the question -->
@@ -19,13 +19,13 @@
                     </div>
                 </li>
             <!-- Message indicating no tasks if quiztasks is empty -->
-            {% empty %} 
+            {% empty %}
                 <p>Hier ist noch nichts zu sehen</p>
             {% endfor %}
         </ul>
     </div>
     <!-- Displaying options if a pool is selected and user is authenticated -->
-    {% if selected_pool and user.is_authenticated %} 
+    {% if selected_pool and user.is_authenticated %}
     <div id="create_quiztask" class="mt-3 text-center">
         <!-- Form to create a new quiz task -->
         <form hx-post="{% url 'create_quiztask' selected_pool.id %}"
@@ -37,7 +37,7 @@
     {# Change Quizpool Name#}
     {% if user.groups.all.0.name == 'dozent' or selected_pool.creator.id == request.user.id%} <!-- Check if user has permission or is in the right group -->
         <div id="change_quizpool_name" class="mt-3">
-            <form hx-post="{% url 'change_quizpool_name' selected_pool.id %}" 
+            <form hx-post="{% url 'change_quizpool_name' selected_pool.id %}"
                   hx-target="#library-content">
                 <input type="text" name="name" class="form-control mb-2" placeholder="{{ selected_pool.name }}" required>
                 <input type="submit" class="btn btn-warning" value="Name ändern">
@@ -45,10 +45,10 @@
         </div>
     {% endif %}
     {# Delete Quitpool#}
-     {% if user.groups.all.0.name == 'dozent' or selected_pool.creator.id == request.user.id%} <!-- Check if user has permission or is in the right group -->          
+     {% if user.groups.all.0.name == 'dozent' or selected_pool.creator.id == request.user.id%} <!-- Check if user has permission or is in the right group -->
         <div id="delete_quizpool" class="mt-3">
-            <form hx-post="{% url 'delete_quizpool' selected_pool.id %}" 
-                  hx-target="#library-content" 
+            <form hx-post="{% url 'delete_quizpool' selected_pool.id %}"
+                  hx-target="#library-content"
                   hx-confirm="Wenn {{ selected_pool.name }} gelöscht wird, werden auch alle dazugehörigen Fragen gelöscht. Wirklich löschen?">
                 <input type="submit" class="btn btn-danger" value="Quizpool {{ selected_pool.name }} löschen">
             </form>

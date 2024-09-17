@@ -21,8 +21,8 @@ class MultiplayerViewsTest(TestCase):
         self.game = MPGame.objects.create(pool=self.pool, player1=self.user1)
 
         # Erstelle einige QuizTasks für das MPGame
-        self.task1 = QuizTask.objects.create(pool=self.pool, question_text="Test Question 1")
-        self.task2 = QuizTask.objects.create(pool=self.pool, question_text="Test Question 2")
+        self.task1 = QuizTask.objects.create(pool=self.pool, question="Test Question 1")
+        self.task2 = QuizTask.objects.create(pool=self.pool, question="Test Question 2")
         MPGame_contains_Quiztask.objects.create(game=self.game, task=self.task1, current_turn=self.user1)
         MPGame_contains_Quiztask.objects.create(game=self.game, task=self.task2, current_turn=self.user1)
 

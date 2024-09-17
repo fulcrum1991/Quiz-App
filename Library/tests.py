@@ -1,84 +1,85 @@
 from django.test import TestCase
-
-# Create your tests here.
-from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from Library.models import QuizPool, QuizTask, Answer
-from Singleplayer.models import SPGame, SPGame_contains_Quiztask
-import datetime as dt
+from .models import QuizPool, QuizTask, Answer
+from .forms import QuizPoolForm, QuizTaskForm, AnswerForm
 
-
-class SingleplayerViewsTestCase(TestCase):
+class LibraryViewTests(TestCase):
 
     def setUp(self):
-        # Erstelle Testdaten für User, QuizPool, QuizTask, usw.
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.client.login(username='testuser', password='12345')
-
+        # Setup Testdaten
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='testpass')
         self.quizpool = QuizPool.objects.create(name="Test Pool", creator=self.user)
-        self.quiztask = QuizTask.objects.create(question="Test Question", pool=self.quizpool)
-        self.answer = Answer.objects.create(answer="Test Answer", correct=True, task=self.quiztask)
+        self.quiztask = QuizTask.objects.create(question="Test Task", pool=self.quizpool, creator=self.user)
+        self.answer = Answer.objects.create(answer="Test Answer", task=self.quiztask, creator=self.user)
 
-        self.sp_game = SPGame.objects.create(name="Test Game", user=self.user, pool=self.quizpool)
-        self.sp_game_quiztask = SPGame_contains_Quiztask.objects.create(game=self.sp_game, task=self.quiztask)
-
-    def test_sp_overview_view(self):
-        response = self.client.get(reverse('sp_overview'))
+    def test_get_library_content(self):
+        # Testet die Funktion get_library_content
+        response = self.client.get(reverse('library'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/sp_overview.html')
-
-    def test_sp_new_game_view(self):
-        response = self.client.get(reverse('sp_new_game'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/sp_new_game.html')
         self.assertIn('quizpools', response.context)
+        self.assertIn('quiztasks', response.context)
+        self.assertIn('selected_pool', response.context)
+        self.assertIn('selected_task', response.context)
 
-    def test_show_lib_content_view(self):
-        response = self.client.get(reverse('show_lib_content', args=[self.quizpool.id]))
+    def test_create_quizpool(self):
+        # Testet die Erstellung eines neuen Quizpools
+        form_data = {'name': 'New Quiz Pool'}
+        response = self.client.post(reverse('create_quizpool'), form_data)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/sp_new_game_content.html')
-        self.assertEqual(response.context['selected_pool'], self.quizpool)
+        self.assertTrue(QuizPool.objects.filter(name='New Quiz Pool').exists())
 
-    def test_create_game_view(self):
-        response = self.client.post(reverse('create_game', args=[self.quizpool.id]))
-        self.assertRedirects(response, reverse('render_game', args=[SPGame.objects.last().id]))
-        self.assertTrue(SPGame_contains_Quiztask.objects.filter(game=SPGame.objects.last()).exists())
+    def test_change_quizpool_name(self):
+        # Testet das Ändern des Namens eines Quizpools
+        form_data = {'name': 'Updated Pool Name'}
+        response = self.client.post(reverse('change_quizpool_name', args=[self.quizpool.id]), form_data)
+        self.quizpool.refresh_from_db()
+        self.assertEqual(self.quizpool.name, 'Updated Pool Name')
 
-    def test_render_game_view(self):
-        response = self.client.get(reverse('render_game', args=[self.sp_game.id]))
+    def test_delete_quizpool(self):
+        # Testet das Löschen eines Quizpools
+        response = self.client.post(reverse('delete_quizpool', args=[self.quizpool.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/sp_game.html')
-        self.assertIn('sp_game', response.context)
+        self.assertFalse(QuizPool.objects.filter(id=self.quizpool.id).exists())
 
-    def test_render_quiztask_card_view(self):
-        response = self.client.get(reverse('render_quiztask_card', args=[self.sp_game.id, self.quiztask.id, 'next']))
+    def test_create_quiztask(self):
+        # Testet die Erstellung eines neuen Quiztasks
+        form_data = {'question': 'New Quiz Task'}
+        response = self.client.post(reverse('create_quiztask', args=[self.quizpool.id]), form_data)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/quiztask_card.html')
+        self.assertTrue(QuizTask.objects.filter(question='New Quiz Task').exists())
 
-    def test_evaluate_task_view(self):
-        response = self.client.post(reverse('evaluate_task', args=[self.sp_game.id, self.quiztask.id, self.answer.id]))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/quiztask_card.html')
-        sp_game_quiztask = SPGame_contains_Quiztask.objects.get(game=self.sp_game, task=self.quiztask)
-        self.assertTrue(sp_game_quiztask.correct_answered)
+    def test_change_question(self):
+        # Testet das Ändern der Frage eines Quiztasks
+        form_data = {'question': 'Updated Question'}
+        response = self.client.post(reverse('change_question', args=[self.quiztask.id]), form_data)
+        self.quiztask.refresh_from_db()
+        self.assertEqual(self.quiztask.question, 'Updated Question')
 
-    def test_render_game_result_card_view(self):
-        self.sp_game.correct_percent = 100
-        self.sp_game.save()
-        response = self.client.get(reverse('render_game_result_card', args=[self.sp_game.id]))
+    def test_delete_quiztask(self):
+        # Testet das Löschen eines Quiztasks
+        response = self.client.post(reverse('delete_quiztask', args=[self.quiztask.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/game_result_card.html')
-        self.assertEqual(response.context['sp_game'], self.sp_game)
+        self.assertFalse(QuizTask.objects.filter(id=self.quiztask.id).exists())
 
-    def test_sp_resume_game_view(self):
-        response = self.client.get(reverse('sp_resume_game'))
+    def test_create_answer(self):
+        # Testet die Erstellung einer neuen Answer
+        form_data = {'answer': 'New Answer', 'correct': 'False'}
+        response = self.client.post(reverse('create_answer', args=[self.quiztask.id]), form_data)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/sp_resume_game.html')
+        self.assertTrue(Answer.objects.filter(answer='New Answer').exists())
 
-    def test_sp_history_view(self):
-        self.sp_game.completed = True
-        self.sp_game.save()
-        response = self.client.get(reverse('sp_history'))
+    def test_edit_answer(self):
+        # Testet das Bearbeiten einer Answer
+        form_data = {'answer': 'Updated Answer', 'explanation': 'Explanation', 'correct': 'True'}
+        response = self.client.post(reverse('edit_answer', args=[self.answer.id]), form_data)
+        self.answer.refresh_from_db()
+        self.assertEqual(self.answer.answer, 'Updated Answer')
+        self.assertEqual(self.answer.correct, True)
+
+    def test_delete_answer(self):
+        # Testet das Löschen einer Answer
+        response = self.client.post(reverse('delete_answer', args=[self.answer.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'singleplayer/sp_history.html')
+        self.assertFalse(Answer.objects.filter(id=self.answer.id).exists())

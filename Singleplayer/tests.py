@@ -20,8 +20,8 @@ class SingleplayerViewsTests(TestCase):
         self.quizpool = QuizPool.objects.create(name="Test Quiz Pool")
 
         # Create some QuizTasks for the pool
-        self.quiztask1 = QuizTask.objects.create(name="Task 1", pool=self.quizpool)
-        self.quiztask2 = QuizTask.objects.create(name="Task 2", pool=self.quizpool)
+        self.quiztask1 = QuizTask.objects.create(question="Task 1", pool=self.quizpool)
+        self.quiztask2 = QuizTask.objects.create(question="Task 2", pool=self.quizpool)
 
     def test_sp_overview_view(self):
         response = self.client.get(reverse('sp_overview'))
@@ -58,7 +58,7 @@ class SingleplayerViewsTests(TestCase):
         sp_game = SPGame.objects.create(name="Test Game", user=self.user, pool=self.quizpool)
         sp_game_quiztask = SPGame_contains_Quiztask.objects.create(game=sp_game, task=self.quiztask1)
 
-        response = self.client.get(reverse('render_quiztask_card', kwargs={'game_id': sp_game.id, 'task_id': self.quiztask1.id, 'action': 'next'}))
+        response = self.client.get(reverse('next_task', kwargs={'game_id': sp_game.id, 'task_id': self.quiztask1.id, 'action': 'next'}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'singleplayer/quiztask_card.html')
 
@@ -66,7 +66,7 @@ class SingleplayerViewsTests(TestCase):
         # Create a game and associated quiz tasks
         sp_game = SPGame.objects.create(name="Test Game", user=self.user, pool=self.quizpool)
         sp_game_quiztask = SPGame_contains_Quiztask.objects.create(game=sp_game, task=self.quiztask1)
-        correct_answer = Answer.objects.create(task=self.quiztask1, text="Correct Answer", correct=True)
+        correct_answer = Answer.objects.create(task=self.quiztask1, correct=True)
 
         response = self.client.post(reverse('evaluate_task', kwargs={'game_id': sp_game.id, 'task_id': self.quiztask1.id, 'selected_answer_id': correct_answer.id}))
         self.assertEqual(response.status_code, 200)
@@ -74,7 +74,7 @@ class SingleplayerViewsTests(TestCase):
 
     def test_render_game_result_card_view(self):
         sp_game = SPGame.objects.create(name="Test Game", user=self.user, pool=self.quizpool)
-        response = self.client.get(reverse('render_game_result_card', kwargs={'game_id': sp_game.id}))
+        response = self.client.get(reverse('game_result', kwargs={'game_id': sp_game.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'singleplayer/game_result_card.html')
 
