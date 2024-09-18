@@ -83,3 +83,72 @@ class LibraryViewTests(TestCase):
         response = self.client.post(reverse('delete_answer', args=[self.answer.id]))
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Answer.objects.filter(id=self.answer.id).exists())
+
+
+class IntegrationTests(TestCase):
+
+    def setUp(self):
+        # Set up Testdaten
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='testpass')
+        self.quizpool = QuizPool.objects.create(name="Test Pool", creator=self.user)
+        self.quiztask = QuizTask.objects.create(question="Test Task", pool=self.quizpool, creator=self.user)
+        self.answer = Answer.objects.create(answer="Test Answer", task=self.quiztask, creator=self.user)
+
+    def test_create_quizpool_and_create_quiztask(self):
+        # Integrationstest für die Erstellung eines Quizpools und einer Quizaufgabe
+        pool_data = {'name': 'Integrated Quiz Pool'}
+        response = self.client.post(reverse('create_quizpool'), pool_data)
+        self.assertEqual(response.status_code, 200)
+        created_pool = QuizPool.objects.get(name='Integrated Quiz Pool')
+
+        task_data = {'question': 'Integrated Quiz Task'}
+        response = self.client.post(reverse('create_quiztask', args=[created_pool.id]), task_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(QuizTask.objects.filter(question='Integrated Quiz Task', pool=created_pool).exists())
+
+    def test_create_quizpool_quiztask_and_answer(self):
+        # Integrationstest für die Erstellung eines Quizpools, einer Quizaufgabe und einer Antwort
+        pool_data = {'name': 'Integrated Pool'}
+        response = self.client.post(reverse('create_quizpool'), pool_data)
+        self.assertEqual(response.status_code, 200)
+        created_pool = QuizPool.objects.get(name='Integrated Pool')
+
+        task_data = {'question': 'Integrated Task'}
+        response = self.client.post(reverse('create_quiztask', args=[created_pool.id]), task_data)
+        self.assertEqual(response.status_code, 200)
+        created_task = QuizTask.objects.get(question='Integrated Task', pool=created_pool)
+
+        answer_data = {'answer': 'Integrated Answer', 'correct': 'False'}
+        response = self.client.post(reverse('create_answer', args=[created_task.id]), answer_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(Answer.objects.filter(answer='Integrated Answer', task=created_task).exists())
+
+    def test_quizpool_task_and_answer_deletion(self):
+        # Integrationstest für das Löschen eines Quizpools, einer Aufgabe und einer Antwort
+        response = self.client.post(reverse('delete_answer', args=[self.answer.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Answer.objects.filter(id=self.answer.id).exists())
+
+        response = self.client.post(reverse('delete_quiztask', args=[self.quiztask.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(QuizTask.objects.filter(id=self.quiztask.id).exists())
+
+        response = self.client.post(reverse('delete_quizpool', args=[self.quizpool.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(QuizPool.objects.filter(id=self.quizpool.id).exists())
+
+    def test_quiztask_with_multiple_answers(self):
+        # Integrationstest für eine Quizaufgabe mit mehreren Antworten
+        answer_data1 = {'answer': 'Answer 1', 'correct': 'True'}
+        answer_data2 = {'answer': 'Answer 2', 'correct': 'False'}
+
+        self.client.post(reverse('create_answer', args=[self.quiztask.id]), answer_data1)
+        self.client.post(reverse('create_answer', args=[self.quiztask.id]), answer_data2)
+
+        task_answers = Answer.objects.filter(task=self.quiztask)
+        self.assertEqual(task_answers.count(), 3)  # 1 bestehende Antwort plus 2 neue
+
+        # Überprüfen, ob die Antworten korrekt gespeichert wurden
+        self.assertTrue(Answer.objects.filter(answer='Answer 1', correct=True).exists())
+        self.assertTrue(Answer.objects.filter(answer='Answer 2', correct=False).exists())

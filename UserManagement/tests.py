@@ -28,13 +28,13 @@ class ViewsTestCase(TestCase):
         }
         response = self.client.post(reverse('sign_up'), data)
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse('library'))
 
     def test_profile_view(self):
         # Test für die Profil-Ansicht
         response = self.client.get(reverse('profile'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'accounts/profile_edit_form.html')
+        self.assertTemplateUsed(response, 'accounts/profile.html')
 
     def test_profile_update_post(self):
         # Test für die Profilaktualisierung (POST)

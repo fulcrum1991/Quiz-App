@@ -364,7 +364,7 @@ def edit_profile(request):
             list(get_messages(request))
             return response
 
-        return redirect('edit_profile')
+        return redirect('edit-profile')
 
     # GET-Anfrage: Rendern des Profilbearbeitungsformulars und des Passwortänderungsformulars
     password_change_form = CustomPasswordChangeForm(user=request.user)

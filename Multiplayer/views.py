@@ -80,7 +80,6 @@ def render_game(request, game_id):
         # Wenn es keine offenen Aufgaben mehr gibt, markiere das Spiel als abgeschlossen
         game.completed = True
         game.save()
-
         # Weiterleitung zur Spiel-Resultat-Seite
         return redirect('multiplayer:mp_game_result', game_id=game.id)
 
@@ -240,7 +239,6 @@ def assign_tasks_to_game(game):
         # Setze current_turn explizit auf den ersten Spieler
         MPGame_contains_Quiztask.objects.create(game=game, task=task, current_turn=game.player1)
     print(f"{len(tasks)} Aufgaben wurden dem Spiel {game.id} zugewiesen.")
-
 
 @login_required(login_url='/login')
 def mp_lobby_content(request, game_id):
